@@ -12,7 +12,7 @@
 
 `npm install`
 
-## Usage
+## Usage of App
 
 ### Clone this repo
 
