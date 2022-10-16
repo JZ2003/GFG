@@ -8,6 +8,8 @@
 
 ### Install React if first time building
 
+`cd frontend`
+
 `npm install`
 
 ### Clone this repo
