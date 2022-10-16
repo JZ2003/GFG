@@ -2,25 +2,21 @@
 
 # Build Guideline
 
-### Before all, use Homebrew to install Node
+### Before all, use Homebrew to install Node if you don't have one
 
 `brew install node`
-
-### Install React if first time building
-
-`cd frontend`
-
-`npm install`
-
-## Usage of App
 
 ### Clone this repo
 
 `git clone https://github.com/TraderBros-UCLA/ucla-22f-35l-project.git`
 
-# Run Server
+### Go to your cloned directory, install React if first time building
 
-### Run the command to start React
+`cd frontend`
+
+`npm install`
+
+### Run App
 
 `npm start`
 
