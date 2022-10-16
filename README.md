@@ -12,6 +12,8 @@
 
 `npm install`
 
+## Usage
+
 ### Clone this repo
 
 `git clone https://github.com/TraderBros-UCLA/ucla-22f-35l-project.git`
