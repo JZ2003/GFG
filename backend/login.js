@@ -7,7 +7,7 @@ function handleSignupRequest(req, res) {
   return created;
 }
 
-function handleLoginRequest(req, res) {
+function handleLoginRequest(url, res) {
   const queryObject = url.URLSearchParams;
   const username = queryObject.get(user);
   const password = queryObject.get(pass);
@@ -16,8 +16,12 @@ function handleLoginRequest(req, res) {
 }
 
 function handleCancleRequest(req, res) {
+  const { header } = req;
+  username = header.username;
+  password = header.password;
   const deleted = false;
   //Todo: Delete account according to username.
+  //Verify identity with password.
   //set 'deleted' true if delete succeed.
   res.send(204, {"result": deleted});
   return deleted;

@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
   } else if (method === 'GET') {
     switch (url.pathname) {
       case 'login':
-        return login.handleLoginRequest(req, res);
+        return login.handleLoginRequest(url, res);
       default:
         res.send(400, 'Unrecognize path');
         break;
