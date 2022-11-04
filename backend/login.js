@@ -3,7 +3,11 @@ function handleSignupRequest(req, res) {
   const created = false;
   // Todo: Post this body to the database;
   // set flag iff post succeed
-  res.send(201, {"result": created});
+  if (created) {
+    res.send(201);
+  } else {
+    res.send(409, {'Error': 'Username may exist'});
+  }
   return created;
 }
 
@@ -12,7 +16,11 @@ function handleLoginRequest(url, res) {
   const username = queryObject.get(user);
   const password = queryObject.get(pass);
   const canLogin = validate(username, password);
-  res.send(200, {"result": canLogin});
+  if (canLogin) {
+    res.send(200);
+  } else {
+    res.send(404, {'Error': 'Check if your username or password is correct'});
+  }
 }
 
 function handleCancleRequest(req, res) {
@@ -23,7 +31,11 @@ function handleCancleRequest(req, res) {
   //Todo: Delete account according to username.
   //Verify identity with password.
   //set 'deleted' true if delete succeed.
-  res.send(204, {"result": deleted});
+  if (deleted) {
+    res.send(204);
+  } else {
+    res.send(409, {'Error': 'The user may not exist or you do not have correct authentication'});
+  }
   return deleted;
 }
 
