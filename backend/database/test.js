@@ -26,6 +26,11 @@ async function testMods() {
     await ModsDB.update(testMod1.modName, testMod2);
     modTest = await ModsDB.find('Test Mod 2');
     console.log(modTest);
+    
+    await ModsDB.insert(testMod1);
+    await ModsDB.insert(testMod2);
+    mods = await ModsDB.search({ modName: /^Test Mod/, author: /^Test Author 2/ });
+    console.log(mods);
 }
 
 

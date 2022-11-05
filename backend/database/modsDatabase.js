@@ -4,16 +4,16 @@ const uri = "mongodb://localhost:27017";
 /** Representation of a mod */
 class Mod {
     /**
-     * @param {string} name of the mod
-     * @param {string} author username of the mod
-     * @param {string} description of the mod
-     * @param {string} date of creation of the mod
-     * @param {string} date of modification of the mod
-     * @param {string} download link of the mod
-     * @param {string} game the mod is for
-     * @param {List<string>} tags of the mod
-     * @param {int} number of views of the mod
-     * @param {string} path to the icon image of the mod
+     * @param {string} modName - name of the mod
+     * @param {string} author - author username of the mod
+     * @param {string} desc - description of the mod
+     * @param {string} dateCreated - date of creation of the mod
+     * @param {string} dateModified - date of modification of the mod
+     * @param {string} url - download link of the mod
+     * @param {string} gameName - name of the game the mod is for
+     * @param {List<string>} tags - tags of the mod
+     * @param {int} views - number of views of the mod
+     * @param {string} icon - path to the icon image of the mod
      */
     constructor(modName, author, desc, dateCreated, dateModified, url, gameName, tag, views, icon) {
         this.modName = modName;
@@ -88,6 +88,40 @@ async function insertDefault() {
 }
 
 /**
+ * Get all mods that matches a given filter object from the database
+ * @param {Object} filter - an object in the form of {key: value, key: value, ...}
+ * where value can be a regular expression: /pattern/
+ * @returns {List<Mod>} List of mods that matches the filter
+ * @returns {null} if no mods match the filter
+ * 
+ * Example:
+ * let filter = {modName: "Foo", author: /^Bar/};
+ * let mods = findMany(filter);
+ * console.log(mods);
+ * 
+ * Output:
+ * An array of mods that have modName "Foo" and author starting with "Bar"
+ */
+async function search(filter) {
+    const client = new MongoClient(uri);
+    let mods = null;
+    try {
+        await client.connect();
+        mods = await client.db("cs35lproject").collection("mods").find(filter).toArray();
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    if (mods == null) {
+        console.log("No mods found");
+    } else {
+        console.log("Mods found: " + mods.length);
+    }
+    return mods;
+}
+
+/**
  * Remove the mod with the given modName from the database
  * @param {string} modName of the mod
  * @returns {boolean} false if the mod with the given modName does not exists
@@ -148,4 +182,4 @@ async function update(modName, mod) {
 }
 
 
-module.exports = { Mod, insert, insertDefault, find, remove, update };
+module.exports = { Mod, insert, insertDefault, find, remove, update, search };
