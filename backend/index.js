@@ -4,7 +4,8 @@ const login = require('./login');
 
 var server = http.createServer((req, res) => {
   const { method } = req;
-  const url = new URL(req.url);
+  const baseURL = 'http://' + req.headers.host + '/';
+  const url = new URL(req.url, baseURL);
 
   if (method === 'POST') {
     switch (url.pathname) {
