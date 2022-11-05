@@ -155,6 +155,7 @@ async function search(filter) {
  * @param {string} modName of the mod
  * @param {Mod} mod to be updated
  * @returns {boolean} false if the mod with the given modName does not exists
+ * or the new mod has the same modName as another mod in the database
  */
 async function update(modName, mod) {
     const client = new MongoClient(uri);
@@ -164,14 +165,15 @@ async function update(modName, mod) {
         const collection = client.db("cs35lproject").collection("mods");
         // check if the mod already exists
         const findResult = await collection.findOne({modName: modName});
-        if (findResult != null) {
+        const findResultNew = await collection.findOne({modName: mod.modName});
+        if (findResult != null && findResultNew == null) {
             const updateResult = await collection.updateOne({modName: modName}, {$set: mod});
             console.log("Mod updated: " + modName);
             console.log("New mod: " + mod.modName);
             console.log(`${updateResult.matchedCount} mod(s) matched the filter, updated ${updateResult.modifiedCount} mod(s)`);
             succeed = true;
         } else {
-            console.log("Mod does not exist: " + modName);
+            console.log("Mod does not exist: " + modName + ", or new mod name already exists: " + mod.modName);
         }
     } catch (e) {
         console.error(e);

@@ -130,15 +130,14 @@ async function remove(username) {
 }
 
 /**
- * Update the account with the given username given the old username and password
+ * Update the account password given the old username and old password
  * @param {string} old username of the account
  * @param {string} old password of the account
- * @param {string} new username of the account
  * @param {string} new password of the account
  * @returns {boolean} false if the account with the given old username does not exists 
  * or the old username and old password does not match
  */
-async function update(oldUsername, oldPassword, newUsername, newPassword) {
+async function update(oldUsername, oldPassword, newPassword) {
     const client = new MongoClient(uri);
     let succeed = false;
     try {
@@ -148,9 +147,8 @@ async function update(oldUsername, oldPassword, newUsername, newPassword) {
         const findResult = await collection.findOne({username: oldUsername});
         if (findResult != null) {
             if (findResult.password == oldPassword) {
-                const updateResult = await collection.updateOne({username: oldUsername}, {$set: {username: newUsername, password: newPassword}});
+                const updateResult = await collection.updateOne({username: oldUsername}, {$set: {username: oldUsername, password: newPassword}});
                 console.log("Account updated: " + oldUsername);
-                console.log("New username: " + newUsername);
                 console.log("New password: " + newPassword);
                 console.log(`Updated ${updateResult.modifiedCount} account(s)`);
                 succeed = true;
