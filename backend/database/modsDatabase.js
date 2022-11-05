@@ -151,6 +151,35 @@ async function search(filter) {
 }
 
 /**
+ * Remove all mods from the database
+ * @returns {boolean} false if the database is empty
+ * @returns {boolean} true if the database is not empty and all mods are removed
+ */
+async function removeAll() {
+    const client = new MongoClient(uri);
+    let succeed = false;
+    try {
+        await client.connect();
+        const collection = client.db("cs35lproject").collection("mods");
+        // check if the database is empty
+        const findResult = await collection.findOne();
+        if (findResult != null) {
+            const deleteResult = await collection.deleteMany({});
+            console.log("All mods deleted");
+            console.log(`Deleted ${deleteResult.deletedCount} mod(s)`);
+            succeed = true;
+        } else {
+            console.log("Database is empty");
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    return succeed;
+}
+
+/**
  * Update the mod with the given modName in the database
  * @param {string} modName of the mod
  * @param {Mod} mod to be updated
@@ -184,4 +213,4 @@ async function update(modName, mod) {
 }
 
 
-module.exports = { Mod, insert, insertDefault, find, remove, update, search };
+module.exports = { Mod, insert, insertDefault, find, remove, update, search, removeAll };

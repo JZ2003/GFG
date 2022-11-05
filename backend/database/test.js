@@ -9,6 +9,7 @@ async function testAccounts() {
     await AccountsDB.update('T2', 'pwd2', 'pwd3');
     account1 = await AccountsDB.find('T1');
     console.log(account1);
+    await AccountsDB.removeAll();
 }
 
 async function testMods() {
@@ -29,9 +30,10 @@ async function testMods() {
     
     await ModsDB.insert(testMod1);
     await ModsDB.update(testMod1.modName, testMod3);
-    mods = await ModsDB.search({});
+    // mods = await ModsDB.search({});
     // console.log(mods);
+    await ModsDB.removeAll();
 }
 
 
-testAccounts().catch(console.error);
+testMods().catch(console.error);

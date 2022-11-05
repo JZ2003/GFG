@@ -130,6 +130,35 @@ async function remove(username) {
 }
 
 /**
+ * Remove all accounts from the database
+ * @returns {boolean} false if the database is empty
+ * @returns {boolean} true if the database is not empty and all accounts are removed
+ */
+async function removeAll() {
+    const client = new MongoClient(uri);
+    let succeed = false;
+    try {
+        await client.connect();
+        const collection = client.db("cs35lproject").collection("accounts");
+        // check if the database is empty
+        const count = await collection.countDocuments();
+        if (count > 0) {
+            const deleteResult = await collection.deleteMany({});
+            console.log("All accounts deleted");
+            console.log(`Deleted ${deleteResult.deletedCount} account(s)`);
+            succeed = true;
+        } else {
+            console.log("Database is empty");
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    return succeed;
+}
+
+/**
  * Update the account password given the old username and old password
  * @param {string} old username of the account
  * @param {string} old password of the account
@@ -168,4 +197,4 @@ async function update(oldUsername, oldPassword, newPassword) {
 
 
 
-module.exports = {Account, insert, find, remove, update};
+module.exports = {Account, insert, find, remove, update, search, removeAll};
