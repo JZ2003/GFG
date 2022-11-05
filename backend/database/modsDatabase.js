@@ -58,6 +58,35 @@ async function insert(mod) {
     return succeed;
 }
 
+/**
+ * Insert dummy mods into the database
+ * @param {int} numMods - number of dummy mods to be inserted
+ * @returns {boolean} false if some mod with same name already exists in the database, but still insert the rest of the mods
+ * @returns {null} if numMods is not a positive integer
+ */
+async function insertDummyMods(numMods) {
+    if (numMods <= 0) {
+        return null;
+    }
+    allUnique = true;
+    for (let i = 0; i < numMods; i++) {
+        const mod = new Mod(
+            "Dummy Mod " + i,
+            "Dummy Author",
+            "Dummy Description",
+            "Dummy Date Created",
+            "Dummy Date Modified",
+            "Dummy URL",
+            "Dummy Game Name",
+            "Dummy Tag",
+            0,
+            "Dummy Icon"
+        );
+        allUnique = await insert(mod);
+    }
+    return allUnique;
+}
+    
 async function insertDefault() {
     let defaultMod = new Mod("Default Mod", "Default Author", "Default Description", "2022/11/01", "2022/11/01", "https://www.google.com", "Default Game", "Default Tag", 0, "Default Icon");
     insert(defaultMod);
@@ -213,4 +242,4 @@ async function update(modName, mod) {
 }
 
 
-module.exports = { Mod, insert, insertDefault, find, remove, update, search, removeAll };
+module.exports = { Mod, insert, insertDefault, find, remove, update, search, removeAll, insertDummyMods };

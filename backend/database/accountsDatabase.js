@@ -43,6 +43,39 @@ class Account {
 }
 
 /**
+ * Insert dummy accounts into the database: admin, user, author
+ * @returns {boolean} false if the database is not empty
+ * @returns {boolean} true if the database is empty and dummy accounts are inserted
+ */
+async function insertDummyAccounts() {
+    const client = new MongoClient(uri);
+    let succeed = false;
+    try {
+        await client.connect();
+        const collection = client.db("cs35lproject").collection("accounts");
+        // check if the database is empty
+        const findResult = await collection.findOne();
+        if (findResult == null) {
+            const insertResult = await collection.insertMany([
+                {username: "admin", password: "admin"},
+                {username: "user", password: "user"},
+                {username: "author", password: "author"}
+            ]);
+            console.log("Dummy accounts inserted");
+            console.log(`New accounts created with the following ids: ${insertResult.insertedIds}`);
+            succeed = true;
+        } else {
+            console.log("Database is not empty");
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    return succeed;
+}
+
+/**
  * Find the account with the given username
  * @param {string} username of the account
  * @returns {Account} account with the given username, null if the account does not exist
@@ -196,5 +229,4 @@ async function update(oldUsername, oldPassword, newPassword) {
 }
 
 
-
-module.exports = {Account, insert, find, remove, update, search, removeAll};
+module.exports = {Account, insert, find, remove, update, search, removeAll, insertDummyAccounts};
