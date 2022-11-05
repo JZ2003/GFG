@@ -31,9 +31,9 @@ import { BrowserRouter as Router, Routes, Route}
 	from 'react-router-dom';
 import Home from './pages/index';
 import About from './pages/about';
-import Projects from './pages/project';
-import Login from './pages/login';
-import CE_Projects from './pages/create_edit_project';
+import My_Mods from './pages/mymods';
+import Login from './pages/login_signup';
+import CE_Mods from './pages/create';
 
 function App() {
 return (
@@ -42,9 +42,9 @@ return (
 	<Routes>
 		<Route exact path='/' element={<Home/>} />
 		<Route path='/about' element={<About/>} />
-		<Route path='/project' element={<Projects/>} />
-		<Route path='/login' element={<Login/>} />
-		<Route path='/create_edit_project' element={<CE_Projects/>} />
+		<Route path='/mymods' element={<My_Mods/>} />
+		<Route path='/login_signup' element={<Login/>} />
+		<Route path='/create' element={<CE_Mods/>} />
 	</Routes>
 	</Router>
 );

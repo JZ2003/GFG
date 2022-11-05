@@ -15,21 +15,18 @@ return (
 		<Bars />
 
 		<NavMenu>
-		<NavLink to="/project" activeStyle>
+		<NavLink to="/mymods" activeStyle>
 			Mods
 		</NavLink>
-		<NavLink to="/create_edit_project" activeStyle>
+		<NavLink to="/create" activeStyle>
 			Upload/Edit Mods
 		</NavLink>
 		<NavLink to="/about" activeStyle>
-			About
-		</NavLink>
-		<NavLink to="/login" activeStyle>
-			Sign Up
+			About Us
 		</NavLink>
 		</NavMenu>
 		<NavBtn>
-          <NavBtnLink to='/login'>Sign In</NavBtnLink>
+          <NavBtnLink to='/login_signup'>Log In/Sign Up</NavBtnLink>
         </NavBtn>
 	</Nav>
 	</>
