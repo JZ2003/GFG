@@ -1,8 +1,14 @@
 const ModsDB = require('./modsDatabase.js');
+const AccountsDB = require('./accountsDatabase.js');
 
-async function testMain() {
-    ModsDB.insertDefaultMod();
-    ModsDB.getMod("Default Mod");
+async function testAccounts() {
+    await AccountsDB.insert(new AccountsDB.Account('test1', 'test1'));
+    account1 = await AccountsDB.find('test1');
+    console.log(account1);
+    // await AccountsDB.remove('test1');
+    await AccountsDB.update('test1', 'test1', 'test1', 'password1');
+    account1 = await AccountsDB.find('test1');
+    console.log(account1);
 }
 
-testMain().catch(console.error);
+testAccounts().catch(console.error);

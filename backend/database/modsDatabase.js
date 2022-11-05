@@ -29,18 +29,6 @@ class Mod {
     }
 }
 
-/** Representation of an account */
-class Account {
-    /**
-     * @param {string} username 
-     * @param {string} password 
-     */
-    constructor(username, password) {
-        this.username = username;
-        this.password = password;
-    }
-}
-
 /**
  * @param {Mod} mod to be added to the database
  * @returns {boolean} false if the mod with same name already exists in the database
@@ -70,7 +58,6 @@ async function insertDefaultMod() {
 /**
  * @param {string} name of the mod
  * @returns {Mod} mod with the given name
- * @throws {Error} if no mod with the given name exists
  * @returns {boolean} false if no mod with the given name exists
  **/
 async function getMod(modName) {
@@ -94,4 +81,4 @@ async function getMod(modName) {
     return succeed;
 }
 
-module.exports = { Mod, Account, insertMod, insertDefaultMod, getMod };
+module.exports = { Mod, insertMod, insertDefaultMod, getMod };
