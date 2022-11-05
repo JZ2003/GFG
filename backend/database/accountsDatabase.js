@@ -22,7 +22,7 @@ class Account {
     let succeed = false;
     try {
         await client.connect();
-        const collection = client.db("main").collection("accounts");
+        const collection = client.db("cs35lproject").collection("accounts");
         // check if the account already exists
         const findResult = await collection.findOne({username: account.username});
         if (findResult == null) {
@@ -50,7 +50,7 @@ async function find(username) {
     let account = null;
     try {
         await client.connect();
-        account = await client.db("main").collection("accounts").findOne({username: username});
+        account = await client.db("cs35lproject").collection("accounts").findOne({username: username});
     } catch (e) {
         console.error(e);
     } finally {
@@ -74,7 +74,7 @@ async function remove(username) {
     let succeed = false;
     try {
         await client.connect();
-        const collection = client.db("main").collection("accounts");
+        const collection = client.db("cs35lproject").collection("accounts");
         // check if the account already exists
         const findResult = await collection.findOne({username: username});
         if (findResult != null) {
@@ -107,7 +107,7 @@ async function update(oldUsername, oldPassword, newUsername, newPassword) {
     let succeed = false;
     try {
         await client.connect();
-        const collection = client.db("main").collection("accounts");
+        const collection = client.db("cs35lproject").collection("accounts");
         // check if the account already exists
         const findResult = await collection.findOne({username: oldUsername});
         if (findResult != null) {

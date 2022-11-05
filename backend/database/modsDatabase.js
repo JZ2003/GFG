@@ -38,7 +38,7 @@ async function insertMod(mod) {
     let succeed = false;
     try {
         await client.connect();
-        const result = await client.db("main").collection("mods").insertOne(mod);
+        const result = await client.db("cs35lproject").collection("mods").insertOne(mod);
         console.log(`New mod created with the following id: ${result.insertedId}`);
         console.log("Mod inserted: " + mod.modName);
         succeed = true; //Todo: return false if the mod already exists
@@ -65,7 +65,7 @@ async function getMod(modName) {
     let succeed = false;
     try {
         await client.connect();
-        const result = await client.db("main").collection("mods").findOne({ modName: modName });
+        const result = await client.db("cs35lproject").collection("mods").findOne({ modName: modName });
         if (result) {
             console.log(`Found a mod in the collection with the name '${modName}':`);
             console.log(result);
