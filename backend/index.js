@@ -2,16 +2,16 @@ const http = require('http');
 const url = require('url');
 const login = require('./login');
 
-const server = http.createServer((req, res) => {
+var server = http.createServer((req, res) => {
   const { method } = req;
-  url = new URL(req.url);
+  const url = new URL(req.url);
 
   if (method === 'POST') {
     switch (url.pathname) {
       case 'signup':
         return login.handleSignupRequest(req, res);
       default:
-        res.send(400, 'Unrecognize path');
+        //res.send(400, 'Unrecognize path');
         break;
     }
   } else if (method === 'GET') {
@@ -19,29 +19,27 @@ const server = http.createServer((req, res) => {
       case 'login':
         return login.handleLoginRequest(url, res);
       default:
-        res.send(400, 'Unrecognize path');
+        //res.send(400, 'Unrecognize path');
         break;
     }
-  } else if (method == 'PUT') {
+  } else if (method === 'PUT') {
     switch (url.pathname) {
       default:
-        res.send(400, 'Unrecognize path');
+        //res.send(400, 'Unrecognize path');
         break;;
     }
-  } else if (method == 'DELETE') {
+  } else if (method === 'DELETE') {
     switch (url.pathname) {
       case 'cancle':
         return login.handleCancleRequest(req, res);
       default:
-        res.send(400, 'Unrecognize path');
+        //res.send(400, 'Unrecognize path');
         break;
     }
   } else {
-    res.send(400, 'Unrecognize method');
+    // res.send(400, 'Unrecognize method');
   }
-});
+  res.end('Hello World');
+})
 
-server.listen(8080, () => {
-  const { port } = server.address();
-  console.log(`Server is listening on: http://localhost:${port}`)
-});
+server.listen(3030);
