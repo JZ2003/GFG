@@ -30,48 +30,25 @@ class Mod {
 }
 
 /**
+ * Insert the given mod into the database
  * @param {Mod} mod to be added to the database
  * @returns {boolean} false if the mod with same name already exists in the database
  */
-async function insertMod(mod) {
+async function insert(mod) {
     const client = new MongoClient(uri);
     let succeed = false;
     try {
         await client.connect();
-        const result = await client.db("cs35lproject").collection("mods").insertOne(mod);
-        console.log(`New mod created with the following id: ${result.insertedId}`);
-        console.log("Mod inserted: " + mod.modName);
-        succeed = true; //Todo: return false if the mod already exists
-    } catch (e) {
-        console.error(e);
-    } finally {
-        await client.close();
-    }
-    return succeed;
-}
-
-async function insertDefaultMod() {
-    let defaultMod = new Mod("Default Mod", "Default Author", "Default Description", "2022/11/01", "2022/11/01", "https://www.google.com", "Default Game", "Default Tag", 0, "Default Icon");
-    insertMod(defaultMod);
-}
-
-/**
- * @param {string} name of the mod
- * @returns {Mod} mod with the given name
- * @returns {boolean} false if no mod with the given name exists
- **/
-async function getMod(modName) {
-    const client = new MongoClient(uri);
-    let succeed = false;
-    try {
-        await client.connect();
-        const result = await client.db("cs35lproject").collection("mods").findOne({ modName: modName });
-        if (result) {
-            console.log(`Found a mod in the collection with the name '${modName}':`);
-            console.log(result);
+        const collection = client.db("cs35lproject").collection("mods");
+        // check if the mod with same name already exists
+        const findResult = await collection.findOne({modName: mod.modName});
+        if (findResult == null) {
+            const insertResult = await collection.insertOne(mod);
+            console.log("Mod inserted: " + mod.modName);
+            console.log(`New mod created with the following id: ${insertResult.insertedId}`);
             succeed = true;
         } else {
-            console.log(`No mod found with the name '${modName}'`);
+            console.log("Mod already exists: " + mod.modName);
         }
     } catch (e) {
         console.error(e);
@@ -81,4 +58,94 @@ async function getMod(modName) {
     return succeed;
 }
 
-module.exports = { Mod, insertMod, insertDefaultMod, getMod };
+async function insertDefault() {
+    let defaultMod = new Mod("Default Mod", "Default Author", "Default Description", "2022/11/01", "2022/11/01", "https://www.google.com", "Default Game", "Default Tag", 0, "Default Icon");
+    insert(defaultMod);
+}
+
+/**
+ * Get the mod with the given modName from the database
+ * @param {string} modName of the Mod
+ * @returns {Mod} Mod with the given username, null if the mod does not exist
+ */
+ async function find(modName) {
+    const client = new MongoClient(uri);
+    let mod = null;
+    try {
+        await client.connect();
+        mod = await client.db("cs35lproject").collection("mods").findOne({modName: modName});
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    if (mod == null) {
+        console.log("Mod not found: " + modName);
+    } else {
+        console.log("Mod found: " + mod.modName);
+    }
+    return mod;
+}
+
+/**
+ * Remove the mod with the given modName from the database
+ * @param {string} modName of the mod
+ * @returns {boolean} false if the mod with the given modName does not exists
+ */
+ async function remove(modName) {
+    const client = new MongoClient(uri);
+    let succeed = false;
+    try {
+        await client.connect();
+        const collection = client.db("cs35lproject").collection("mods");
+        // check if the mod already exists
+        const findResult = await collection.findOne({modName: modName});
+        if (findResult != null) {
+            const deleteResult = await collection.deleteOne({modName: modName});
+            console.log("Mod deleted: " + modName);
+            console.log(`Deleted ${deleteResult.deletedCount} mod(s)`);
+            succeed = true;
+        } else {
+            console.log("Mod does not exist: " + username);
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    return succeed;
+}
+
+/**
+ * Update the mod with the given modName in the database
+ * @param {string} modName of the mod
+ * @param {Mod} mod to be updated
+ * @returns {boolean} false if the mod with the given modName does not exists
+ */
+async function update(modName, mod) {
+    const client = new MongoClient(uri);
+    let succeed = false;
+    try {
+        await client.connect();
+        const collection = client.db("cs35lproject").collection("mods");
+        // check if the mod already exists
+        const findResult = await collection.findOne({modName: modName});
+        if (findResult != null) {
+            const updateResult = await collection.updateOne({modName: modName}, {$set: mod});
+            console.log("Mod updated: " + modName);
+            console.log("New mod: " + mod.modName);
+            console.log(`${updateResult.matchedCount} mod(s) matched the filter, updated ${updateResult.modifiedCount} mod(s)`);
+            succeed = true;
+        } else {
+            console.log("Mod does not exist: " + modName);
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    return succeed;
+}
+
+
+module.exports = { Mod, insert, insertDefault, find, remove, update };

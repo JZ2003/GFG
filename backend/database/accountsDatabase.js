@@ -14,6 +14,7 @@ class Account {
 }
 
 /**
+ * Insert the given account into the database
  * @param {Account} account to be added to the database
  * @returns {boolean} false if the account with same username already exists in the database
  */
@@ -42,6 +43,7 @@ class Account {
 }
 
 /**
+ * Find the account with the given username
  * @param {string} username of the account
  * @returns {Account} account with the given username, null if the account does not exist
  */
