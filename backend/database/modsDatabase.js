@@ -96,7 +96,7 @@ async function insertDefault() {
  * 
  * Example:
  * let filter = {modName: "Foo", author: /^Bar/};
- * let mods = findMany(filter);
+ * let mods = search(filter);
  * console.log(mods);
  * 
  * Output:
@@ -104,7 +104,7 @@ async function insertDefault() {
  */
 async function search(filter) {
     const client = new MongoClient(uri);
-    let mods = null;
+    let mods = [];
     try {
         await client.connect();
         mods = await client.db("cs35lproject").collection("mods").find(filter).toArray();
@@ -113,7 +113,7 @@ async function search(filter) {
     } finally {
         await client.close();
     }
-    if (mods == null) {
+    if (mods.length == 0) {
         console.log("No mods found");
     } else {
         console.log("Mods found: " + mods.length);

@@ -67,6 +67,40 @@ async function find(username) {
 }
 
 /**
+ * Get all accounts that matches a given filter object from the database
+ * @param {Object} filter - an object in the form of {key: value, key: value, ...}
+ * where value can be a regular expression: /pattern/
+ * @returns {List<Account>} List of accounts that matches the filter
+ * @returns empty list if no accounts match the filter
+ * 
+ * Example:
+ * let filter = {username: "Foo", password: /^Bar/};
+ * let accounts = search(filter);
+ * console.log(accounts);
+ * 
+ * Output:
+ * An array of accounts that have username "Foo" and password starting with "Bar"
+ */
+async function search(filter) {
+    const client = new MongoClient(uri);
+    let accounts = [];
+    try {
+        await client.connect();
+        accounts = await client.db("cs35lproject").collection("accounts").find(filter).toArray();
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    if (accounts.length == 0) {
+        console.log("No accounts found");
+    } else {
+        console.log("Accounts found: " + accounts.length);
+    }
+    return accounts;
+}
+
+/**
  * Remove the account with the given username from the database
  * @param {string} username of the account
  * @returns {boolean} false if the account with the given username does not exists
