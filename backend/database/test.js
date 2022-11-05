@@ -1,4 +1,4 @@
-const api = require('./api');
+const ModsDB = require('./mods_database');
 const {MongoClient} = require('mongodb');
 
 async function main() {
@@ -12,6 +12,10 @@ async function main() {
 
         // Make the appropriate DB calls
         await listDatabases(client);
+
+        await ModsDB.insertDefaultMod(client);
+
+        await ModsDB.getMod(client, "Default Mod");
 
     } catch (e) {
         console.error(e);
