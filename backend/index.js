@@ -9,7 +9,8 @@ var server = http.createServer((req, res) => {
 
   if (method === 'POST') {
     switch (url.pathname) {
-      case 'signup':
+      case '/signup':
+        console.log('signup')
         return login.handleSignupRequest(req, res);
       default:
         //res.send(400, 'Unrecognize path');
@@ -17,7 +18,7 @@ var server = http.createServer((req, res) => {
     }
   } else if (method === 'GET') {
     switch (url.pathname) {
-      case 'login':
+      case '/login':
         return login.handleLoginRequest(url, res);
       default:
         //res.send(400, 'Unrecognize path');
@@ -31,14 +32,14 @@ var server = http.createServer((req, res) => {
     }
   } else if (method === 'DELETE') {
     switch (url.pathname) {
-      case 'cancle':
+      case '/cancel':
         return login.handleCancleRequest(req, res);
       default:
         //res.send(400, 'Unrecognize path');
         break;
     }
   } else {
-    // res.send(400, 'Unrecognize method');
+    //res.send(400, 'Unrecognize method');
   }
   res.end('Hello World');
 })
