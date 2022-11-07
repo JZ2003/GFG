@@ -6,7 +6,7 @@ var server = http.createServer((req, res) => {
   const { method } = req;
   const baseURL = 'http://' + req.headers.host + '/';
   const url = new URL(req.url, baseURL);
-
+  // console.log(url);
   if (method === 'POST') {
     switch (url.pathname) {
       case '/signup':
