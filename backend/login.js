@@ -1,25 +1,32 @@
+const AccountsDB = require('./database/accountsDatabase.js');
+
 function handleSignupRequest(req, res) {
+  console.log("here");
   const { headers } = req;
+  res.statusCode = 204;
+  AccountsDB.insertDummyAccounts();
+  return true;
   const created = false;
   // Todo: Post this body to the database;
   // set flag iff post succeed
   if (created) {
-    res.send(201);
+    res.statusCode = 204;
   } else {
-    res.send(409, {'Error': 'Username may exist'});
+    res.statusCode = 409;
   }
   return created;
 }
 
 function handleLoginRequest(url, res) {
-  const queryObject = url.URLSearchParams;
-  const username = queryObject.get(user);
-  const password = queryObject.get(pass);
+  const queryObject = url.searchParams;
+  const username = queryObject.get('user');
+  const password = queryObject.get('pass');
   const canLogin = validate(username, password);
   if (canLogin) {
-    res.send(200);
+    res.write("success");
+    res.statusCode = 200;
   } else {
-    res.send(404, {'Error': 'Check if your username or password is correct'});
+    res.statusCode = 404;
   }
 }
 
@@ -32,16 +39,21 @@ function handleCancleRequest(req, res) {
   //Verify identity with password.
   //set 'deleted' true if delete succeed.
   if (deleted) {
-    res.send(204);
+    res.status(204);
   } else {
-    res.send(409, {'Error': 'The user may not exist or you do not have correct authentication'});
+    res.status(409, {'Error': 'The user may not exist or you do not have correct authentication'});
   }
   return deleted;
 }
 
 function validate(username, password) {
   //Todo: Search through database to see if the user have authorization
-  return false;
+  const find = AccountsDB.find(username);
+  if (find === null || find === false) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 module.exports = { handleLoginRequest, handleSignupRequest, handleCancleRequest };
