@@ -10,38 +10,54 @@ var server = http.createServer((req, res) => {
   if (method === 'POST') {
     switch (url.pathname) {
       case '/signup':
-        console.log('signup')
-        return login.handleSignupRequest(req, res);
+        console.log('here');
+        login.handleSignupRequest(req, res);
+        break;
+      case '/login':
+        login.handleLoginRequest(url, res);
+        break;
       default:
-        //res.send(400, 'Unrecognize path');
+        res.statusCode = 400;
+        res.write('Unrecognize path');
         break;
     }
   } else if (method === 'GET') {
+    console.log(url.pathname)
     switch (url.pathname) {
+      case '/':
+        break;
       case '/login':
-        return login.handleLoginRequest(url, res);
+        login.handleLoginRequest(url, res);
+        break;
       default:
-        //res.send(400, 'Unrecognize path');
+        res.statusCode = 400;
+        res.write('Unrecognize path');
         break;
     }
   } else if (method === 'PUT') {
     switch (url.pathname) {
       default:
-        //res.send(400, 'Unrecognize path');
+        res.statusCode = 400;
+        res.write('Unrecognize path');
         break;;
     }
   } else if (method === 'DELETE') {
     switch (url.pathname) {
       case '/cancel':
-        return login.handleCancleRequest(req, res);
+        login.handleCancleRequest(req, res);
+        break;
       default:
-        //res.send(400, 'Unrecognize path');
+        res.statusCode = 400;
+        res.write('Unrecognize path');
         break;
     }
   } else {
-    //res.send(400, 'Unrecognize method');
+    res.statusCode = 400;
+    res.write('Unrecognize method');
   }
-  res.end('Hello World');
+  res.end("Hello world");
 })
 
-server.listen(3030);
+server.listen(3030, () => {
+  console.log("Service is listening to at port 3030");
+});

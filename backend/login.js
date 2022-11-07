@@ -1,36 +1,32 @@
-const ModsDB = require('./database/modsDatabase.js');
 const AccountsDB = require('./database/accountsDatabase.js');
+
 function handleSignupRequest(req, res) {
-  //Put some dummy accounts for test purpose
-  AccountsDB.insertDummyAccounts();
-  //------------------------------------
+  console.log("here");
   const { headers } = req;
+  res.statusCode = 204;
+  AccountsDB.insertDummyAccounts();
+  return true;
   const created = false;
-  // // Todo: Post this body to the database;
-  // // set flag iff post succeed
-  // if (created) {
-  //   res.send(201);
-  // } else {
-  //   res.send(409, {'Error': 'Username may exist'});
-  // }
-  res.end()
+  // Todo: Post this body to the database;
+  // set flag iff post succeed
+  if (created) {
+    res.statusCode = 204;
+  } else {
+    res.statusCode = 409;
+  }
   return created;
 }
 
 function handleLoginRequest(url, res) {
-  // const queryObject = url.URLSearchParams;
-  const queryObject = url.searchParams; //Fixed. --zjx
-  // console.log(queryObject);
-  const username = queryObject.get('user'); //Should use string 'user' --zjx
-  const password = queryObject.get('pass'); //Same
-  // console.log(username, password);
+  const queryObject = url.searchParams;
+  const username = queryObject.get('user');
+  const password = queryObject.get('pass');
   const canLogin = validate(username, password);
   if (canLogin) {
-    // res.send(200);
-    res.write(200);
+    res.write("success");
+    res.statusCode = 200;
   } else {
-    // res.send(404, {'Error': 'Check if your username or password is correct'});
-    res.end(404);
+    res.statusCode = 404;
   }
 }
 
@@ -43,21 +39,20 @@ function handleCancleRequest(req, res) {
   //Verify identity with password.
   //set 'deleted' true if delete succeed.
   if (deleted) {
-    res.send(204);
+    res.status(204);
   } else {
-    res.send(409, {'Error': 'The user may not exist or you do not have correct authentication'});
+    res.status(409, {'Error': 'The user may not exist or you do not have correct authentication'});
   }
   return deleted;
 }
 
 function validate(username, password) {
   //Todo: Search through database to see if the user have authorization
-  let account = AccountsDB.find(username);
-  if (account === null){
+  const find = AccountsDB.find(username);
+  if (find === null || find === false) {
     return false;
   } else {
-    if (account.password === password){return true;}
-    else {return false;}
+    return true;
   }
 }
 
