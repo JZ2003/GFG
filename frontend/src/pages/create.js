@@ -14,7 +14,7 @@ return (
 			<label> Upload URL: </label>
 			<input type="text" name="name" /><br></br>
 			<label> Description: </label><br></br>
-			<input type="text" name="name" /><br></br>
+			<input type="text" name="name" size="100" maxlength="2500" /><br></br>
 		</form>
 	</div>
 );
