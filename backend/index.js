@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 const login = require('./login');
+const upload = require('./upload')
 
 var server = http.createServer((req, res) => {
   const { method } = req;
@@ -12,6 +13,9 @@ var server = http.createServer((req, res) => {
       case '/signup':
         console.log('here');
         login.handleSignupRequest(req, res);
+        break;
+      case '/createMod':
+        upload.handleUploadReqeust(req, res);
         break;
       default:
         res.statusCode = 400;
@@ -26,6 +30,12 @@ var server = http.createServer((req, res) => {
       case '/login':
         login.handleLoginRequest(url, res);
         break;
+      case '/listall':
+        upload.handleGetAllRequest(req, res);
+        break;
+      case '/currMod':
+        upload.handleGetModRequest(req, res);
+        break;
       default:
         res.statusCode = 400;
         res.write('Unrecognize path');
@@ -34,8 +44,11 @@ var server = http.createServer((req, res) => {
     }
   } else if (method === 'PUT') {
     switch (url.pathname) {
-      case '/update':
+      case '/updateUser':
         login.handleUpdateRequest(req, res);
+        break;
+      case '/updateMod':
+        upload.handleChangeModRequest(req, res);
         break;
       default:
         res.statusCode = 400;
@@ -45,8 +58,11 @@ var server = http.createServer((req, res) => {
     }
   } else if (method === 'DELETE') {
     switch (url.pathname) {
-      case '/cancel':
+      case '/cancelUser':
         login.handleCancleRequest(req, res);
+        break;
+      case '/cancelMod':
+        upload.handleDeleteModRequest(req, res);
         break;
       default:
         res.statusCode = 400;
