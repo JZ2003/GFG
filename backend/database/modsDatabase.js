@@ -59,6 +59,26 @@ async function insert(mod) {
 }
 
 /**
+ * Get all the Mods in the database
+ * @param {void}
+ * @returns {Collection} collection object of all the mods
+ */
+async function getALl() {
+    const client = new MongoClient(uri);
+    let all = null;
+    try {
+        await client.connect();
+        const collection = client.db("cs35lproject").collection("mods");
+        const all = await collection.find({}).toArray();
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    return all;
+}
+
+/**
  * Insert dummy mods into the database
  * @param {int} numMods - number of dummy mods to be inserted
  * @returns {boolean} false if some mod with same name already exists in the database, but still insert the rest of the mods
@@ -113,7 +133,7 @@ async function insertDefault() {
     } else {
         console.log("Mod found: " + mod.modName);
     }
-    return mod;
+    return JSON.stringify(mod);
 }
 
 /**

@@ -1,7 +1,6 @@
 const AccountsDB = require('./database/accountsDatabase.js');
 
 function handleSignupRequest(req, res) {
-  console.log("here");
   const { headers } = req;
   newUser = new AccountsDB.Account(headers.username, headers.password);
   AccountsDB.insert(newUser).then((canInsert) => {
@@ -20,18 +19,7 @@ function handleLoginRequest(url, res) {
   const queryObject = url.searchParams;
   const username = queryObject.get('user');
   const password = queryObject.get('pass');
-  // const data = await AccountsDB.find(username);
-  // if (data === null) {
-  //   res.statusCode = 404;
-  //   res.write("Incorrect username");
-  // } else if (data.password === password) {
-  //   res.statusCode = 200;
-  //   res.write("Success");
-  // } else {
-  //   res.statuCode = 404;
-  //   res.write("Failed");
-  //   return false;
-  // }
+
   AccountsDB.find(username).then((data) => {
     if (data === null) {
       res.statusCode = 404;
