@@ -38,7 +38,7 @@ function handleLoginRequest(url, res) {
     //console.log(find);
     res.write("Server Error");
     res.end("!")
-    res.stausCode = 500;
+    res.statusCode = 500;
   });
 }
 
