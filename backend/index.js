@@ -2,6 +2,23 @@ const http = require('http');
 const url = require('url');
 const login = require('./login');
 const upload = require('./upload')
+// var express = require('express')
+// var app = express()
+
+// app.get('/signup', (req, res) => {
+//   // req.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.header('Access-Control-Allow-Origin', "*");
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//   // console.log(req);
+// });
+
+// var port = process.env.PORT || '3030'
+// app.listen(port, err => {
+// 	if (err)
+// 		throw err
+// 	console.log('Server listening on port', port)
+// })
 
 var server = http.createServer((req, res) => {
   const { method } = req;
@@ -9,6 +26,7 @@ var server = http.createServer((req, res) => {
   const url = new URL(req.url, baseURL);
   // console.log(url);
   if (method === 'POST') {
+    console.log(url.pathname);
     switch (url.pathname) {
       case '/signup':
         console.log('here');
