@@ -22,7 +22,8 @@ const Signup = () => {
             // res.setHeader('Access-Control-Allow-Credentials', true)
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                username: user,
+                password: pass
             },
         })
             .then((response) => console.log(response))
