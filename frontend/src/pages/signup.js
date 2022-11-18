@@ -21,24 +21,14 @@ const Signup = () => {
             // res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token');
             // res.setHeader('Access-Control-Allow-Credentials', true)
             headers: {
-<<<<<<< HEAD
                 'Content-type': 'application/json; charset=UTF-8',
-                'username': user,
-                'password': pass
+                'Access-Control-Allow-Origin': 'http://localhost:3000'
             },
         })
-            .then((response) => console.log(response))
-=======
-                'Content-Type' : 'text/plain; charset=UTF-8',
-                'user': user,
-                'pass': pass
-            },
-        })
-            // .then((response) => response.json())
+            .then((response) => response.json())
             .then((data) => {
                 console.log(data);
             })
->>>>>>> Workaround cors bug
             .catch((err) => {
                 console.log(err.message);
             });

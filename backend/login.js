@@ -2,7 +2,7 @@ const AccountsDB = require('./database/accountsDatabase.js');
 
 function handleSignupRequest(req, res) {
   const { headers } = req;
-  newUser = new AccountsDB.Account(headers.user, headers.pass);
+  newUser = new AccountsDB.Account(headers.username, headers.password);
   AccountsDB.insert(newUser).then((canInsert) => {
     if (canInsert) {
       res.statusCode = 201;
