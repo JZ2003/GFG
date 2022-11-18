@@ -32,6 +32,10 @@ function handleDeleteModRequest(req, res) {
   })
 }
 
+function handleRemoveAllRequest(req, res) {
+  ModsDB.removeAll();
+}
+
 // function handleChangeModRequest(req, res) {
 //   const { headers } = req;
 //   to_be_update = headers.modName;
@@ -179,17 +183,29 @@ function handleUpdateRequest(req,res){
 
 }
 
-function handleUpdateTag(){
+function handleUpdateTag(req, res){
+  let arr = [];
+  req.on("data", (chunk) => {
+    arr.push(chunk);
+  })
+  req.on("end", () => {
+    let changed_tags = JSON.parse(arr);
+    let modName = changed_tags["modName"];
+    let added_tag = changed_tags["addedTags"];
+    let deleted_tag = changed_tags["deletedTags"];
+    ModsDB.find(modName).then((data) => {
+      
+    })
+  })
+}
+
+function handleUpdatelike(req, res){
 
 }
 
-function handleUpdatelike(){
-
-}
-
-function handleUpdateView(){
+function handleUpdateView(req, res){
 
 }
 
 
-module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,handleFilterTagRequest,handleUpdateRequest};
+module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest };

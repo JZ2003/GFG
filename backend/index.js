@@ -89,6 +89,9 @@ var server = http.createServer((req, res) => {
       case '/cancelMod':
         upload.handleDeleteModRequest(req, res);
         break;
+      case '/cancleAllMod':
+        upload.handleRemoveAllRequest(req, res);
+        break;
       default:
         res.statusCode = 400;
         res.write('Unrecognize path');
