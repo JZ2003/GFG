@@ -13,18 +13,15 @@ const Signup = () => {
             body: JSON.stringify({
                 title: '',
                 body: '',
-                userId: Math.random().toString(36).slice(2),
-                user: user,
-                pass: pass
+                userId: Math.random().toString(36).slice(2)
             }),
             headers: {
-                'Content-type': 'application/json; charset=UTF-8'
+                'Content-type': 'application/json; charset=UTF-8',
+                'username': user,
+                'password': pass
             },
         })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-            })
+            .then((response) => console.log(response))
             .catch((err) => {
                 console.log(err.message);
             });
@@ -40,13 +37,16 @@ const Signup = () => {
     return (
         <div className="app">
             <div className="add-post-container">
-                <form onSubmit={handleSubmit}>
-                    <label for="user" > Username or Email: </label><br></br>
-                    <input type="text" className="form-control" value={user} onChange={(e) => setUser(e.target.value)} /><br></br>
-                    <label for="pass" > Password: </label><br></br>
-                    <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br></br>
-                    <button type="submit">Add Post</button>
-                </form>
+                <h1><center>Log In or Sign Up Here!</center></h1>
+                <center>
+                    <form onSubmit={handleSubmit}>
+                        <label for="user" > Username or Email: </label><br></br>
+                        <input type="text" className="form-control" value={user} onChange={(e) => setUser(e.target.value)} /><br></br>
+                        <label for="pass" > Password: </label><br></br>
+                        <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br></br>
+                        <button type="submit">Signup</button>
+                    </form>
+                </center>
             </div>
         </div>
     );
