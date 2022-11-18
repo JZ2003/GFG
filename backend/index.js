@@ -28,13 +28,19 @@ var server = http.createServer((req, res) => {
       case '/':
         break;
       case '/login':
-        login.handleLoginRequest(url, res);
+        login.handleLoginRequest(req, res);
         break;
       case '/listall':
         upload.handleGetAllRequest(req, res);
         break;
       case '/currMod':
         upload.handleGetModRequest(req, res);
+        break;
+      case '/filterMod':
+        upload.handleFilterRequest(req,res);
+        break;
+      case '/tagFilter':
+        upload.handleFilterTagRequest(req,res);
         break;
       default:
         res.statusCode = 400;
@@ -48,7 +54,8 @@ var server = http.createServer((req, res) => {
         login.handleUpdateRequest(req, res);
         break;
       case '/updateMod':
-        upload.handleChangeModRequest(req, res);
+        console.log("this way");
+        upload.handleUpdateRequest(req, res);
         break;
       default:
         res.statusCode = 400;

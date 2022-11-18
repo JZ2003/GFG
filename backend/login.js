@@ -15,7 +15,9 @@ function handleSignupRequest(req, res) {
   });
 }
 
-function handleLoginRequest(url, res) {
+function handleLoginRequest(req, res) {
+  const baseURL = 'http://' + req.headers.host + '/';
+  const url = new URL(req.url, baseURL);
   const queryObject = url.searchParams;
   const username = queryObject.get('user');
   const password = queryObject.get('pass');
