@@ -1,23 +1,34 @@
 const express = require("express");
-
-const PORT = process.env.PORT || 3030;  // Our port defaults to port 3001 (if no port is provided)
+const cors = require('cors');
 
 const app = express();
 
-// following links client to server, sourced from:
-// https://stackoverflow.com/questions/58450951/blocked-by-cors-policy-error-when-calling-to-mongo-golang-db-with-angular-web-ap
+app.use(cors());
+app.use(express.json());
+
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
+    // hello
+});
+
+app.get('/', function (req, res, next) {
+    // Handle the get for this route
+});
+
+app.post('/', function (req, res, next) {
+    // Handle the post for this route
+    console.log('here');
+});
+
+app.post('/signup', function (req, res, next) {
+    // Handle the post for this route
+    console.log('signup');
+    login.handleSignupRequest(req, res);
 });
 
 
-app.use(express.json());        // express.json is the middleware that processes JSON files sent to the server
-
-
-app.listen(PORT, () => 
-    {
-        console.log(`Server listening on ${PORT}`);     // Note the use of the ` quote instead of ' or " -- ` encloses a formatted string
-    });
+app.listen(3030, () => {
+    console.log('Server listening on 3030');
+});
