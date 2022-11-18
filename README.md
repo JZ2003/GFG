@@ -1,23 +1,44 @@
 # 35L project
 
-# Build Guideline
+## Build
 
-### Before all, use Homebrew to install Node if you don't have one
+- Install Node if you have not
+```
+brew install node
+```
 
-`brew install node`
+- Clone this repo
+```
+git clone https://github.com/TraderBros-UCLA/ucla-22f-35l-project.git
+```
 
-### Clone this repo
+- Go to your cloned directory, then install node packages
+```
+cd frontend ; npm install ; cd ..
+cd backend; npm install ; cd ..
+```
 
-`git clone https://github.com/TraderBros-UCLA/ucla-22f-35l-project.git`
+## Run Server
 
-### Go to your cloned directory, install React if first time building
+- Install MongoDB if you have not
+```
+brew tap mongodb/brew
+brew update
+brew install mongodb-community@6.0
+```
+- Run the start server script
+```
+./start-server.sh
+```
 
-`cd frontend`
+- To stop server
+```
+./stop-server.sh
+```
 
-`npm install`
-
-### Run App
-
-`npm start`
+## Run Client
+```
+npm start
+```
 
 
