@@ -25,10 +25,7 @@ const Signup = () => {
                 'Access-Control-Allow-Origin': 'http://localhost:3000'
             },
         })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-            })
+            .then((response) => console.log(response))
             .catch((err) => {
                 console.log(err.message);
             });
