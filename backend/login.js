@@ -2,14 +2,13 @@ const AccountsDB = require('./database/accountsDatabase.js');
 
 function handleSignupRequest(req, res) {
   const { headers } = req;
-  newUser = new AccountsDB.Account(headers.username, headers.password);
+  newUser = new AccountsDB.Account(headers.user, headers.pass);
   AccountsDB.insert(newUser).then((canInsert) => {
     if (canInsert) {
       res.statusCode = 201;
       res.end();
     } else {
       res.statusCode = 409;
-      res.write("Already exist");
       res.end();
     }
   });

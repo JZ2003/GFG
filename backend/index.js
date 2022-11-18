@@ -21,6 +21,13 @@ const upload = require('./upload')
 // })
 
 var server = http.createServer((req, res) => {
+
+//   res.setHeader('Access-Control-Allow-Origin', "*");
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, FETCH, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token, user, pass');
+//   res.setHeader('Access-Control-Allow-Credentials', true)
+//   // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+// //   // console.log(req);  
   const { method } = req;
   const baseURL = 'http://' + req.headers.host + '/';
   const url = new URL(req.url, baseURL);
@@ -98,6 +105,9 @@ var server = http.createServer((req, res) => {
         res.end();
         break;
     }
+  } else if (method == 'OPTIONS') {
+    res.statusCode = 200;
+    res.end();
   } else {
     res.statusCode = 400;
     res.write('Unrecognize method');
