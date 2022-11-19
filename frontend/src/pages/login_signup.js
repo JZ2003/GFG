@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { TextField,Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
+    const navigate = useNavigate();
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
     const [emailErr, setEmailErr] = useState(false);
@@ -23,7 +26,18 @@ function Login() {
                 password: pass
             },
         })
-            .then((response) => console.log(response))
+            .then((response) => {
+                console.log(response);
+                if(response.status >= 200 && response.status <= 204){
+                    navigate({ 
+                        pathname: '/',
+                        state: user
+                    });
+                }
+                else{
+                    console.log('did not succeed lol');
+                }
+            })
             .catch((err) => {
                 console.log(err.message);
             });
@@ -45,11 +59,27 @@ function Login() {
                 <h1><center>Log in or Sign Up Here!</center></h1>
                 <center>
                     <form onSubmit={handleSubmit}>
-                        <label for="user" > Username or Email: </label><br />
-                        <input type="text" className="form-control" value={user} onChange={(e) => setUser(e.target.value)} /><br />
-                        <label for="pass" > Password: </label><br />
-                        <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br />
-                        <button type="submit">Log In</button>
+                    <TextField
+                            value={user}
+                            label="Username or Email"
+                            variant="outlined"
+                            required
+                            margin="normal"
+                            onChange={(e) => {setUser(e.target.value);}}
+                        />
+                        <br></br>
+                        <TextField
+                            value={pass}
+                            label="Password"
+                            variant="outlined"
+                            required
+                            margin="normal"
+                            onChange={(e) => {setPass(e.target.value);}}
+                        />
+                        <br></br>
+                        <Button type="submit" variant="contained" color="primary">
+                            Log in
+                        </Button>
                     </form>
                     {/* {emailErr && <p>Your email is invalid</p>} */}
 					

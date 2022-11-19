@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { TextField,Button } from "@mui/material";
-
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const Signup = (props) => {
-
+    const navigate = useNavigate();
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
     const [emailErr, setEmailErr] = useState(false);
@@ -28,8 +28,8 @@ const Signup = (props) => {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    props.history.push({ 
-                        pathname: '/about',
+                    navigate({ 
+                        pathname: '/',
                         state: user
                        });
                 }
@@ -50,7 +50,10 @@ const Signup = (props) => {
         console.log(user);
         console.log(pass);
         addAcc(user, pass);
-
+        navigate({ 
+            pathname: '/',
+            state: user
+           });
     };
 
     return (
