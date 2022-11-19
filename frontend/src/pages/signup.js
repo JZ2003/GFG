@@ -10,7 +10,6 @@ const Signup = () => {
         '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
      );
 
-
     const addAcc = async (user, pass) => {
         await fetch('http://localhost:3030/signup', {
             method: 'POST',
@@ -28,13 +27,13 @@ const Signup = () => {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    this.context.router.push({ //browserHistory.push should also work here
-                        pathname: 'http://localhost:3000/about',
-                        state: {username: user}
-                      }); 
+                    this.props.history.push({ 
+                        pathname: '/about',
+                        state: user
+                       });
                 }
                 else{
-                    alert('invalid username and password');
+                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
