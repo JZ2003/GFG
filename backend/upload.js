@@ -1,19 +1,58 @@
 const ModsDB = require('./database/modsDatabase.js');
 
-function handleUploadReqeust(req, res) {
-  const { headers } = req;
-  const Mod = headers.mod;
+// function handleUploadReqeust(req, res) {
+//   const { headers } = req;
+//   const Mod = headers.mod;
   
-  ModsDB.insert(Mod).then((canInsert) => {
-    if (canInsert) {
-      res.statusCode = 201;
-      res.end();
-    } else {
-      res.statusCode = 409;
-      res.write("Alreday existed");
-      res.end();
-    }
-  });
+//   ModsDB.insert(Mod).then((canInsert) => {
+//     if (canInsert) {
+//       res.statusCode = 201;
+//       res.end();
+//     } else {
+//       res.statusCode = 409;
+//       res.write("Alreday existed");
+//       res.end();
+//     }
+//   });
+// }
+
+function handleUploadReqeust(req, res) {
+  console.log("log1");
+  // const { headers } = req;
+  // const Mod = headers.mod;
+  let arr = [];
+  req.on("data", (chunk) => {
+    arr.push(chunk);
+  })
+  console.log("log3");
+  req.on("end",()=>{
+    console.log("log5");
+    let newModInfo = JSON.parse(arr)["mod"];
+    let newMod = new ModsDB.Mod(
+      newModInfo["modName"],
+      newModInfo["author"],
+      newModInfo["desc"],
+      newModInfo["dateCreated"],
+      newModInfo["dateModified"],
+      newModInfo["url"],
+      newModInfo["gameName"],
+      newModInfo["tag"],
+      newModInfo["views"],
+      newModInfo["icon"]
+    );
+    console.log("log4");
+    ModsDB.insert(newMod).then((canInsert) => {
+      console.log("log2");
+      if (canInsert) {
+        res.statusCode = 201;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.write("Alreday existed");
+        res.end();
+      }
+    });
+  })
 }
 
 function handleDeleteModRequest(req, res) {
@@ -155,6 +194,10 @@ function handleFilterTagRequest(req,res){
   })
 }
 
+/**
+ * Notice that this function is unfinished
+ * 这个函数还未完成
+ */
 function handleUpdateRequest(req,res){
   let arr = [];
   req.on("data",(chunk) => {
