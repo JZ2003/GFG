@@ -17,8 +17,9 @@ return (
 		<Route exact path='/' element={<Home/>} />
 		<Route path='/about' element={<About/>} />
 		<Route path='/mymods' element={<My_Mods/>} />
-		<Route path='/signup' element={<Signup/>} />
+		<Route path='/login_signup' element={<Login/>} />
 		<Route path='/create' element={<CE_Mods/>} />
+		<Route path='/signup' element={<Signup/>} />
 	</Routes>
 	</Router>
 );
