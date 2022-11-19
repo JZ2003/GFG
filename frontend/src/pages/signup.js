@@ -54,6 +54,7 @@ const Signup = () => {
     };
 
     return (
+        
         <div className="app">
             <div className="add-post-container">
                 <h1><center>Sign Up Here!</center></h1>
