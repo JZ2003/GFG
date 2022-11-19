@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { TextField,Button } from "@mui/material";
 
 
-const Signup = () => {
+const Signup = (props) => {
 
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
@@ -28,7 +28,7 @@ const Signup = () => {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    this.props.history.push({ 
+                    props.history.push({ 
                         pathname: '/about',
                         state: user
                        });

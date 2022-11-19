@@ -1,10 +1,63 @@
 const ModsDB = require('./database/modsDatabase.js');
 
-function handleUploadReqeust(req, res) {
-  const { headers } = req;
-  const Mod = headers.mod;
+// function handleUploadReqeust(req, res) {
+//   const { headers } = req;
+//   const Mod = headers.mod;
   
-  ModsDB.insert(Mod).then((canInsert) => {
+//   ModsDB.insert(Mod).then((canInsert) => {
+//     if (canInsert) {
+//       res.statusCode = 201;
+//       res.end();
+//     } else {
+//       res.statusCode = 409;
+//       res.write("Alreday existed");
+//       res.end();
+//     }
+//   });
+// }
+
+function handleUploadReqeust(req, res) {
+  let newModInfo = req.body["mod"];
+  console.log(newModInfo);
+  console.log(newModInfo["modName"]);
+  let newMod = new ModsDB.Mod(
+    newModInfo["modName"],
+    newModInfo["author"],
+    newModInfo["desc"],
+    newModInfo["dateCreated"],
+    newModInfo["dateModified"],
+    newModInfo["url"],
+    newModInfo["gameName"],
+    newModInfo["tag"],
+    newModInfo["views"],
+    newModInfo["icon"]
+  );
+  // console.log("log1");
+  // // const { headers } = req;
+  // // const Mod = headers.mod;
+  // let arr = [];
+  // req.on("data", (chunk) => {
+  //   arr.push(chunk);
+  // })
+  // console.log("log3");
+  // req.on("end",()=>{
+  //   console.log("log5");
+  //   let newModInfo = JSON.parse(arr)["mod"];
+  //   let newMod = new ModsDB.Mod(
+  //     newModInfo["modName"],
+  //     newModInfo["author"],
+  //     newModInfo["desc"],
+  //     newModInfo["dateCreated"],
+  //     newModInfo["dateModified"],
+  //     newModInfo["url"],
+  //     newModInfo["gameName"],
+  //     newModInfo["tag"],
+  //     newModInfo["views"],
+  //     newModInfo["icon"]
+  //   );
+  //   console.log("log4");
+  ModsDB.insert(newMod).then((canInsert) => {
+    console.log("log2");
     if (canInsert) {
       res.statusCode = 201;
       res.end();
@@ -14,6 +67,7 @@ function handleUploadReqeust(req, res) {
       res.end();
     }
   });
+  // })
 }
 
 function handleDeleteModRequest(req, res) {
@@ -90,14 +144,7 @@ function handleGetAllRequest(req, res) {
  * filtering by TAGS
  */
 function handleFilterRequest(req, res) {
-  // To read from Body of HTTP
-  let arr = [];
-  req.on("data",(chunk) => {
-    arr.push(chunk);
-  })
-  req.on("end",()=>{
-    // filter is an object to pass to search function
-    let filter = JSON.parse(arr)["filter"];
+    let filter = req.body["filter"];
     ModsDB.search(filter).then((data) =>
     {
       if(data.length === 0){
@@ -112,49 +159,46 @@ function handleFilterRequest(req, res) {
         res.end(JSON.stringify({data, "num":data.length})); 
       }
     })
-  });
 }
 /**
  * This function means to give the right result by filtering by TAGS
  */
 function handleFilterTagRequest(req,res){
-  let arr = [];
-  req.on("data",(chunk) => {
-    arr.push(chunk);
-  })
-  req.on("end",()=>{
-    let result = [];
-    let tag = JSON.parse(arr)["tag"];
-    let tag_len = tag.length;
-    ModsDB.getAll().then((data) =>
-    {
-      let data_len = data.length;
-      for(let i = 0; i < data_len; i ++){
-        let bool = true;
-        for(let j = 0; j < tag_len; j ++){
-          if(!data[i].tag.includes(tag[j])){
-            bool = false;
-            break;
-          }
-        }
-        if(bool){
-          result.push(data[i]);
+  let result = [];
+  let tag = req.body["tag"];
+  let tag_len = tag.length;
+  ModsDB.getAll().then((data) =>
+  {
+    let data_len = data.length;
+    for(let i = 0; i < data_len; i ++){
+      let bool = true;
+      for(let j = 0; j < tag_len; j ++){
+        if(!data[i].tag.includes(tag[j])){
+          bool = false;
+          break;
         }
       }
-      if(result.length === 0){
-        res.statusCode = 404;
-        res.write("Can't find any mod with these tag filters");
-        res.end();
+      if(bool){
+        result.push(data[i]);
       }
-      else{
-        res.statusCode = 200;
-        res.setHeader("Content-Type","application/json");
-        res.end(JSON.stringify({result, "num":result.length})); 
-      }
-    })
+    }
+    if(result.length === 0){
+      res.statusCode = 404;
+      res.write("Can't find any mod with these tag filters");
+      res.end();
+    }
+    else{
+      res.statusCode = 200;
+      res.setHeader("Content-Type","application/json");
+      res.end(JSON.stringify({result, "num":result.length})); 
+    }
   })
 }
 
+/**
+ * Notice that this function is unfinished
+ * 这个函数还未完成
+ */
 function handleUpdateRequest(req,res){
   let arr = [];
   req.on("data",(chunk) => {
@@ -182,7 +226,10 @@ function handleUpdateRequest(req,res){
   })
 
 }
-
+/**
+ * Notice that this function is unfinished
+ * 这个函数还未完成
+ */
 function handleUpdateTag(req, res){
   let arr = [];
   req.on("data", (chunk) => {
