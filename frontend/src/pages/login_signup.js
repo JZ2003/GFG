@@ -43,8 +43,8 @@ function Login() {
     };
 
     return (
-        <div className="signup">
-            <div className="signup-container">
+        <div className="login">
+            <div className="login-container">
                 <h1><center>Log in or Sign Up Here!</center></h1>
                 <center>
                     <form onSubmit={handleSubmit}>
