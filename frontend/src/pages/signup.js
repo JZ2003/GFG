@@ -5,22 +5,20 @@ const Signup = () => {
 
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
-//    const [errmessage, setErrmessage] = useState('');
+    const [emailErr, setEmailErr] = useState(false);
+    const validEmail = new RegExp(
+        '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
+     );
 
 
     const addPosts = async (user, pass) => {
         await fetch('http://localhost:3030/signup', {
             method: 'POST',
             body: JSON.stringify({
-                title: '',
-                body: '',
-                userId: Math.random().toString(36).slice(2)
+                user: '',
+                pass: ''
+                // userId: Math.random().toString(36).slice(2)
             }),
-            // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-            // res.setHeader('Access-Control-Allow-Origin', "*");
-            // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-            // res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token');
-            // res.setHeader('Access-Control-Allow-Credentials', true)
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 username: user,
@@ -46,6 +44,9 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!validEmail.test(user)) {
+            setEmailErr(true);
+         }
         console.log(user);
         console.log(pass);
         addPosts(user, pass);
@@ -64,6 +65,7 @@ const Signup = () => {
                         <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br></br>
                         <button type="submit">Signup</button>
                     </form>
+                    {emailErr && <p>Your email is invalid</p>}
                 </center>
             </div>
         </div>
