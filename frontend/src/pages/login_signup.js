@@ -16,9 +16,6 @@ function Login() {
             body: JSON.stringify({
                 user: '',
                 pass: ''
-                // title: '',
-                // body: '',
-                // userId: Math.random().toString(36).slice(2)
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -63,26 +60,6 @@ function Login() {
             </div>
         </div>
     );
-
-	// return (
-	// 	<div>
-	// 	<h1><center>Log In or Sign Up Here!</center></h1>
-	// 	<center>
-	// 		<form action="/login" method="GET">
-	// 			{/* input name attribute for backend, id is used for CSS */}
-	// 			  <label for="user"> Username or Email: </label><br />
-	// 			<input type="text" id="user" name="user" /><br />
-	// 			<label for="pass"> Password: </label><br />
-	// 			<input type="text" id="pass" name="pass" /><br />
-	// 			<br />
-	// 			<input type="submit" value="Log in"/>
-	// 			<br />
-	// 			<input type="submit" value="Sign up"/>
-	// 		</form>	
-	// 	</center>
-	// 	</div>
-	// );
-
 };
 
 
