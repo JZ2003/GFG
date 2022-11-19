@@ -11,12 +11,12 @@ function Login() {
      );
 
     const log_Acc = async (user, pass) => {
-        await fetch('http://localhost:3030/signup', {
+        await fetch('http://localhost:3030/login?user=' + user + '&pass=' + pass, {
             method: 'GET',
-            body: JSON.stringify({
-                user: '',
-                pass: ''
-            }),
+            // body: JSON.stringify({
+            //     user: '',
+            //     pass: ''
+            // }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 username: user,
@@ -36,7 +36,7 @@ function Login() {
          }
         log_Acc(user, pass);
         console.log(user);
-        console.log(validEmail.test(user));
+        console.log(pass);
     };
 
     return (

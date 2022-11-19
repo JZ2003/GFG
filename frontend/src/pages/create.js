@@ -21,24 +21,19 @@ function CE_Mods() {
 	const [tags, setTags] = useState('');
 
     const addMod = async (gameName, modName, author, desc, url, tags) => {
-        await fetch('http://localhost:3030/signup', {
+        await fetch('http://localhost:3030/createMod', {
             method: 'POST',
             body: JSON.stringify({
-                gameName: '',
-                modName: '',
-				author: '',
-				desc: '',
-				url: '',
-				tags: ''
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
                 gameName: gameName,
                 modName: modName,
 				author: author,
 				desc: desc,
 				url: url,
 				tags: tags
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                
             },
         })
             .then((response) => console.log(response))
