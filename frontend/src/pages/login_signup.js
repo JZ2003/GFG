@@ -10,9 +10,9 @@ function Login() {
         '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
      );
 
-    const addAcc = async (user, pass) => {
+    const log_Acc = async (user, pass) => {
         await fetch('http://localhost:3030/signup', {
-            method: 'POST',
+            method: 'GET',
             body: JSON.stringify({
                 user: '',
                 pass: ''
@@ -34,7 +34,7 @@ function Login() {
         if (!validEmail.test(user)) {
             setEmailErr(true);
          }
-        addAcc(user, pass);
+        log_Acc(user, pass);
         console.log(user);
         console.log(validEmail.test(user));
     };
@@ -51,7 +51,7 @@ function Login() {
                         <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br />
                         <button type="submit">Log In</button>
                     </form>
-                    {emailErr && <p>Your email is invalid</p>}
+                    {/* {emailErr && <p>Your email is invalid</p>} */}
 					
 					<Link to="/signup">
 						Sign Up
