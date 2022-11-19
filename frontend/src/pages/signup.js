@@ -11,7 +11,7 @@ const Signup = () => {
      );
 
 
-    const addPosts = async (user, pass) => {
+    const addAcc = async (user, pass) => {
         await fetch('http://localhost:3030/signup', {
             method: 'POST',
             body: JSON.stringify({
@@ -49,13 +49,13 @@ const Signup = () => {
          }
         console.log(user);
         console.log(pass);
-        addPosts(user, pass);
+        addAcc(user, pass);
 
     };
 
     return (
-        <div className="app">
-            <div className="add-post-container">
+        <div className="signup">
+            <div className="signup-container">
                 <h1><center>Sign Up Here!</center></h1>
                 <center>
                     <form onSubmit={handleSubmit}>
@@ -65,7 +65,7 @@ const Signup = () => {
                         <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br></br>
                         <button type="submit">Signup</button>
                     </form>
-                    {emailErr && <p>Your email is invalid</p>}
+                    {/* {emailErr && <p>Your email is invalid</p>} */}
                 </center>
             </div>
         </div>
