@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { TextField,Button } from "@mui/material";
 import React from 'react';
 
 const Signup = () => {
@@ -58,11 +59,27 @@ const Signup = () => {
                 <h1><center>Sign Up Here!</center></h1>
                 <center>
                     <form onSubmit={handleSubmit}>
-                        <label for="user" > Username or Email: </label><br></br>
-                        <input type="text" className="form-control" value={user} onChange={(e) => setUser(e.target.value)} /><br></br>
-                        <label for="pass" > Password: </label><br></br>
-                        <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br></br>
-                        <button type="submit">Signup</button>
+                        <TextField
+                            value={user}
+                            label="Username or Email"
+                            variant="outlined"
+                            required
+                            margin="normal"
+                            onChange={(e) => {setUser(e.target.value);}}
+                        />
+                        <br></br>
+                        <TextField
+                            value={pass}
+                            label="Password"
+                            variant="outlined"
+                            required
+                            margin="normal"
+                            onChange={(e) => {setPass(e.target.value);}}
+                        />
+                        <br></br>
+                        <Button type="submit" variant="contained" color="primary">
+                            Signup
+                        </Button>
                     </form>
                     {/* {emailErr && <p>Your email is invalid</p>} */}
                 </center>
@@ -70,6 +87,7 @@ const Signup = () => {
         </div>
     );
 
+    
 };
 
 export default Signup;
