@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 
 const Signup = () => {
 
@@ -15,9 +15,8 @@ const Signup = () => {
         await fetch('http://localhost:3030/signup', {
             method: 'POST',
             body: JSON.stringify({
-                user: '',
-                pass: ''
-                // userId: Math.random().toString(36).slice(2)
+                user: user,
+                pass: user
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
