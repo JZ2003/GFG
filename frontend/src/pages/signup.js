@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { TextField,Button } from "@mui/material";
+
 
 const Signup = () => {
 
@@ -9,7 +11,6 @@ const Signup = () => {
     const validEmail = new RegExp(
         '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
      );
-
 
     const addAcc = async (user, pass) => {
         await fetch('http://localhost:3030/signup', {
@@ -27,13 +28,13 @@ const Signup = () => {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    this.context.router.push({ //browserHistory.push should also work here
-                        pathname: 'http://localhost:3000/about',
-                        state: {username: user}
-                      }); 
+                    this.props.history.push({ 
+                        pathname: '/about',
+                        state: user
+                       });
                 }
                 else{
-                    alert('invalid username and password');
+                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -58,11 +59,27 @@ const Signup = () => {
                 <h1><center>Sign Up Here!</center></h1>
                 <center>
                     <form onSubmit={handleSubmit}>
-                        <label for="user" > Username or Email: </label><br></br>
-                        <input type="text" className="form-control" value={user} onChange={(e) => setUser(e.target.value)} /><br></br>
-                        <label for="pass" > Password: </label><br></br>
-                        <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} /><br></br>
-                        <button type="submit">Signup</button>
+                        <TextField
+                            value={user}
+                            label="Username or Email"
+                            variant="outlined"
+                            required
+                            margin="normal"
+                            onChange={(e) => {setUser(e.target.value);}}
+                        />
+                        <br></br>
+                        <TextField
+                            value={pass}
+                            label="Password"
+                            variant="outlined"
+                            required
+                            margin="normal"
+                            onChange={(e) => {setPass(e.target.value);}}
+                        />
+                        <br></br>
+                        <Button type="submit" variant="contained" color="primary">
+                            Signup
+                        </Button>
                     </form>
                     {/* {emailErr && <p>Your email is invalid</p>} */}
                 </center>
@@ -70,6 +87,7 @@ const Signup = () => {
         </div>
     );
 
+    
 };
 
 export default Signup;
