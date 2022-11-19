@@ -7,7 +7,7 @@ import About from './pages/about';
 import My_Mods from './pages/mymods';
 import Login from './pages/login_signup';
 import CE_Mods from './pages/create';
-// import Signup from './pages/signup';
+import Signup from './pages/signup';
 
 function App() {
 return (
@@ -19,6 +19,7 @@ return (
 		<Route path='/mymods' element={<My_Mods/>} />
 		<Route path='/login_signup' element={<Login/>} />
 		<Route path='/create' element={<CE_Mods/>} />
+		<Route path='/signup' element={<Signup/>} />
 	</Routes>
 	</Router>
 );
