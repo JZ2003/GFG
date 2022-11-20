@@ -18,8 +18,14 @@ const ModsDB = require('./database/modsDatabase.js');
 
 function handleUploadReqeust(req, res) {
   let newModInfo = req.body["mod"];
-  console.log(newModInfo);
-  console.log(newModInfo["modName"]);
+  
+  // This part handles the possible game thing...
+  // possible_game = ["Minecraft", "Terraria"];
+  // if (!(newModInfo["gameName"] in possible_game)){
+  //   res.statusCode = 409;
+  //   res.send("This game doesn't exist");
+  // }
+
   let newMod = new ModsDB.Mod(
     newModInfo["modName"],
     newModInfo["author"],
@@ -57,7 +63,6 @@ function handleUploadReqeust(req, res) {
   //   );
   //   console.log("log4");
   ModsDB.insert(newMod).then((canInsert) => {
-    console.log("log2");
     if (canInsert) {
       res.statusCode = 201;
       res.end();
@@ -146,6 +151,7 @@ function handleGetAllRequest(req, res) {
 function handleFilterRequest(req, res) {
     let filter = req.headers.filter;
     let obj = JSON.parse(filter);
+    console.log(obj)
     ModsDB.search(obj).then((data) =>
     {
       if(data.length === 0){
@@ -168,6 +174,7 @@ function handleFilterRequest(req, res) {
 function handleFilterTagRequest(req,res){
   let result = [];
   let tag = req.headers.tag;
+  console.log(JSON.parse(tag)["tag"][0])
   let tag_len = tag.length;
   ModsDB.getAll().then((data) =>
   {
@@ -202,32 +209,33 @@ function handleFilterTagRequest(req,res){
  * 这个函数还未完成
  */
 function handleUpdateRequest(req,res){
-  let arr = [];
-  req.on("data",(chunk) => {
-    arr.push(chunk);
-  })
-  req.on("end", ()=>
-  {
-    let targetName = JSON.parse(arr)["targetName"];
-    let modChange = JSON.parse(arr)["mod"];
-    let changeInfo = new ModsDB.Mod();
-    changeInfo.modName = modChange["modName"];
-    changeInfo.author = modChange["author"];
-    ModsDB.update(targetName,changeInfo).then((data)=>
-    {
-      if(data){
-        res.statusCode = 404;
-        res.write("Mod does not exist " + targetName + " or new mod name already exists");
-        res.end();
-      }
-      else{
-        res.statusCode = 204;
-        res.end("Update successfully!");
-      }
-    })
-  })
-
+  new_mod = req.body["newMod"]
+  // let arr = [];
+  // req.on("data",(chunk) => {
+  //   arr.push(chunk);
+  // })
+  // req.on("end", ()=>
+  // {
+  //   let targetName = JSON.parse(arr)["targetName"];
+  //   let modChange = JSON.parse(arr)["mod"];
+  //   let changeInfo = new ModsDB.Mod();
+  //   changeInfo.modName = modChange["modName"];
+  //   changeInfo.author = modChange["author"];
+  //   ModsDB.update(targetName,changeInfo).then((data)=>
+  //   {
+  //     if(data){
+  //       res.statusCode = 404;
+  //       res.write("Mod does not exist " + targetName + " or new mod name already exists");
+  //       res.end();
+  //     }
+  //     else{
+  //       res.statusCode = 204;
+  //       res.end("Update successfully!");
+  //     }
+  //   })
+  // })
 }
+
 /**
  * Notice that this function is unfinished
  * 这个函数还未完成
@@ -252,9 +260,61 @@ function handleUpdatelike(req, res){
 
 }
 
-function handleUpdateView(req, res){
+// function modCopy(mod){
+//   return new ModsDB.Mod( 
+//     newModInfo["modName"],
+//     newModInfo["author"],
+//     newModInfo["desc"],
+//     newModInfo["dateCreated"],
+//     newModInfo["dateModified"],
+//     newModInfo["url"],
+//     newModInfo["gameName"],
+//     newModInfo["tag"],
+//     newModInfo["views"],
+//     newModInfo["icon"]
+//   );
+// }
 
+function handleUpdateView(req, res){
+  modName = req.headers.modname;
+  ModsDB.find(modName).then((mod) => {
+    currMod = mod.clone();
+    currMod["views"] = currMod["views"] + 1;
+    ModsDB.update(modName, currMod).then((success) => {
+      if (success) {
+        res.statusCode = 204;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end();
+      }
+    })
+  })
 }
 
+function handleGetAllTag(req, res) {
+  console.log("log1")
+  ModsDB.getAll().then((allMods) => {
+    console.log(allMods)
+    tagSet = new Set()
+    for (let i = 0; i < allMods.length; i++) {
+      for (let j = 0; j < allMods[i].tag.length; j++) {
+        tagSet.add((allMods[i].tag)[j]);
+      }
+    }
+    let tagArr = Array.from(tagSet);
+    res.statusCode = 200;
+    res.json({"tag":tagArr});
+    res.end();
+  }).catch(() => {
+    res.statusCode = 404;
+    res.end();
+  })
+}
 
-module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest };
+function handleGetAllGame(req, res) {
+  possible_game = ["Minecraft", "Terraria"];
+  res.json({"Games":possible_game});
+}
+
+module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag };

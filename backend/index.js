@@ -73,12 +73,20 @@ app.get('/tagFilter', (req, res) => {
   upload.handleFilterTagRequest(req, res);
 })
 
+app.get('/allTag', (req, res) => {
+  upload.handleGetAllTag(req, res);
+})
+
 app.put('/updateUser', (req, res) => {
   login.handleUpdateRequest(req, res);
 })
 
 app.put('/updateMod', (req, res) => {
   upload.handleUpdateRequest(req, res);
+})
+
+app.put('/updateView', (req, res) => {
+  upload.handleUpdateView(req, res);
 })
 
 app.delete('/cancelUser', (req, res) => {
