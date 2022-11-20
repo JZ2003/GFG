@@ -8,17 +8,53 @@ class ModView extends React.Component{
         super(props);
         this.state = {
             modName: props.modName, 
-            author: 'sunny',
+            author: '',
             desc: '',
-            dateCreated: '2002/11/3',
-            dateModified: '2022/11/18',
-            url: 'http',
-            gameName: 'Persona 5',
-            tag: 'functional',
-            views: '50',
-            icon: 'https://www.gannett-cdn.com/presto/2020/04/02/PREN/1a3f1556-6174-4ed1-8881-4bbb8ab12f49-Cast.jpg'
+            dateCreated: '',
+            dateModified: '',
+            url: '',
+            gameName: '',
+            tag: '',
+            views: '',
+            icon: ''
         };
     }
+
+    async getMod(user, pass){
+        await fetch('http://localhost:3030/currMod?modName=' + this.state.modName, {
+            method: 'GET',
+            // body: JSON.stringify({
+            //     user: '',
+            //     pass: ''
+            // }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                if(response.status >= 200 && response.status <= 204){
+                    this.setState({
+                        modName: response.modName, 
+                        author: response.author,
+                        desc: desc,
+                        dateCreated: response.dateCreated,
+                        dateModified: response.dateCreated,
+                        url: response.url,
+                        gameName: response.gameName,
+                        tag: response.tag,
+                        views: response.views,
+                        icon: response.icon
+                    });
+                }
+                else{
+                    console.log('did not succeed lol');
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
 
     render(){
         return (
