@@ -8,6 +8,7 @@ import My_Mods from './pages/mymods';
 import Login from './pages/login_signup';
 import CE_Mods from './pages/create';
 import Signup from './pages/signup';
+import ModView from './pages/modview';
 
 function App() {
 return (
@@ -20,6 +21,7 @@ return (
 		<Route path='/login_signup' element={<Login/>} />
 		<Route path='/create' element={<CE_Mods/>} />
 		<Route path='/signup' element={<Signup/>} />
+		<Route path='/modview' element={<ModView/>} />
 	</Routes>
 	</Router>
 );
