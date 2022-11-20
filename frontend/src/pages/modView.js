@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 
 class ModView extends React.Component{
     constructor(props){
+        console.log(localStorage.getItem('user'));
         super(props);
         this.state = {
             modName: 'Persona 5: More Persona Slots', 
