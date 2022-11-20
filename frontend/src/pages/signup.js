@@ -28,10 +28,7 @@ const Signup = (props) => {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    navigate({ 
-                        pathname: '/',
-                        state: user
-                       });
+                    navigate('/',{state:{username:user}});
                 }
                 else{
                     console.log('did not succeed lol');
@@ -50,10 +47,6 @@ const Signup = (props) => {
         console.log(user);
         console.log(pass);
         addAcc(user, pass);
-        navigate({ 
-            pathname: '/',
-            state: user
-           });
     };
 
     return (
