@@ -25,12 +25,13 @@ function CE_Mods() {
 
     const addMod = async (gameName, modName, author, desc, url, tags) => {
 		console.log(`${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`);
+		console.log(localStorage.getItem('user'));
         await fetch('http://localhost:3030/createMod', {
             method: 'POST',
             body: JSON.stringify({
                 "mod": {
 					"modName": modName,
-					"author": author,
+					"author": localStorage.getItem('user'),
 					"desc": desc,
 					"url": url,
 					"gameName": gameName,
@@ -50,7 +51,12 @@ function CE_Mods() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addMod(gameName, modName, author, desc, url, tags);
+		if(localStorage.getItem('user') == null){
+			console.log("please sign in...");
+		}
+		else{
+			addMod(gameName, modName, desc, url, tags);
+		}
     };
 
     return (
@@ -62,8 +68,8 @@ function CE_Mods() {
 					<input type="text" className="form-control" value={gameName} onChange={(e) => setGameName(e.target.value)} /><br/>
 					<label for="modName"> Mod Name: </label><br/>
 					<input type="text" className="form-control" value={modName} onChange={(e) => setModName(e.target.value)} /><br/>
-					<label for="author"> Author: </label><br/>
-					<input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} /><br/>
+					{/* <label for="author"> Author: </label><br/>
+					<input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} /><br/> */}
 					<label for="tags"> Tags: </label><br/>
 					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>
 					<label for="url"> Upload URL: </label><br/>

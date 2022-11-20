@@ -16,10 +16,6 @@ function Login() {
     const log_Acc = async (user, pass) => {
         await fetch('http://localhost:3030/login?user=' + user + '&pass=' + pass, {
             method: 'GET',
-            // body: JSON.stringify({
-            //     user: '',
-            //     pass: ''
-            // }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 username: user,
