@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import moment from "moment";
 
 function CE_Mods() {
 
@@ -19,26 +20,27 @@ function CE_Mods() {
 	const [desc, setDesc] = useState('');
 	const [url, setUrl] = useState('');
 	const [tags, setTags] = useState('');
+	const [dateCreated, setDate] = useState('');
+	const current = new Date();
 
     const addMod = async (gameName, modName, author, desc, url, tags) => {
-        await fetch('http://localhost:3030/signup', {
+		console.log(`${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`);
+		console.log(localStorage.getItem('user'));
+        await fetch('http://localhost:3030/createMod', {
             method: 'POST',
             body: JSON.stringify({
-                gameName: '',
-                modName: '',
-				author: '',
-				desc: '',
-				url: '',
-				tags: ''
+                "mod": {
+					"modName": modName,
+					"author": localStorage.getItem('user'),
+					"desc": desc,
+					"url": url,
+					"gameName": gameName,
+					"tag": tags,
+					"dateCreated": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`
+				}
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                gameName: gameName,
-                modName: modName,
-				author: author,
-				desc: desc,
-				url: url,
-				tags: tags
             },
         })
             .then((response) => console.log(response))
@@ -49,7 +51,12 @@ function CE_Mods() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addMod(gameName, modName, author, desc, url, tags);
+		if(localStorage.getItem('user') == null){
+			console.log("please sign in...");
+		}
+		else{
+			addMod(gameName, modName, desc, url, tags);
+		}
     };
 
     return (
@@ -61,8 +68,8 @@ function CE_Mods() {
 					<input type="text" className="form-control" value={gameName} onChange={(e) => setGameName(e.target.value)} /><br/>
 					<label for="modName"> Mod Name: </label><br/>
 					<input type="text" className="form-control" value={modName} onChange={(e) => setModName(e.target.value)} /><br/>
-					<label for="author"> Author: </label><br/>
-					<input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} /><br/>
+					{/* <label for="author"> Author: </label><br/>
+					<input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} /><br/> */}
 					<label for="tags"> Tags: </label><br/>
 					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>
 					<label for="url"> Upload URL: </label><br/>

@@ -144,8 +144,9 @@ function handleGetAllRequest(req, res) {
  * filtering by TAGS
  */
 function handleFilterRequest(req, res) {
-    let filter = req.body["filter"];
-    ModsDB.search(filter).then((data) =>
+    let filter = req.headers.filter;
+    let obj = JSON.parse(filter);
+    ModsDB.search(obj).then((data) =>
     {
       if(data.length === 0){
         res.statusCode = 404;
@@ -156,7 +157,8 @@ function handleFilterRequest(req, res) {
         res.statusCode = 200;
         res.setHeader("Content-Type","application/json");
         // Give all matched mods, and the number of matching
-        res.end(JSON.stringify({data, "num":data.length})); 
+        // set the body with the result
+        res.end(JSON.stringify(data, "num", data.length));
       }
     })
 }
@@ -165,7 +167,7 @@ function handleFilterRequest(req, res) {
  */
 function handleFilterTagRequest(req,res){
   let result = [];
-  let tag = req.body["tag"];
+  let tag = req.headers.tag;
   let tag_len = tag.length;
   ModsDB.getAll().then((data) =>
   {
