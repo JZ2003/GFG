@@ -77,6 +77,10 @@ app.get('/allTag', (req, res) => {
   upload.handleGetAllTag(req, res);
 })
 
+app.get('/allGames', (req, res) => {
+  upload.handleGetAllGame(req, res);
+})
+
 app.put('/updateUser', (req, res) => {
   login.handleUpdateRequest(req, res);
 })
@@ -87,6 +91,10 @@ app.put('/updateMod', (req, res) => {
 
 app.put('/updateView', (req, res) => {
   upload.handleUpdateView(req, res);
+})
+
+app.put('/updateLikes', (req, res) => {
+  upload.handleUpdateLikes(req, res);
 })
 
 app.delete('/cancelUser', (req, res) => {

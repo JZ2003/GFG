@@ -294,6 +294,27 @@ function handleUpdateView(req, res){
   })
 }
 
+function handleUpdateLikes(req, res) {
+  modName = req.headers.modname;
+  add = req.headers.change;
+  ModsDB.find(modName).then((mod) => {
+    currMod = mod.clone();
+    if (add == '1') {
+      currMod["Likes"] = currMod["Likes"] + 1;
+    } else {
+      currMod["Likes"] = currMod["Likes"] - 1;
+    }
+    ModsDB.update(modName, currMod).then((success) => {
+      if (success) {
+        res.statusCode = 24;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end();
+      }
+    })
+  })
+}
 
 function handleGetAllTag(req, res) {
   console.log("log1")
@@ -320,4 +341,5 @@ function handleGetAllGame(req, res) {
   res.json({"Games":possible_game});
 }
 
-module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag };
+module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
+  handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame };
