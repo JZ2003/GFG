@@ -59,6 +59,33 @@ async function insert(mod) {
 }
 
 /**
+ * Get all the Mods in the database
+ * @param {void}
+ * @returns {Collection} collection object of all the mods
+ */
+// async function getAll() {
+//     const client = new MongoClient(uri);
+//     let allMods = null;
+//     try {
+//         await client.connect();
+//         const collection = client.db("cs35lproject").collection("mods");
+//         allMods = await collection.find({}).toArray();
+//     } catch (e) {
+//         console.error(e);
+//     } finally {
+//         await client.close();
+//     }
+//     return JSON.stringify({allMods});
+// }
+
+async function getAll(){
+    let filter = {};
+    let arr = await search(filter);
+    return arr;
+    // return JSON.stringify({arr});
+}
+
+/**
  * Insert dummy mods into the database
  * @param {int} numMods - number of dummy mods to be inserted
  * @returns {boolean} false if some mod with same name already exists in the database, but still insert the rest of the mods
@@ -79,12 +106,25 @@ async function insertDummyMods(numMods) {
             "Dummy Date Modified",
             "Dummy URL",
             "Dummy Game Name",
-            "Dummy Tag",
+            ["Dummy Tag1","Dummy Tag2","Dummy Tag3"],
             0,
             "Dummy Icon"
         );
         allUnique = await insert(mod);
     }
+    const mod = new Mod(
+        "Mod1",
+        "Dummy Author",
+        "Dummy Description",
+        "Dummy Date Created",
+        "Dummy Date Modified",
+        "Dummy URL",
+        "Dummy Game Name",
+        ["Good Tag1","Dummy Tag2","Goofy Tag3"],
+        0,
+        "Dummy Icon"
+    )
+    allUnique = await insert(mod);
     return allUnique;
 }
     
@@ -243,4 +283,4 @@ async function update(modName, mod) {
 }
 
 
-module.exports = { Mod, insert, insertDefault, find, remove, update, search, removeAll, insertDummyMods };
+module.exports = { Mod, insert, insertDefault, find, remove, update, search, removeAll, insertDummyMods, getAll};
