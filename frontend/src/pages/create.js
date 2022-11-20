@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-tagsinput
+import 'react-tagsinput/react-tagsinput.css'
+
 // import moment from "moment";
 
 function CE_Mods() {
@@ -16,16 +19,12 @@ function CE_Mods() {
 
     const [gameName, setGameName] = useState('');
     const [modName, setModName] = useState('');
-	const [author, setAuthor] = useState('');
 	const [desc, setDesc] = useState('');
 	const [url, setUrl] = useState('');
-	const [tags, setTags] = useState('');
-	const [dateCreated, setDate] = useState('');
+	const [tags, setTags] = useState([]);
 	const current = new Date();
 
     const addMod = async (gameName, modName, author, desc, url, tags) => {
-		console.log(`${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`);
-		console.log(localStorage.getItem('user'));
         await fetch('http://localhost:3030/createMod', {
             method: 'POST',
             body: JSON.stringify({
@@ -35,8 +34,11 @@ function CE_Mods() {
 					"desc": desc,
 					"url": url,
 					"gameName": gameName,
-					"tag": tags,
-					"dateCreated": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`
+					"tags": tags,
+					"views": 0,
+					"icon": "placeholder",
+					"dateCreated": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`,
+					"dateModified": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`
 				}
             }),
             headers: {
@@ -59,6 +61,10 @@ function CE_Mods() {
 		}
     };
 
+	const handleTagsChange = (tags) => {
+		setTags(tags)
+	}
+
     return (
         <div className="make-mod">
             <div className="mod-container">
@@ -68,10 +74,10 @@ function CE_Mods() {
 					<input type="text" className="form-control" value={gameName} onChange={(e) => setGameName(e.target.value)} /><br/>
 					<label for="modName"> Mod Name: </label><br/>
 					<input type="text" className="form-control" value={modName} onChange={(e) => setModName(e.target.value)} /><br/>
-					{/* <label for="author"> Author: </label><br/>
-					<input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} /><br/> */}
+					{/* <label for="tags"> Tags: </label><br/>
+					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>*/}
 					<label for="tags"> Tags: </label><br/>
-					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>
+					<TagsInput value={tags} onChange={handleTagsChange}/>
 					<label for="url"> Upload URL: </label><br/>
 					<input type="url" className="form-control" value={url} onChange={(e) => setUrl(e.target.value)} /><br/>
 					<label for="desc"> Description: </label><br/>
@@ -79,6 +85,8 @@ function CE_Mods() {
 					<br/>
 					<button type="submit">Submit</button>
 				</form>
+				
+            	
             </div>
         </div>
     );
