@@ -29,6 +29,7 @@ function Login() {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
+                    localStorage.setItem('user', user);
                     navigate('/',{state:{username:user}});
                 }
                 else{

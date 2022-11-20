@@ -98,11 +98,9 @@ app.listen(3030, () => {
 });
 
 // var server = http.createServer((req, res) => {
-
 //   res.setHeader('Access-Control-Allow-Origin', "*");
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, FETCH, PUT, PATCH, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token, username, password');
-//   res.setHeader('Access-Control-Allow-Credentials', true)
+//   res.setHeader('Access-Control-Allow-Headers', '*');
 // //   // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 // // //   // console.log(req);  
 //   const { method } = req;
@@ -183,6 +181,7 @@ app.listen(3030, () => {
 //         break;
 //     }
 //   } else if (method == 'OPTIONS') {
+//     // 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token, username, password'
 //     res.statusCode = 200;
 //     res.end();
 //   } else {

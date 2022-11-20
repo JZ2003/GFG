@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import moment from "moment";
 
 function CE_Mods() {
 
@@ -19,21 +20,26 @@ function CE_Mods() {
 	const [desc, setDesc] = useState('');
 	const [url, setUrl] = useState('');
 	const [tags, setTags] = useState('');
+	const [dateCreated, setDate] = useState('');
+	const current = new Date();
 
     const addMod = async (gameName, modName, author, desc, url, tags) => {
+		console.log(`${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`);
         await fetch('http://localhost:3030/createMod', {
             method: 'POST',
             body: JSON.stringify({
-                gameName: gameName,
-                modName: modName,
-				author: author,
-				desc: desc,
-				url: url,
-				tags: tags
+                "mod": {
+					"modName": modName,
+					"author": author,
+					"desc": desc,
+					"url": url,
+					"gameName": gameName,
+					"tag": tags,
+					"dateCreated": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`
+				}
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                
             },
         })
             .then((response) => console.log(response))
