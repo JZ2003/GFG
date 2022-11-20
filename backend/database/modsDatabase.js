@@ -63,26 +63,10 @@ async function insert(mod) {
  * @param {void}
  * @returns {Collection} collection object of all the mods
  */
-// async function getAll() {
-//     const client = new MongoClient(uri);
-//     let allMods = null;
-//     try {
-//         await client.connect();
-//         const collection = client.db("cs35lproject").collection("mods");
-//         allMods = await collection.find({}).toArray();
-//     } catch (e) {
-//         console.error(e);
-//     } finally {
-//         await client.close();
-//     }
-//     return JSON.stringify({allMods});
-// }
-
 async function getAll(){
     let filter = {};
     let arr = await search(filter);
     return arr;
-    // return JSON.stringify({arr});
 }
 
 /**

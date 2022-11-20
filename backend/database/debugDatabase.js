@@ -1,6 +1,7 @@
 const ModsDB = require('./modsDatabase.js');
 const AccountsDB = require('./accountsDatabase.js');
 
+
 async function testAccounts() {
     await AccountsDB.insert(new AccountsDB.Account('T1', 'pwd1'));
     account1 = await AccountsDB.find('T1');
@@ -33,10 +34,16 @@ async function testMods() {
     // mods = await ModsDB.search({});
     // console.log(mods);
     //await ModsDB.removeAll();
-    await ModsDB.insertDummyMods(10);
-    mods = await ModsDB.search({"author": "kevin"});
+    // await ModsDB.insertDummyMods(10);
+    // mods = await ModsDB.search({"author": "kevin"});
+    mods = await ModsDB.getAll();
+    // ModsDB.removeAll();
     console.log(mods);
 }
 
+async function main() {
+    await testAccounts();
+    await testMods();
+}
 
-testMods().catch(console.error);
+main().catch(console.error);

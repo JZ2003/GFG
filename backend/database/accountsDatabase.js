@@ -100,6 +100,17 @@ async function find(username) {
 }
 
 /**
+ * Get all the Accounts in the database
+ * @param {void}
+ * @returns {Collection} collection object of all the mods
+ */
+ async function getAll(){
+    let filter = {};
+    let arr = await search(filter);
+    return arr;
+}
+
+/**
  * Get all accounts that matches a given filter object from the database
  * @param {Object} filter - an object in the form of {key: value, key: value, ...}
  * where value can be a regular expression: /pattern/
@@ -229,4 +240,4 @@ async function update(oldUsername, oldPassword, newPassword) {
 }
 
 
-module.exports = {Account, insert, find, remove, update, search, removeAll, insertDummyAccounts};
+module.exports = {Account, insert, find, remove, update, search, removeAll, insertDummyAccounts, getAll};
