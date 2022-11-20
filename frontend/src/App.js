@@ -20,6 +20,7 @@ return (
 		<Route path='/login_signup' element={<Login/>} />
 		<Route path='/create' element={<CE_Mods/>} />
 		<Route path='/signup' element={<Signup/>} />
+		<Route path='/modview' element={<modView/>} />
 	</Routes>
 	</Router>
 );
