@@ -6,11 +6,28 @@ class Account {
     /**
      * @param {string} username 
      * @param {string} password 
+     * @param {favoriteModNames} favoriteModNames
      */
     constructor(username, password) {
         this.username = username;
         this.password = password;
+        this.favoriteModNames = [];
     }
+
+    /**
+     * @param {string} modName to favorite
+     * @returns {boolean} false if the mod with same name already exists in the database
+     */
+    addFavoriteMod(modName) {
+        // append if not already in list
+        if (!this.favoriteModNames.includes(modName)) {
+            this.favoriteModNames.push(modName);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
 
 /**
