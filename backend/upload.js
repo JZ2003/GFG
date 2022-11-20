@@ -294,6 +294,7 @@ function handleUpdateView(req, res){
   })
 }
 
+
 function handleGetAllTag(req, res) {
   console.log("log1")
   ModsDB.getAll().then((allMods) => {
