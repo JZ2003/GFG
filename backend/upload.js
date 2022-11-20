@@ -34,9 +34,11 @@ function handleUploadReqeust(req, res) {
     newModInfo["dateModified"],
     newModInfo["url"],
     newModInfo["gameName"],
-    newModInfo["tag"],
+    newModInfo["tags"],
     newModInfo["views"],
-    newModInfo["icon"]
+    newModInfo["icon"],
+    newModInfo["likes"],
+    newModInfo["comments"]
   );
   // console.log("log1");
   // // const { headers } = req;
