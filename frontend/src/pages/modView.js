@@ -15,7 +15,7 @@ class ModView extends React.Component{
             url: '',
             gameName: '',
             tag: '',
-            views: '',
+            views: 0,
             icon: ''
         };
         this.getMod(this.state.modName);
@@ -36,17 +36,18 @@ class ModView extends React.Component{
                 //console.log(response);
                 if(response.status >= 200 && response.status <= 204){
                     this.state.mods = response.json().then((data) => {
+                        console.log(data);
                         this.setState({
-                            modName: data[0].modName, 
-                            author: data[0].author,
-                            desc: data[0].desc,
-                            dateCreated: data[0].dateCreated,
-                            dateModified: data[0].dateCreated,
-                            url: data[0].url,
-                            gameName: data[0].gameName,
-                            tag: data[0].tag,
-                            views: data[0].views,
-                            icon: data[0].icon
+                            modName: data.modName, 
+                            author: data.author,
+                            desc: data.desc,
+                            dateCreated: data.dateCreated,
+                            dateModified: data.dateCreated,
+                            url: data.url,
+                            gameName: data.gameName,
+                            tag: data.tag,
+                            views: data.views,
+                            icon: data.icon
                         });
                     });
                 }
