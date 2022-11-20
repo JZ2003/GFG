@@ -77,7 +77,7 @@ function CE_Mods() {
 					{/* <label for="tags"> Tags: </label><br/>
 					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>*/}
 					<label for="tags"> Tags: </label><br/>
-					<TagsInput value={tags} onChange={handleTagsChange}/>
+					<TagsInput value={tags} onChange={handleTagsChange} onlyUnique={true}/>
 					<label for="url"> Upload URL: </label><br/>
 					<input type="url" className="form-control" value={url} onChange={(e) => setUrl(e.target.value)} /><br/>
 					<label for="desc"> Description: </label><br/>
