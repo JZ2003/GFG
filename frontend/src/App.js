@@ -22,6 +22,12 @@ return (
 		<Route path='/create' element={<CE_Mods/>} />
 		<Route path='/signup' element={<Signup/>} />
 		<Route path='/modView' element={<ModView/>} />
+
+		<Route path='/modView/train' element={<ModView modName='train'/>} />
+		{/* <Route 
+			path='/modView/train'
+			render={(props) => <ModView { ... props} modName='train' />} 
+		/> */}
 	</Routes>
 	</Router>
 );

@@ -4,10 +4,9 @@ import { Box } from '@mui/material';
 
 class ModView extends React.Component{
     constructor(props){
-        console.log(localStorage.getItem('user'));
         super(props);
         this.state = {
-            modName: 'Persona 5: More Persona Slots', 
+            modName: props.modName, 
             author: 'sunny',
             desc: '',
             dateCreated: '2002/11/3',
@@ -19,6 +18,7 @@ class ModView extends React.Component{
             icon: 'https://www.gannett-cdn.com/presto/2020/04/02/PREN/1a3f1556-6174-4ed1-8881-4bbb8ab12f49-Cast.jpg'
         };
     }
+
     render(){
         return (
             <div style = {{
