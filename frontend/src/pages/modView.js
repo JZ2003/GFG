@@ -18,9 +18,10 @@ class ModView extends React.Component{
             views: '',
             icon: ''
         };
+        this.getMod;
     }
 
-    async getMod(user, pass){
+    async getMod(){
         await fetch('http://localhost:3030/currMod?modName=' + this.state.modName, {
             method: 'GET',
             // body: JSON.stringify({
@@ -32,19 +33,21 @@ class ModView extends React.Component{
             },
         })
             .then((response) => {
-                console.log(response);
+                //console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    this.setState({
-                        modName: response.modName, 
-                        author: response.author,
-                        desc: desc,
-                        dateCreated: response.dateCreated,
-                        dateModified: response.dateCreated,
-                        url: response.url,
-                        gameName: response.gameName,
-                        tag: response.tag,
-                        views: response.views,
-                        icon: response.icon
+                    this.state.mods = response.json().then((data) => {
+                        this.setState({
+                            modName: data[0].modName, 
+                            author: data[0].author,
+                            desc: data[0].desc,
+                            dateCreated: data[0].dateCreated,
+                            dateModified: data[0].dateCreated,
+                            url: data[0].url,
+                            gameName: data[0].gameName,
+                            tag: data[0].tag,
+                            views: data[0].views,
+                            icon: data[0].icon
+                        });
                     });
                 }
                 else{
