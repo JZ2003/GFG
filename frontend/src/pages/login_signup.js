@@ -29,10 +29,7 @@ function Login() {
             .then((response) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
-                    navigate({ 
-                        pathname: '/',
-                        state: user
-                    });
+                    navigate('/',{state:{username:user}});
                 }
                 else{
                     console.log('did not succeed lol');
