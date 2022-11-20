@@ -18,11 +18,11 @@ class ModView extends React.Component{
             views: '',
             icon: ''
         };
-        this.getMod;
+        this.getMod(this.state.modName);
     }
 
-    async getMod(){
-        await fetch('http://localhost:3030/currMod?modName=' + this.state.modName, {
+    async getMod(name){
+        await fetch('http://localhost:3030/currMod?modName=' + name, {
             method: 'GET',
             // body: JSON.stringify({
             //     user: '',
@@ -68,14 +68,16 @@ class ModView extends React.Component{
                 }}>
                 <h1>Mod Name: {this.state.modName}</h1>
                 <img className='modIcon' src={this.state.url} alt='mod icon'></img>
-                <h2>Author: {this.state.author}</h2>
-                <h3>Desc: {this.state.desc}</h3>
-                <h4>Date Created: {this.state.dateCreated}</h4>
-                <h5>Date Modified: {this.state.dateModified}</h5>
-                <h6>Download URL: {this.state.url}</h6>
-                <h7>Game: {this.state.gameName}     </h7>
-                <h8>tag: {this.state.tag}      </h8>
-                <h9>views: {this.state.views}     </h9>
+                <p>
+                    Author: {this.state.author}<br></br>
+                    Desc: {this.state.desc}<br></br>
+                    Date Created: {this.state.dateCreated}<br></br>
+                    Date Modified: {this.state.dateModified}<br></br>
+                    Download URL: {this.state.url}<br></br>
+                    Game: {this.state.gameName}  
+                    tag: {this.state.tag}  
+                    views: {this.state.views}     
+                </p>
             </div>
             
         );
