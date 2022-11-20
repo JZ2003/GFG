@@ -144,7 +144,7 @@ function handleGetAllRequest(req, res) {
  * filtering by TAGS
  */
 function handleFilterRequest(req, res) {
-    let filter = req.body["filter"];
+    let filter = req.headers.filter;
     ModsDB.search(filter).then((data) =>
     {
       if(data.length === 0){
@@ -165,7 +165,7 @@ function handleFilterRequest(req, res) {
  */
 function handleFilterTagRequest(req,res){
   let result = [];
-  let tag = req.body["tag"];
+  let tag = req.headers.tag;
   let tag_len = tag.length;
   ModsDB.getAll().then((data) =>
   {
