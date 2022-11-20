@@ -8,7 +8,7 @@ import My_Mods from './pages/mymods';
 import Login from './pages/login_signup';
 import CE_Mods from './pages/create';
 import Signup from './pages/signup';
-import ModView from './pages/modview';
+import ModView from './pages/modView';
 
 function App() {
 return (
