@@ -36,13 +36,15 @@ async function testMods() {
     //await ModsDB.removeAll();
     // await ModsDB.insertDummyMods(10);
     // mods = await ModsDB.search({"author": "kevin"});
+
+    await ModsDB.insertDefault();
     mods = await ModsDB.getAll();
     // ModsDB.removeAll();
     console.log(mods);
 }
 
 async function main() {
-    await testAccounts();
+    // await testAccounts();
     await testMods();
 }
 
