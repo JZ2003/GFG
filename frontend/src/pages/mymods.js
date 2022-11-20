@@ -7,8 +7,6 @@ class My_Mods extends React.Component{
         super(props);
         this.state = {
             user: localStorage.getItem('user'),
-            modName: "",
-            mods: []
         };
         this.getInfo(this.state.user);
     }
@@ -21,16 +19,16 @@ class My_Mods extends React.Component{
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                "filter":{
-                    "author": user 
-                } 
+                filter : JSON.stringify({"author": user})
             },
         })
         .then((response) => {
-            console.log(response);
             if(response.status === 200){
-                console.log(response.parse());
-                this.state.mods = response.parse();
+                this.state.mods = response.json().then((data) => {
+                    console.log(data);
+                    this.setState({modName: data[0].modName});
+                    this.setState({mods: data});
+                });
                 console.log("fetched");
             }
             else{
