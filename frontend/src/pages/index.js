@@ -8,6 +8,7 @@ class Home extends React.Component{
         this.state = {
             modName: "",
             mods: [],
+			displayMods: [],
 			query: ""
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
@@ -51,8 +52,10 @@ class Home extends React.Component{
 		if(query.length > 0) {
 		  let newMods = [...mods].filter((mod) =>regex.test(mod.modName));
 		  //display filtered mods
+		  this.setState({displayMods:newMods});
 		} else if (query.length === 0) {
 		  //display all mods
+		  this.setState({displayMods:mods});
 		}
 	  }
 
