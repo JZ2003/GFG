@@ -11,8 +11,7 @@ class My_Mods extends React.Component{
             signedIn: false,
             modName: "",
             gameName: "",
-            Desc: "",
-            mods: []
+            Desc: ""
         };
         this.getInfo(this.state.user);
     }
@@ -22,7 +21,7 @@ class My_Mods extends React.Component{
     //   }
 
     async getInfo (user) {
-        console.log("user is: " + user);
+        // console.log("user is: " + user);
         if(user == null){
             console.log("not logged in");
         }
@@ -37,19 +36,18 @@ class My_Mods extends React.Component{
                 filter : JSON.stringify({"author": user})
             },
         })
+        .then(res => res.json())
         .then((response) => {
-            if(response.status === 200){
-                this.state.mods = response.json().then((data) => {
-                    console.log(data.length);
-                    console.log(data[0].modName);
-                    // this.state.modName = data[0].modName;
-                    // this.state.mods = data;
-                    this.setState({modName: data[0].modName});
-                    this.setState({mods: data});
-                    this.setState({gameName: data[0].gameName});
-                    this.setState({Desc: data[0].desc});
-                    console.log(this.state.modName);
-                });
+            // console.log(response);
+            if(response /*status === 200*/){
+                this.state.mods = response;
+
+                // this.state.mods = response.json().then((data) => {
+                this.setState({
+                    modName:  this.state.mods[0].modName,
+                    gameName: this.state.mods[0].gameName,
+                    Desc: this.state.mods[0].desc
+                })
                 console.log("fetched");
             }
             else{
@@ -70,8 +68,8 @@ class My_Mods extends React.Component{
                 }}>
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
                 {this.state.signedIn && <h1>Your uploaded mods </h1>}<br/>
-                <a href={"http://localhost:3000/" + this.state.modName} class="card">
-                    <article class="text">
+                <a href={"http://localhost:3000/" + this.state.modName} className="card">
+                    <article className="text">
                         {this.state.signedIn && 
                             <p>
                                 Mod Name: {this.state.modName}<br/> 
