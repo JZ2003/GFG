@@ -47,44 +47,13 @@ class My_Mods extends React.Component{
                     marginRight: '10%',
                     marginTop: '20px',
                 }}>
-                <h1>Mod Name: {this.state.modName}</h1>
+                <h1>Yours Mods: </h1><br/>
+                <h2>Mod Name: {this.state.modName}</h2>
                 
             </div>
             
         );
-
-        // return (
-        //     <div style = {{
-        //             marginLeft: '10%',
-        //             marginTop: '20px',
-        //             width: '50%'
-        //         }}>
-        //         <h1>Your Mods: </h1>
-        //     </div>
-        // );
     };
 }
-
-
-
-// function My_Mods(){
-//     const location = useLocation();
-//     //location.state.username
-
-
-//     return (
-//         <div style = {{
-//                 marginLeft: '10%',
-//                 marginTop: '20px',
-//                 width: '50%'
-//             }}>
-//             <Box 
-//                 color="white"
-//                 bgcolor="black" p={1}>
-//                 Check out your mods!
-//             </Box>
-//         </div>
-//     );
-// };
 
 export default My_Mods;
