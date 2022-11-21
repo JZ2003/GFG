@@ -24,7 +24,7 @@ function CE_Mods() {
 	const [tags, setTags] = useState([]);
 	const current = new Date();
 
-    const addMod = async (gameName, modName, author, desc, url, tags) => {
+    const addMod = async (gameName, modName, desc, url, tags) => {
         await fetch('http://localhost:3030/createMod', {
             method: 'POST',
             body: JSON.stringify({
