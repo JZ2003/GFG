@@ -7,7 +7,56 @@ class Home extends React.Component{
         super(props);
         this.state = {
             modName: "",
-            mods: [],
+            mods: [
+				{
+					modName: "persona 5 extra persona slots", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+				{
+					modName: "starcraft infinite minerals", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+				{
+					modName: "persona 5 costumes", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+				{
+					modName: "persona 5 more friends dlc", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+			],
 			displayMods: [],
 			query: ""
 			// user: localStorage.getItem('user'),
@@ -48,21 +97,34 @@ class Home extends React.Component{
         });
     };
 
+	/*
 	filterMods(regex){
-		if(query.length > 0) {
-		  let newMods = [...mods].filter((mod) =>regex.test(mod.modName));
+		if(this.state.query.length > 0) {
+		  let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
 		  //display filtered mods
 		  this.setState({displayMods:newMods});
-		} else if (query.length === 0) {
+		} else if (this.state.query.length === 0) {
 		  //display all mods
-		  this.setState({displayMods:mods});
+		  this.setState({displayMods:this.state.mods});
 		}
 	  }
+	*/
+
+	componentDidMount(){
+		this.setState({displayMods:this.state.mods});
+	}
 
 	componentDidUpdate(prevProps, prevState){
 		if (this.state.query !== prevState.query) {
-			let regex = new RegExp(query, "i");
-			filterMods(regex);
+			let regex = new RegExp(this.state.query, "i");
+			if(this.state.query.length > 0) {
+				let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+				//display filtered mods
+				this.setState({displayMods:newMods});
+			} else if (this.state.query.length === 0) {
+				//display all mods
+				this.setState({displayMods:this.state.mods});
+			}
 		  }
 	}
 
@@ -70,6 +132,7 @@ class Home extends React.Component{
 		console.log("delete");
         this.setState({query:""});
     }
+
 
     render(){
         return (
@@ -92,6 +155,21 @@ class Home extends React.Component{
                 X
             </button>
 			</center>
+			{this.state.displayMods.map((mod) => {
+                        return(
+						<p>
+							Mod Name: {mod.modName}<br></br>
+							Author: {mod.author}<br></br>
+							Desc: {mod.desc}<br></br>
+							Date Created: {mod.dateCreated}<br></br>
+							Date Modified: {mod.dateModified}<br></br>
+							Download URL: {mod.url}<br></br>
+							Game: {mod.gameName}  
+							tag: {mod.tag}  
+							views: {mod.views}     
+						</p>
+						);
+                    })}
             </div>
             
         );
