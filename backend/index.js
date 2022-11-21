@@ -49,9 +49,20 @@ app.post('/createMod', (req, res) => {
 
 app.post('/signup', (req, res) => {
     // Handle the post for this route
-    console.log('signup');
     login.handleSignupRequest(req, res);
 });
+
+app.post('/addComments', (req, res) => {
+  upload.handlePostCommentRequest(req, res);
+})
+
+app.post('/insertDummyMods', (req, res) => {
+  upload.handleinsertDummyMods(req, res);
+})
+
+app.post('/insertDummyUsers', (req, res) => {
+  login.handleinsertDummyUsers(req, res);
+})
 
 app.get('/login', (req, res) => {
   login.handleLoginRequest(req, res);
@@ -73,12 +84,48 @@ app.get('/tagFilter', (req, res) => {
   upload.handleFilterTagRequest(req, res);
 })
 
+app.get('/allTag', (req, res) => {
+  upload.handleGetAllTag(req, res);
+})
+
+app.get('/allGames', (req, res) => {
+  upload.handleGetAllGame(req, res);
+})
+
+app.get('/getUserComments', (req, res) => {
+  upload.handleGetCommentsForUser(req, res);
+})
+
+app.get('/allUsers', (req, res) => {
+  login.getAllUsers(req, res);
+})
+
+app.get('/allFavorite', (req, res) => {
+  login.handleGetAllFavoriteRequest(req, res);
+})
+
 app.put('/updateUser', (req, res) => {
   login.handleUpdateRequest(req, res);
 })
 
 app.put('/updateMod', (req, res) => {
   upload.handleUpdateRequest(req, res);
+})
+
+app.put('/updateView', (req, res) => {
+  upload.handleUpdateView(req, res);
+})
+
+app.put('/updateLikes', (req, res) => {
+  upload.handleUpdateLikes(req, res);
+})
+
+app.put('/updateTag', (req,res) => {
+  upload.handleUpdateTag(req,res);
+})
+
+app.put('/addFavorite', (req, res) => {
+  login.handleFavoriteRequest(req, res);
 })
 
 app.delete('/cancelUser', (req, res) => {
@@ -91,6 +138,14 @@ app.delete('/cancelMod', (req, res) => {
 
 app.delete('/cancelAllMods', (req, res) => {
   upload.handleRemoveAllRequest(req, res);
+})
+
+app.delete('/cancelAllUsers', (req, res) => {
+  login.handleremoveAllUsers(req, res);
+})
+
+app.delete('/deleteComment', (req, res) => {
+  upload.handleDeleteCommentRequest(req, res);
 })
 
 app.listen(3030, () => {

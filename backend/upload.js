@@ -1,3 +1,4 @@
+const e = require('cors');
 const ModsDB = require('./database/modsDatabase.js');
 
 // function handleUploadReqeust(req, res) {
@@ -16,10 +17,64 @@ const ModsDB = require('./database/modsDatabase.js');
 //   });
 // }
 
+/**
+ * This is handy for striped out some outdated data
+ * Use this before you insert dummy
+ */
+ function handleRemoveAllRequest(req, res) {
+  ModsDB.removeAll().then(() => {
+    res.end();
+  })
+}
+
+/**
+ * This can be used to initialize some data in database
+ */
+function handleinsertDummyMods(req, res){
+  ModsDB.insertDummyMods(10).then((succeed) => {
+    if (succeed) {
+      res.statusCode = 204;
+      res.end();
+    } else {
+      res.statusCode = 409;
+      res.end("Database non empty");
+    }
+  })
+}
+/**
+ * 
+ * @param {mod} oldMod 
+ * @returns a new copy of the old mod
+ */
+function copyMod(oldMod){
+  let newMod = new ModsDB.Mod(
+    oldMod["modName"],
+    oldMod["author"],
+    oldMod["desc"],
+    oldMod["dateCreated"],
+    oldMod["dateModified"],
+    oldMod["url"],
+    oldMod["gameName"],
+    oldMod["tags"],
+    oldMod["views"],
+    oldMod["icon"],
+    oldMod["likes"],
+    oldMod["comments"]
+  );
+  return newMod;
+}
+
 function handleUploadReqeust(req, res) {
   let newModInfo = req.body["mod"];
-  console.log(newModInfo);
-  console.log(newModInfo["modName"]);
+  
+  // Uncomment this to handle the restricted game set thing
+  // ------------------------------------------------------
+  // possible_game = ["Minecraft", "Terraria"];
+  // if (!(newModInfo["gameName"] in possible_game)){
+  //   res.statusCode = 409;
+  //   res.send("This game doesn't exist");
+  // }
+
   let newMod = new ModsDB.Mod(
     newModInfo["modName"],
     newModInfo["author"],
@@ -34,32 +89,7 @@ function handleUploadReqeust(req, res) {
     newModInfo["likes"],
     newModInfo["comments"]
   );
-  // console.log("log1");
-  // // const { headers } = req;
-  // // const Mod = headers.mod;
-  // let arr = [];
-  // req.on("data", (chunk) => {
-  //   arr.push(chunk);
-  // })
-  // console.log("log3");
-  // req.on("end",()=>{
-  //   console.log("log5");
-  //   let newModInfo = JSON.parse(arr)["mod"];
-  //   let newMod = new ModsDB.Mod(
-  //     newModInfo["modName"],
-  //     newModInfo["author"],
-  //     newModInfo["desc"],
-  //     newModInfo["dateCreated"],
-  //     newModInfo["dateModified"],
-  //     newModInfo["url"],
-  //     newModInfo["gameName"],
-  //     newModInfo["tag"],
-  //     newModInfo["views"],
-  //     newModInfo["icon"]
-  //   );
-  //   console.log("log4");
   ModsDB.insert(newMod).then((canInsert) => {
-    console.log("log2");
     if (canInsert) {
       res.statusCode = 201;
       res.end();
@@ -86,10 +116,6 @@ function handleDeleteModRequest(req, res) {
       res.end();
     }
   })
-}
-
-function handleRemoveAllRequest(req, res) {
-  ModsDB.removeAll();
 }
 
 // function handleChangeModRequest(req, res) {
@@ -148,6 +174,7 @@ function handleGetAllRequest(req, res) {
 function handleFilterRequest(req, res) {
     let filter = req.headers.filter;
     let obj = JSON.parse(filter);
+    console.log(obj)
     ModsDB.search(obj).then((data) =>
     {
       if(data.length === 0){
@@ -170,6 +197,7 @@ function handleFilterRequest(req, res) {
 function handleFilterTagRequest(req,res){
   let result = [];
   let tag = req.headers.tag;
+  console.log(JSON.parse(tag)["tag"][0])
   let tag_len = tag.length;
   ModsDB.getAll().then((data) =>
   {
@@ -204,59 +232,284 @@ function handleFilterTagRequest(req,res){
  * 这个函数还未完成
  */
 function handleUpdateRequest(req,res){
-  let arr = [];
-  req.on("data",(chunk) => {
-    arr.push(chunk);
-  })
-  req.on("end", ()=>
-  {
-    let targetName = JSON.parse(arr)["targetName"];
-    let modChange = JSON.parse(arr)["mod"];
-    let changeInfo = new ModsDB.Mod();
-    changeInfo.modName = modChange["modName"];
-    changeInfo.author = modChange["author"];
-    ModsDB.update(targetName,changeInfo).then((data)=>
-    {
-      if(data){
-        res.statusCode = 404;
-        res.write("Mod does not exist " + targetName + " or new mod name already exists");
-        res.end();
-      }
-      else{
-        res.statusCode = 204;
-        res.end("Update successfully!");
-      }
-    })
-  })
-
+  new_mod = req.body["newMod"]
+  // let arr = [];
+  // req.on("data",(chunk) => {
+  //   arr.push(chunk);
+  // })
+  // req.on("end", ()=>
+  // {
+  //   let targetName = JSON.parse(arr)["targetName"];
+  //   let modChange = JSON.parse(arr)["mod"];
+  //   let changeInfo = new ModsDB.Mod();
+  //   changeInfo.modName = modChange["modName"];
+  //   changeInfo.author = modChange["author"];
+  //   ModsDB.update(targetName,changeInfo).then((data)=>
+  //   {
+  //     if(data){
+  //       res.statusCode = 404;
+  //       res.write("Mod does not exist " + targetName + " or new mod name already exists");
+  //       res.end();
+  //     }
+  //     else{
+  //       res.statusCode = 204;
+  //       res.end("Update successfully!");
+  //     }
+  //   })
+  // })
 }
+
 /**
- * Notice that this function is unfinished
- * 这个函数还未完成
+ *  USE: use BODY in such way: 
+ *  add : List<string> of tags to be added
+ *  delete : List<string> of tags to be deleted
+ *  modName : <name of the mod>
  */
 function handleUpdateTag(req, res){
-  let arr = [];
-  req.on("data", (chunk) => {
-    arr.push(chunk);
+  let addList = req.body["add"];
+  let deleteList = req.body["delete"];
+  let modName = req.body["modName"];
+  ModsDB.find(modName).then((mod) => {
+    if(mod !== null){
+      let currMod = copyMod(mod); // Copy the mod
+      // delete currMod["_id"]; // remove the id part
+      console.log(currMod);
+      let newTags = currMod.tags;
+      // First, we remove all tags that need to be deleted
+      let delete_len = deleteList.length;
+      for(let i = 0; i < delete_len; i ++){
+        let index = newTags.indexOf(deleteList[i]);
+        // If such a tag exists in the old list, we delete it
+        if(index > -1){
+          newTags.splice(index,1);
+        }
+      }
+      // Second, let's add all new tags
+      let add_len = addList.length;
+      for(let i = 0; i < add_len; i ++){
+        // If the tag is indeed new, we add it
+        if(newTags.indexOf(addList[i]) <= -1){
+          newTags.push(addList[i]);
+        }
+      }
+      currMod.tags = newTags;
+      ModsDB.update(modName,currMod).then((success)=>{
+        if(success){
+          res.statusCode = 204;
+          res.end();
+        }
+        else{
+          res.statusCode = 404;
+          res.write("Failed for some unclear reason");
+        }
+      })
+    }
+    // If we can't find such modName, we write 404
+    else{
+      res.statusCode = 404;
+      res.write("Can't find this mod!");
+      res.end();
+    }
   })
-  req.on("end", () => {
-    let changed_tags = JSON.parse(arr);
-    let modName = changed_tags["modName"];
-    let added_tag = changed_tags["addedTags"];
-    let deleted_tag = changed_tags["deletedTags"];
-    ModsDB.find(modName).then((data) => {
-      
+}
+
+/**
+ *  USE: use headers in such way: 
+ *  modName : <name of the mod>
+ */
+function handleUpdateView(req, res){
+  modName = req.headers.modname;
+  ModsDB.find(modName).then((mod) => {
+    currMod = copyMod(mod);
+    currMod["views"] = currMod["views"] + 1;
+    ModsDB.update(modName, currMod).then((success) => {
+      if (success) {
+        res.statusCode = 204;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end();
+      }
     })
   })
 }
 
-function handleUpdatelike(req, res){
-
+/**
+ *  USE: use headers in such way: 
+ *  change : -1 OR add : 1
+ *  modName : <name of the mod>
+ */
+function handleUpdateLikes(req, res) {
+  modName = req.headers.modname;
+  add = req.headers.change;
+  ModsDB.find(modName).then((mod) => {
+    currMod = copyMod(mod);
+    if (add === '1') {
+      currMod["likes"] = currMod["likes"] + 1;
+    } else {
+      currMod["likes"] = currMod["likes"] - 1;
+    }
+    ModsDB.update(modName, currMod).then((success) => {
+      if (success) {
+        res.statusCode = 204;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end();
+      }
+    })
+  })
 }
 
-function handleUpdateView(req, res){
-
+function handleGetAllTag(req, res) {
+  ModsDB.getAll().then((allMods) => {
+    tagSet = new Set()
+    for (let i = 0; i < allMods.length; i++) {
+      for (let j = 0; j < allMods[i].tag.length; j++) {
+        tagSet.add((allMods[i].tag)[j]);
+      }
+    }
+    let tagArr = Array.from(tagSet);
+    res.statusCode = 200;
+    res.json({"tag":tagArr});
+    res.end();
+  }).catch(() => {
+    res.statusCode = 404;
+    res.end();
+  })
 }
 
+/**
+ * This function is designed to handle request like this
+ * 
+ * Method: POST
+ * 
+ * In body, passed json data formatted like
+ * 
+ * {
+ *   "comment": {
+ *      "content": "Hello random",
+ *      "username": "Random Dummy",
+ *      "modname": "Dummy Mod 0"
+ *   }
+ * }
+ * 
+ * with the the thing after the colon being changed to actual data
+ */
+function handlePostCommentRequest(req, res) {
+  const comment = req.body.comment.content;
+  const username = req.body.comment.username;
+  const modname = req.body.comment.modname;
+  ModsDB.find(modname).then((mod) => {
+    let new_mod = copyMod(mod);
+    new_mod.addComment(username, comment);
+    ModsDB.update(modname, new_mod).then((success) => {
+      if (success) {
+        res.statusCode = 201;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end("Failed with known reason");
+      }
+    }).catch(() => {
+      res.statusCode = 500;
+      res.end("Failed with unknown reason");
+    })
+  })
+}
 
-module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest };
+/**
+ * Usage: exactly the same with above
+ * Except change POST to DELETE
+ */
+function handleDeleteCommentRequest(req, res) {
+  const comment = req.body.comment.content;
+  const username = req.body.comment.username;
+  const modname = req.body.comment.modname;
+  ModsDB.find(modname).then((mod) => {
+    let new_mod = copyMod(mod);
+    const comments = new_mod.comments;
+    let new_comments = [];
+    for (let i = 0; i < comments.length; i++) {
+      if (comments[i].username !== username || comments[i].content !== comment) {
+        new_comments.push(comments[i]);
+      }
+    }
+    new_mod.comments = new_comments;
+    ModsDB.update(modname, new_mod).then((success) => {
+      if (success) {
+        res.statusCode = 204;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end("Failed with unknown reason");
+      }
+    }).catch(() => {
+      res.statusCode = 500;
+      res.end("Failed with unknown reasons");
+    })
+  })
+}
+
+/**
+ * I think maybe this will be somewhat handy
+ * 
+ * Manual for Usage:
+ * 
+ * Method: Get
+ * Headers: username: data
+ * 
+ * Returned value:
+ * Json objects, where "comments" has value of
+ * a list where each element is a json objects
+ * containing key with modname and value of comments
+ * written by user for this mod.
+ * 
+ * {
+ *   "comments": [
+ *      {
+ *         "Dummy Mod 0":[
+ *             "Dummy Comment1"
+ *         ]
+ *      },
+ *      {
+ *         "Dummy Mod 1":[
+ *             "Dummy Comment1"
+ *          ]
+ *      }
+ * }
+ */
+function handleGetCommentsForUser(req, res) {
+  const username = req.headers.username;
+  ModsDB.getAll().then((allMods) => {
+    let comments = [];
+    for (let i = 0; i < allMods.length; i++) {
+      let subComment = [];
+      for (let j = 0; j < allMods[i].comments.length; j++) {
+        if (allMods[i].comments[j].username === username) {
+          subComment.push(allMods[i].comments[j].content);
+        }
+      }
+      if (subComment.length > 0){
+        let commentObj = {};
+        modName = allMods[i].modName;
+        commentObj[modName] = subComment;
+        comments.push(commentObj);
+      }
+    }
+    res.json({"comments": comments});
+    res.end();
+  })
+}
+
+/**
+ * Need more things here
+ */
+function handleGetAllGame(req, res) {
+  possible_game = ["Minecraft", "Terraria"];
+  res.json({"Games":possible_game});
+}
+
+module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
+  handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag,
+  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser };

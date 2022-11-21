@@ -74,9 +74,9 @@ async function insertDummyAccounts() {
         const findResult = await collection.findOne();
         if (findResult == null) {
             const insertResult = await collection.insertMany([
-                {username: "admin", password: "admin"},
-                {username: "user", password: "user"},
-                {username: "author", password: "author"}
+                {username: "admin", password: "admin", favoriteModNames: []},
+                {username: "user", password: "user", favoriteModNames: []},
+                {username: "author", password: "author", favoriteModNames: []}
             ]);
             console.log("Dummy accounts inserted");
             console.log(`New accounts created with the following ids: ${insertResult.insertedIds}`);
