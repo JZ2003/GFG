@@ -52,6 +52,16 @@ function Login() {
         console.log(pass);
     };
 
+    const logOut = (e) => {
+        e.preventDefault();
+        console.log('Logout');
+
+        localStorage.clear();
+        sessionStorage.clear();
+
+        navigate("/");
+    }
+
     return (
         <div className="login">
             <div className="login-container">
@@ -85,6 +95,10 @@ function Login() {
 					<Link to="/signup">
 						No account? Sign up here
         			</Link>
+                    <br/>
+                    <Button onClick={logOut} variant="contained" color="primary">
+                            Log out
+                    </Button>
                 </center>
             </div>
         </div>

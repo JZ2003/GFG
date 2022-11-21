@@ -13,12 +13,12 @@ class My_Mods extends React.Component{
             gameName: "",
             Desc: ""
         };
-        this.getInfo(this.state.user);
+        // this.getInfo(this.state.user);
     }
 
-    // componentDidMount(){
-    //     this.getInfo = this.getInfo(this.state.user);
-    //   }
+    componentDidMount(){
+        this.getInfo(this.state.user);
+      }
 
     async getInfo (user) {
         // console.log("user is: " + user);
