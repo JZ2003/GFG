@@ -19,7 +19,7 @@ export default function Navbar () {
         className="navigation-menu">
         <ul>
           <li>
-            <a href="/mymods">Mods</a>
+            <a href="/mymods">My Mods</a>
           </li>
           <li>
             <a href="/create">Upload/Edit Mods</a>

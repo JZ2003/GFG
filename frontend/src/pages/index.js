@@ -24,7 +24,7 @@ class Home extends React.Component{
 		// if(user != null){
 		// 	loggedIn = true;
 		// }
-        await fetch('http://localhost:3030/', {
+        await fetch('http://localhost:3030/listall', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
