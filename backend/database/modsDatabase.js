@@ -15,7 +15,7 @@ class Mod {
      * @param {int} views - number of views of the mod
      * @param {string} icon - path to the icon image of the mod
      * @param {int} likes - number of likes of the mod
-     * @param {List<string>} comments - comments of the mod
+     * @param {List<{username: {string}, content: {string}}>} comments - comments of the mod
      */
     constructor(modName, author, desc, dateCreated, dateModified, url, gameName, tags, views, icon, likes, comments) {
         this.modName = modName;
@@ -31,6 +31,28 @@ class Mod {
         this.likes = likes;
         this.comments = comments;
     }
+
+    /**
+     * @returns {boolean} true if successfully incremented the views of the mod.
+     */
+    incrementViews() {
+        this.views += 1;
+        return true;
+    }
+
+    incrementLikes() {
+        this.likes += 1;
+        return true;
+    }
+
+    addComment(username, content) {
+        this.comments.push({username: username, content: content});
+    }
+
+    clearComments() {
+        this.comments = [];
+    }
+
 }
 
 /**
@@ -98,7 +120,9 @@ async function insertDummyMods(numMods) {
             0,
             "Dummy Icon",
             0,
-            ["Dummy Comment1","Dummy Comment2","Dummy Comment3"]
+            [{username: "Dummy User1", content: "Dummy Comment1"},
+            {username: "Dummy User2", content: "Dummy Comment2"},
+            {username: "Dummy User3", content: "Dummy Comment3"}]
         );
         allUnique = await insert(mod);
     }
@@ -114,7 +138,9 @@ async function insertDummyMods(numMods) {
         0,
         "Dummy Icon",
         0,
-        ["Dummy Comment1","Dummy Comment2","Dummy Comment3"]
+        [{username: "Dummy User1", content: "Dummy Comment1"},
+            {username: "Dummy User2", content: "Dummy Comment2"},
+            {username: "Dummy User3", content: "Dummy Comment3"}]
     )
     allUnique = await insert(mod);
     return allUnique;
@@ -133,7 +159,9 @@ async function insertDefault() {
         0, 
         "Default Icon",
         0,
-        ["Dummy Comment1","Dummy Comment2","Dummy Comment3"]
+        [{username: "Dummy User1", content: "Dummy Comment1"},
+            {username: "Dummy User2", content: "Dummy Comment2"},
+            {username: "Dummy User3", content: "Dummy Comment3"}]
     );
     insert(defaultMod);
 }

@@ -3,14 +3,18 @@ const AccountsDB = require('./accountsDatabase.js');
 
 
 async function testAccounts() {
-    await AccountsDB.insert(new AccountsDB.Account('T1', 'pwd1'));
-    account1 = await AccountsDB.find('T1');
-    console.log(account1);
-    // await AccountsDB.remove('test1');
-    await AccountsDB.update('T2', 'pwd2', 'pwd3');
-    account1 = await AccountsDB.find('T1');
-    console.log(account1);
-    await AccountsDB.removeAll();
+    // await AccountsDB.insert(new AccountsDB.Account('T1', 'pwd1'));
+    // account1 = await AccountsDB.find('T1');
+    // console.log(account1);
+    // // await AccountsDB.remove('test1');
+    // await AccountsDB.update('T2', 'pwd2', 'pwd3');
+    // account1 = await AccountsDB.find('T1');
+    // console.log(account1);
+    // await AccountsDB.removeAll();
+
+    account = new AccountsDB.Account('T1', 'pwd1');
+    account.addFavoriteMod('Test Mod');
+    console.log(account);
 }
 
 async function testMods() {
@@ -41,11 +45,12 @@ async function testMods() {
     mods = await ModsDB.getAll();
     // ModsDB.removeAll();
     console.log(mods);
+    mod = new ModsDB.Mod('Test Mod', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon');
 }
 
 async function main() {
     // await testAccounts();
-    await testMods();
+    await testAccounts();
 }
 
 main().catch(console.error);

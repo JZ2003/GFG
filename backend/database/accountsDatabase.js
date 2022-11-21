@@ -27,7 +27,7 @@ class Account {
             return false;
         }
     }
-    
+
 }
 
 /**
