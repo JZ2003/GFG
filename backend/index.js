@@ -97,6 +97,10 @@ app.put('/updateLikes', (req, res) => {
   upload.handleUpdateLikes(req, res);
 })
 
+app.put('/updateTag', (req,res) => {
+  upload.handleUpdateTag(req,res);
+})
+
 app.delete('/cancelUser', (req, res) => {
   login.handleCancleRequest(req, res);
 })

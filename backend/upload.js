@@ -1,3 +1,4 @@
+const e = require('cors');
 const ModsDB = require('./database/modsDatabase.js');
 
 // function handleUploadReqeust(req, res) {
@@ -15,6 +16,28 @@ const ModsDB = require('./database/modsDatabase.js');
 //     }
 //   });
 // }
+/**
+ * 
+ * @param {mod} oldMod 
+ * @returns a new copy of the old mod
+ */
+function copyMod(oldMod){
+  let newMod = new ModsDB.Mod(
+    oldMod["modName"],
+    oldMod["author"],
+    oldMod["desc"],
+    oldMod["dateCreated"],
+    oldMod["dateModified"],
+    oldMod["url"],
+    oldMod["gameName"],
+    oldMod["tags"],
+    oldMod["views"],
+    oldMod["icon"],
+    oldMod["likes"],
+    oldMod["comments"]
+  );
+  return newMod;
+}
 
 function handleUploadReqeust(req, res) {
   let newModInfo = req.body["mod"];
@@ -40,30 +63,6 @@ function handleUploadReqeust(req, res) {
     newModInfo["likes"],
     newModInfo["comments"]
   );
-  // console.log("log1");
-  // // const { headers } = req;
-  // // const Mod = headers.mod;
-  // let arr = [];
-  // req.on("data", (chunk) => {
-  //   arr.push(chunk);
-  // })
-  // console.log("log3");
-  // req.on("end",()=>{
-  //   console.log("log5");
-  //   let newModInfo = JSON.parse(arr)["mod"];
-  //   let newMod = new ModsDB.Mod(
-  //     newModInfo["modName"],
-  //     newModInfo["author"],
-  //     newModInfo["desc"],
-  //     newModInfo["dateCreated"],
-  //     newModInfo["dateModified"],
-  //     newModInfo["url"],
-  //     newModInfo["gameName"],
-  //     newModInfo["tag"],
-  //     newModInfo["views"],
-  //     newModInfo["icon"]
-  //   );
-  //   console.log("log4");
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
       res.statusCode = 201;
@@ -239,22 +238,56 @@ function handleUpdateRequest(req,res){
 }
 
 /**
- * Notice that this function is unfinished
- * 这个函数还未完成
+ *  USE: use BODY in such way: 
+ *  add : List<string> of tags to be added
+ *  delete : List<string> of tags to be deleted
+ *  modName : <name of the mod>
  */
 function handleUpdateTag(req, res){
-  let arr = [];
-  req.on("data", (chunk) => {
-    arr.push(chunk);
-  })
-  req.on("end", () => {
-    let changed_tags = JSON.parse(arr);
-    let modName = changed_tags["modName"];
-    let added_tag = changed_tags["addedTags"];
-    let deleted_tag = changed_tags["deletedTags"];
-    ModsDB.find(modName).then((data) => {
-      
-    })
+  let addList = req.body["add"];
+  let deleteList = req.body["delete"];
+  let modName = req.body["modName"];
+  ModsDB.find(modName).then((mod) => {
+    if(mod !== null){
+      let currMod = copyMod(mod); // Copy the mod
+      // delete currMod["_id"]; // remove the id part
+      console.log(currMod);
+      let newTags = currMod.tags;
+      // First, we remove all tags that need to be deleted
+      let delete_len = deleteList.length;
+      for(let i = 0; i < delete_len; i ++){
+        let index = newTags.indexOf(deleteList[i]);
+        // If such a tag exists in the old list, we delete it
+        if(index > -1){
+          newTags.splice(index,1);
+        }
+      }
+      // Second, let's add all new tags
+      let add_len = addList.length;
+      for(let i = 0; i < add_len; i ++){
+        // If the tag is indeed new, we add it
+        if(newTags.indexOf(addList[i]) <= -1){
+          newTags.push(addList[i]);
+        }
+      }
+      currMod.tags = newTags;
+      ModsDB.update(modName,currMod).then((success)=>{
+        if(success){
+          res.statusCode = 204;
+          res.end();
+        }
+        else{
+          res.statusCode = 404;
+          res.write("Failed for some unclear reason");
+        }
+      })
+    }
+    // If we can't find such modName, we write 404
+    else{
+      res.statusCode = 404;
+      res.write("Can't find this mod!");
+      res.end();
+    }
   })
 }
 
@@ -277,10 +310,14 @@ function handleUpdatelike(req, res){
 //   );
 // }
 
+/**
+ *  USE: use headers in such way: 
+ *  modName : <name of the mod>
+ */
 function handleUpdateView(req, res){
   modName = req.headers.modname;
   ModsDB.find(modName).then((mod) => {
-    currMod = mod.clone();
+    currMod = copyMod(mod);
     currMod["views"] = currMod["views"] + 1;
     ModsDB.update(modName, currMod).then((success) => {
       if (success) {
@@ -294,19 +331,24 @@ function handleUpdateView(req, res){
   })
 }
 
+/**
+ *  USE: use headers in such way: 
+ *  change : -1 OR add : 1
+ *  modName : <name of the mod>
+ */
 function handleUpdateLikes(req, res) {
   modName = req.headers.modname;
   add = req.headers.change;
   ModsDB.find(modName).then((mod) => {
-    currMod = mod.clone();
-    if (add == '1') {
-      currMod["Likes"] = currMod["Likes"] + 1;
+    currMod = copyMod(mod);
+    if (add === '1') {
+      currMod["likes"] = currMod["likes"] + 1;
     } else {
-      currMod["Likes"] = currMod["Likes"] - 1;
+      currMod["likes"] = currMod["likes"] - 1;
     }
     ModsDB.update(modName, currMod).then((success) => {
       if (success) {
-        res.statusCode = 24;
+        res.statusCode = 204;
         res.end();
       } else {
         res.statusCode = 409;
@@ -342,4 +384,4 @@ function handleGetAllGame(req, res) {
 }
 
 module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
-  handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame };
+  handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag };
