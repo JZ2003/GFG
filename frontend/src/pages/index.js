@@ -7,7 +7,58 @@ class Home extends React.Component{
         super(props);
         this.state = {
             modName: "",
-            mods: []
+            mods: [
+				{
+					modName: "persona 5 extra persona slots", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+				{
+					modName: "starcraft infinite minerals", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+				{
+					modName: "persona 5 costumes", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+				{
+					modName: "persona 5 more friends dlc", 
+            		author: "sunny",
+            		desc: "whatever",
+            		dateCreated: "2002/11/3",
+            		dateModified: "2022/11/21",
+            		url: "http://www.persona5tianxiadiyi.com",
+            		gameName: "persona 5",
+            		tag: "none",
+            		views: 0,
+            		icon: "whatever"
+				},
+			],
+			displayMods: [],
+			query: ""
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
         };
@@ -46,17 +97,85 @@ class Home extends React.Component{
         });
     };
 
+	/*
+	filterMods(regex){
+		if(this.state.query.length > 0) {
+		  let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+		  //display filtered mods
+		  this.setState({displayMods:newMods});
+		} else if (this.state.query.length === 0) {
+		  //display all mods
+		  this.setState({displayMods:this.state.mods});
+		}
+	  }
+	*/
+
+	componentDidMount(){
+		this.setState({displayMods:this.state.mods});
+	}
+
+	componentDidUpdate(prevProps, prevState){
+		if (this.state.query !== prevState.query) {
+			let regex = new RegExp(this.state.query, "i");
+			if(this.state.query.length > 0) {
+				let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+				//display filtered mods
+				this.setState({displayMods:newMods});
+			} else if (this.state.query.length === 0) {
+				//display all mods
+				this.setState({displayMods:this.state.mods});
+			}
+		  }
+	}
+
+	handleXClick(){
+		console.log("delete");
+        this.setState({query:""});
+    }
+
+
     render(){
         return (
             <div>
 				<h1><center>Welcome to gamersforgamers!</center></h1>
 				{/* {loggedIn && <p>Welcome {user}! Checkout our mods!</p>} */}
                 {/* <h2>Mod Name: {this.state.modName}</h2> */}
-                
+            <center>
+			<input 
+                className="search-bar"
+                key="random1"
+                maxLength={60}
+                value={this.state.query}
+                onChange={(e) => this.setState({query:e.target.value})}
+            />
+            
+			<button onClick={() => this.handleXClick()}
+                className="x-button"
+            >
+                X
+            </button>
+			</center>
+			{this.state.displayMods.map((mod) => {
+                        return(
+						<p>
+							Mod Name: {mod.modName}<br></br>
+							Author: {mod.author}<br></br>
+							Desc: {mod.desc}<br></br>
+							Date Created: {mod.dateCreated}<br></br>
+							Date Modified: {mod.dateModified}<br></br>
+							Download URL: {mod.url}<br></br>
+							Game: {mod.gameName}  
+							tag: {mod.tag}  
+							views: {mod.views}     
+						</p>
+						);
+                    })}
             </div>
             
         );
     };
 }
+
+
 
 export default Home;
