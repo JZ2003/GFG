@@ -7,7 +7,8 @@ class Home extends React.Component{
         super(props);
         this.state = {
             modName: "",
-            mods: []
+            mods: [],
+			query: ""
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
         };
@@ -46,17 +47,54 @@ class Home extends React.Component{
         });
     };
 
+	filterMods(regex){
+		if(query.length > 0) {
+		  let newMods = [...mods].filter((mod) =>regex.test(mod.modName));
+		  //display filtered mods
+		} else if (query.length === 0) {
+		  //display all mods
+		}
+	  }
+
+	componentDidUpdate(prevProps, prevState){
+		if (this.state.query !== prevState.query) {
+			let regex = new RegExp(query, "i");
+			filterMods(regex);
+		  }
+	}
+
+	handleXClick(){
+		console.log("delete");
+        this.setState({query:""});
+    }
+
     render(){
         return (
             <div>
 				<h1><center>Welcome to gamersforgamers!</center></h1>
 				{/* {loggedIn && <p>Welcome {user}! Checkout our mods!</p>} */}
                 {/* <h2>Mod Name: {this.state.modName}</h2> */}
-                
+            <center>
+			<input 
+                className="search-bar"
+                key="random1"
+                maxLength={60}
+                value={this.state.query}
+                onChange={(e) => this.setState({query:e.target.value})}
+            />
+            
+			<button onClick={() => this.handleXClick()}
+                className="x-button"
+            >
+                X
+            </button>
+			</center>
             </div>
             
         );
     };
 }
+
+
 
 export default Home;
