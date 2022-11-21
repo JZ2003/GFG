@@ -1,5 +1,53 @@
 const AccountsDB = require('./database/accountsDatabase.js');
 
+/**
+ * Initialize the database with a bunch of dummy accounts
+ */
+function handleinsertDummyUsers(req, res) {
+  AccountsDB.insertDummyAccounts().then((success) => {
+    if (success) {
+      res.statusCode = 204;
+      res.end();
+    } else {
+      res.statusCode = 409;
+      res.end("Datebase non empty");
+    }
+  })
+}
+
+/**
+ * This stripped out all the outdate data
+ * use this before insert dummies
+ */
+function handleremoveAllUsers(req, res) {
+  AccountsDB.removeAll().then(() => {
+    res.statusCode = 204;
+    res.end();
+  })
+}
+
+/**
+ * For testing purposes
+ */
+function getAllUsers(req, res) {
+  AccountsDB.search({}).then((data) => {
+    if (data.length === 0){
+      res.statusCode = 200;
+      res.end();
+    } else {
+      res.statusCode = 200;
+      res.json({"Users":data});
+      res.end();
+    }
+  })
+}
+
+function copyUser(user) {
+  let newUser = new AccountsDB.Account(user.username, user.password)
+  newUser.favoriteModNames = user.favoriteModNames;
+  return newUser;
+}
+
 function handleSignupRequest(req, res) {
   const { headers } = req;
   newUser = new AccountsDB.Account(headers.username, headers.password);
@@ -82,4 +130,53 @@ function handleUpdateRequest(req, res) {
   });
 }
 
-module.exports = { handleLoginRequest, handleSignupRequest, handleCancleRequest, handleUpdateRequest };
+/**
+ * Usage:
+ * 
+ * Method: PUT
+ * 
+ * headers: username: data, modname: data
+ */
+function handleFavoriteRequest(req, res) {
+  username = req.headers.username;
+  modname = req.headers.modname;
+  AccountsDB.find(username).then((account) => {
+    newUser = copyUser(account);
+    success = newUser.addFavoriteMod(modname);
+    if (success) {
+      AccountsDB.remove(username).then(() => {
+        AccountsDB.insert(newUser).then(() => {
+          res.statusCode = 200;
+          res.end();
+        })
+      })
+    } else {
+      res.statusCode = 409;
+      res.end();
+    }
+  })
+}
+
+/**
+ * Usage:
+ * 
+ * Method: GET
+ * 
+ * headers: username: data
+ */
+function handleGetAllFavoriteRequest(req, res) {
+  username = req.headers.username;
+  AccountsDB.find(username).then((account) => {
+    if (account !== null) {
+      res.statusCode = 200;
+      res.json({"Favorite": account.favoriteModNames});
+      res.end();
+    } else {
+      res.statusCode = 409;
+      res.end("Failed with some reasons")
+    }
+  })
+}
+
+module.exports = { handleLoginRequest, handleSignupRequest, handleCancleRequest, handleUpdateRequest, handleinsertDummyUsers, handleremoveAllUsers,
+ handleFavoriteRequest, getAllUsers, handleGetAllFavoriteRequest };
