@@ -6,11 +6,28 @@ class Account {
     /**
      * @param {string} username 
      * @param {string} password 
+     * @param {favoriteModNames} favoriteModNames
      */
     constructor(username, password) {
         this.username = username;
         this.password = password;
+        this.favoriteModNames = [];
     }
+
+    /**
+     * @param {string} modName to favorite
+     * @returns {boolean} false if the mod with same name already exists in the database
+     */
+    addFavoriteMod(modName) {
+        // append if not already in list
+        if (!this.favoriteModNames.includes(modName)) {
+            this.favoriteModNames.push(modName);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 /**
@@ -97,6 +114,17 @@ async function find(username) {
         console.log("Account found: " + account.username);
     }
     return account;
+}
+
+/**
+ * Get all the Accounts in the database
+ * @param {void}
+ * @returns {Collection} collection object of all the mods
+ */
+ async function getAll(){
+    let filter = {};
+    let arr = await search(filter);
+    return arr;
 }
 
 /**
@@ -229,4 +257,4 @@ async function update(oldUsername, oldPassword, newPassword) {
 }
 
 
-module.exports = {Account, insert, find, remove, update, search, removeAll, insertDummyAccounts};
+module.exports = {Account, insert, find, remove, update, search, removeAll, insertDummyAccounts, getAll};

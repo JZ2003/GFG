@@ -14,8 +14,10 @@ class Mod {
      * @param {List<string>} tags - tags of the mod
      * @param {int} views - number of views of the mod
      * @param {string} icon - path to the icon image of the mod
+     * @param {int} likes - number of likes of the mod
+     * @param {List<{username: {string}, content: {string}}>} comments - comments of the mod
      */
-    constructor(modName, author, desc, dateCreated, dateModified, url, gameName, tag, views, icon) {
+    constructor(modName, author, desc, dateCreated, dateModified, url, gameName, tags, views, icon, likes, comments) {
         this.modName = modName;
         this.author = author;
         this.desc = desc;
@@ -23,10 +25,34 @@ class Mod {
         this.dateModified = dateModified;
         this.url = url;
         this.gameName = gameName;
-        this.tag = tag;
+        this.tags = tags;
         this.views = views;
         this.icon = icon;
+        this.likes = likes;
+        this.comments = comments;
     }
+
+    /**
+     * @returns {boolean} true if successfully incremented the views of the mod.
+     */
+    incrementViews() {
+        this.views += 1;
+        return true;
+    }
+
+    incrementLikes() {
+        this.likes += 1;
+        return true;
+    }
+
+    addComment(username, content) {
+        this.comments.push({username: username, content: content});
+    }
+
+    clearComments() {
+        this.comments = [];
+    }
+
 }
 
 /**
@@ -63,26 +89,10 @@ async function insert(mod) {
  * @param {void}
  * @returns {Collection} collection object of all the mods
  */
-// async function getAll() {
-//     const client = new MongoClient(uri);
-//     let allMods = null;
-//     try {
-//         await client.connect();
-//         const collection = client.db("cs35lproject").collection("mods");
-//         allMods = await collection.find({}).toArray();
-//     } catch (e) {
-//         console.error(e);
-//     } finally {
-//         await client.close();
-//     }
-//     return JSON.stringify({allMods});
-// }
-
 async function getAll(){
     let filter = {};
     let arr = await search(filter);
     return arr;
-    // return JSON.stringify({arr});
 }
 
 /**
@@ -107,7 +117,11 @@ async function insertDummyMods(numMods) {
             "Dummy Game Name",
             ["Dummy Tag1","Dummy Tag2","Dummy Tag3"],
             0,
-            "Dummy Icon"
+            "Dummy Icon",
+            0,
+            [{username: "Dummy User1", content: "Dummy Comment1"},
+            {username: "Dummy User2", content: "Dummy Comment2"},
+            {username: "Dummy User3", content: "Dummy Comment3"}]
         );
         allUnique = await insert(mod);
     }
@@ -121,14 +135,33 @@ async function insertDummyMods(numMods) {
         "Dummy Game Name",
         ["Good Tag1","Dummy Tag2","Goofy Tag3"],
         0,
-        "Dummy Icon"
+        "Dummy Icon",
+        0,
+        [{username: "Dummy User1", content: "Dummy Comment1"},
+            {username: "Dummy User2", content: "Dummy Comment2"},
+            {username: "Dummy User3", content: "Dummy Comment3"}]
     )
     allUnique = await insert(mod);
     return allUnique;
 }
     
 async function insertDefault() {
-    let defaultMod = new Mod("Default Mod", "Default Author", "Default Description", "2022/11/01", "2022/11/01", "https://www.google.com", "Default Game", "Default Tag", 0, "Default Icon");
+    let defaultMod = new Mod(
+        "Default Mod", 
+        "Default Author", 
+        "Default Description", 
+        "2022/11/01", 
+        "2022/11/01", 
+        "https://www.google.com", 
+        "Default Game", 
+        ["Default Tag"], 
+        0, 
+        "Default Icon",
+        0,
+        [{username: "Dummy User1", content: "Dummy Comment1"},
+            {username: "Dummy User2", content: "Dummy Comment2"},
+            {username: "Dummy User3", content: "Dummy Comment3"}]
+    );
     insert(defaultMod);
 }
 

@@ -28,9 +28,11 @@ function handleUploadReqeust(req, res) {
     newModInfo["dateModified"],
     newModInfo["url"],
     newModInfo["gameName"],
-    newModInfo["tag"],
+    newModInfo["tags"],
     newModInfo["views"],
-    newModInfo["icon"]
+    newModInfo["icon"],
+    newModInfo["likes"],
+    newModInfo["comments"]
   );
   // console.log("log1");
   // // const { headers } = req;
@@ -145,7 +147,8 @@ function handleGetAllRequest(req, res) {
  */
 function handleFilterRequest(req, res) {
     let filter = req.headers.filter;
-    ModsDB.search(filter).then((data) =>
+    let obj = JSON.parse(filter);
+    ModsDB.search(obj).then((data) =>
     {
       if(data.length === 0){
         res.statusCode = 404;
@@ -156,7 +159,8 @@ function handleFilterRequest(req, res) {
         res.statusCode = 200;
         res.setHeader("Content-Type","application/json");
         // Give all matched mods, and the number of matching
-        res.end(JSON.stringify({data, "num":data.length})); 
+        // set the body with the result
+        res.end(JSON.stringify(data, "num", data.length));
       }
     })
 }
