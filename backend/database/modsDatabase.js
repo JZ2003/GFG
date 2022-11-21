@@ -297,7 +297,7 @@ async function update(modName, mod) {
         // check if the mod already exists
         const findResult = await collection.findOne({modName: modName});
         const findResultNew = await collection.findOne({modName: mod.modName});
-        if (findResult != null && findResultNew == null) {
+        if ((findResult != null && findResultNew == null) || (modName === mod.modName)) {
             const updateResult = await collection.updateOne({modName: modName}, {$set: mod});
             console.log("Mod updated: " + modName);
             console.log("New mod: " + mod.modName);
