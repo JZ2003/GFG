@@ -16,8 +16,10 @@ class Mod {
      * @param {string} icon - path to the icon image of the mod
      * @param {int} likes - number of likes of the mod
      * @param {List<{username: {string}, content: {string}}>} comments - comments of the mod
+     * @param {string} slug - the short description of the mod, including keywords etc.
      */
-    constructor(modName, author, desc, dateCreated, dateModified, url, gameName, tags, views, icon, likes, comments) {
+    constructor(modName, author, desc, dateCreated, dateModified, url, gameName, 
+        tags, views, icon, likes, comments, slug) {
         this.modName = modName;
         this.author = author;
         this.desc = desc;
@@ -30,6 +32,7 @@ class Mod {
         this.icon = icon;
         this.likes = likes;
         this.comments = comments;
+        this.slug = slug;
     }
 
     /**
@@ -124,7 +127,8 @@ async function insertDummyMods(numMods) {
             0,
             [{username: "Dummy User1", content: "Dummy Comment1"},
             {username: "Dummy User2", content: "Dummy Comment2"},
-            {username: "Dummy User3", content: "Dummy Comment3"}]
+            {username: "Dummy User3", content: "Dummy Comment3"}],
+            "Default Slug"
         );
         allUnique = await insert(mod);
     }
@@ -142,7 +146,8 @@ async function insertDummyMods(numMods) {
         0,
         [{username: "Dummy User1", content: "Dummy Comment1"},
             {username: "Dummy User2", content: "Dummy Comment2"},
-            {username: "Dummy User3", content: "Dummy Comment3"}]
+            {username: "Dummy User3", content: "Dummy Comment3"}],
+        "Default Slug"
     )
     allUnique = await insert(mod);
     return allUnique;
@@ -162,8 +167,9 @@ async function insertDefault() {
         "Default Icon",
         0,
         [{username: "Dummy User1", content: "Dummy Comment1"},
-            {username: "Dummy User2", content: "Dummy Comment2"},
-            {username: "Dummy User3", content: "Dummy Comment3"}]
+        {username: "Dummy User2", content: "Dummy Comment2"},
+        {username: "Dummy User3", content: "Dummy Comment3"}],
+        "Default Slug"
     );
     insert(defaultMod);
 }

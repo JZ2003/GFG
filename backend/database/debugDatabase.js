@@ -38,7 +38,7 @@ async function testMods() {
     // mods = await ModsDB.search({});
     // console.log(mods);
     //await ModsDB.removeAll();
-    // await ModsDB.insertDummyMods(10);
+    await ModsDB.insertDummyMods(10);
     // mods = await ModsDB.search({"author": "kevin"});
 
     mods = await ModsDB.getAll();
