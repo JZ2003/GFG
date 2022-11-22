@@ -97,7 +97,7 @@ class Home extends React.Component{
         });
     };
 
-	/*
+	
 	filterMods(regex){
 		if(this.state.query.length > 0) {
 		  let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
@@ -108,7 +108,7 @@ class Home extends React.Component{
 		  this.setState({displayMods:this.state.mods});
 		}
 	  }
-	*/
+	
 
 	componentDidMount(){
 		this.setState({displayMods:this.state.mods});
