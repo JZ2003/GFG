@@ -38,19 +38,21 @@ async function testMods() {
     // mods = await ModsDB.search({});
     // console.log(mods);
     //await ModsDB.removeAll();
-    // await ModsDB.insertDummyMods(10);
+    await ModsDB.insertDummyMods(10);
     // mods = await ModsDB.search({"author": "kevin"});
 
-    await ModsDB.insertDefault();
     mods = await ModsDB.getAll();
     // ModsDB.removeAll();
+    mod = new ModsDB.Mod('train', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon', 0, []);
+    // mod = new ModsDB.Mod('Test Mod', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon');
+    
+    ModsDB.insert(mod);
     console.log(mods);
-    mod = new ModsDB.Mod('Test Mod', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon');
 }
 
 async function main() {
     // await testAccounts();
-    await testAccounts();
+    await testMods();
 }
 
 main().catch(console.error);

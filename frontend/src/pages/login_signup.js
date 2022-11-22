@@ -11,9 +11,14 @@ function Login() {
     const [emailErr, setEmailErr] = useState(false);
     const validEmail = new RegExp(
         '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
-     );
+    );
+    // const[signedIn, setSignedIn] = usestate(false);
+    const loggedIn = localStorage.getItem('user');
 
     const log_Acc = async (user, pass) => {
+        if(loggedIn != null){
+            window.alert("You are already signed in!");
+        }
         await fetch('http://localhost:3030/login?user=' + user + '&pass=' + pass, {
             method: 'GET',
             headers: {
@@ -76,9 +81,9 @@ function Login() {
                         </Button>
                     </form>
                     {/* {emailErr && <p>Your email is invalid</p>} */}
-					
+					<br/>
 					<Link to="/signup">
-						Sign Up
+						No account? Sign up here
         			</Link>
                 </center>
             </div>

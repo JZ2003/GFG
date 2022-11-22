@@ -16,8 +16,10 @@ class Mod {
      * @param {string} icon - path to the icon image of the mod
      * @param {int} likes - number of likes of the mod
      * @param {List<{username: {string}, content: {string}}>} comments - comments of the mod
+     * @param {string} slug - the short description of the mod, including keywords etc.
      */
-    constructor(modName, author, desc, dateCreated, dateModified, url, gameName, tags, views, icon, likes, comments) {
+    constructor(modName, author, desc, dateCreated, dateModified, url, gameName, 
+        tags, views, icon, likes, comments, slug) {
         this.modName = modName;
         this.author = author;
         this.desc = desc;
@@ -30,6 +32,7 @@ class Mod {
         this.icon = icon;
         this.likes = likes;
         this.comments = comments;
+        this.slug = slug;
     }
 
     /**
@@ -58,7 +61,8 @@ class Mod {
 /**
  * Insert the given mod into the database
  * @param {Mod} mod to be added to the database
- * @returns {boolean} false if the mod with same name already exists in the database
+ * @returns {boolean} false if the mod with same name (regardless of case)
+ * already exists in the database
  */
 async function insert(mod) {
     const client = new MongoClient(uri);
@@ -66,15 +70,16 @@ async function insert(mod) {
     try {
         await client.connect();
         const collection = client.db("cs35lproject").collection("mods");
-        // check if the mod with same name already exists
-        const findResult = await collection.findOne({modName: mod.modName});
+        // check if the mod with same name already exists regardless of case
+        let filter = {modName: {$regex: new RegExp("^" + mod.modName + "$", "i")}};
+        const findResult = await collection.findOne(filter);
         if (findResult == null) {
             const insertResult = await collection.insertOne(mod);
             console.log("Mod inserted: " + mod.modName);
             console.log(`New mod created with the following id: ${insertResult.insertedId}`);
             succeed = true;
         } else {
-            console.log("Mod already exists: " + mod.modName);
+            console.log("Mod already exists: " + findResult.modName);
         }
     } catch (e) {
         console.error(e);
@@ -121,7 +126,8 @@ async function insertDummyMods(numMods) {
             0,
             [{username: "Dummy User1", content: "Dummy Comment1"},
             {username: "Dummy User2", content: "Dummy Comment2"},
-            {username: "Dummy User3", content: "Dummy Comment3"}]
+            {username: "Dummy User3", content: "Dummy Comment3"}],
+            "Default Slug"
         );
         allUnique = await insert(mod);
     }
@@ -139,7 +145,8 @@ async function insertDummyMods(numMods) {
         0,
         [{username: "Dummy User1", content: "Dummy Comment1"},
             {username: "Dummy User2", content: "Dummy Comment2"},
-            {username: "Dummy User3", content: "Dummy Comment3"}]
+            {username: "Dummy User3", content: "Dummy Comment3"}],
+        "Default Slug"
     )
     allUnique = await insert(mod);
     return allUnique;
@@ -159,8 +166,9 @@ async function insertDefault() {
         "Default Icon",
         0,
         [{username: "Dummy User1", content: "Dummy Comment1"},
-            {username: "Dummy User2", content: "Dummy Comment2"},
-            {username: "Dummy User3", content: "Dummy Comment3"}]
+        {username: "Dummy User2", content: "Dummy Comment2"},
+        {username: "Dummy User3", content: "Dummy Comment3"}],
+        "Default Slug"
     );
     insert(defaultMod);
 }

@@ -10,9 +10,13 @@ const Signup = (props) => {
     const [emailErr, setEmailErr] = useState(false);
     const validEmail = new RegExp(
         '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
-     );
+    );
+    const loggedIn = localStorage.getItem('user');
 
     const addAcc = async (user, pass) => {
+        if(loggedIn != null){
+            window.alert("You are already signed into an account!");
+        }
         await fetch('http://localhost:3030/signup', {
             method: 'POST',
             body: JSON.stringify({
@@ -63,7 +67,7 @@ const Signup = (props) => {
                             margin="normal"
                             onChange={(e) => {setUser(e.target.value);}}
                         />
-                        <br></br>
+                        <br/>
                         <TextField
                             value={pass}
                             label="Password"
@@ -72,7 +76,7 @@ const Signup = (props) => {
                             margin="normal"
                             onChange={(e) => {setPass(e.target.value);}}
                         />
-                        <br></br>
+                        <br/>
                         <Button type="submit" variant="contained" color="primary">
                             Signup
                         </Button>

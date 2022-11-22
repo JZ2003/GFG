@@ -59,7 +59,8 @@ function copyMod(oldMod){
     oldMod["views"],
     oldMod["icon"],
     oldMod["likes"],
-    oldMod["comments"]
+    oldMod["comments"],
+    oldMod["slug"]
   );
   return newMod;
 }
@@ -75,20 +76,7 @@ function handleUploadReqeust(req, res) {
   //   res.send("This game doesn't exist");
   // }
 
-  let newMod = new ModsDB.Mod(
-    newModInfo["modName"],
-    newModInfo["author"],
-    newModInfo["desc"],
-    newModInfo["dateCreated"],
-    newModInfo["dateModified"],
-    newModInfo["url"],
-    newModInfo["gameName"],
-    newModInfo["tags"],
-    newModInfo["views"],
-    newModInfo["icon"],
-    newModInfo["likes"],
-    newModInfo["comments"]
-  );
+  let newMod = copyMod(newModInfo);
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
       res.statusCode = 201;
