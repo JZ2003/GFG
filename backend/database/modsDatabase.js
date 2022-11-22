@@ -105,7 +105,6 @@ async function insertDummyMods(numMods) {
     if (numMods <= 0) {
         return null;
     }
-    //allUnique是否需要let？ --ZJX
     allUnique = true;
     for (let i = 0; i < numMods; i++) {
         const mod = new Mod(
