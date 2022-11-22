@@ -58,7 +58,8 @@ class Mod {
 /**
  * Insert the given mod into the database
  * @param {Mod} mod to be added to the database
- * @returns {boolean} false if the mod with same name already exists in the database
+ * @returns {boolean} false if the mod with same name (regardless of case)
+ * already exists in the database
  */
 async function insert(mod) {
     const client = new MongoClient(uri);
@@ -66,15 +67,16 @@ async function insert(mod) {
     try {
         await client.connect();
         const collection = client.db("cs35lproject").collection("mods");
-        // check if the mod with same name already exists
-        const findResult = await collection.findOne({modName: mod.modName});
+        // check if the mod with same name already exists regardless of case
+        let filter = {modName: {$regex: new RegExp("^" + mod.modName + "$", "i")}};
+        const findResult = await collection.findOne(filter);
         if (findResult == null) {
             const insertResult = await collection.insertOne(mod);
             console.log("Mod inserted: " + mod.modName);
             console.log(`New mod created with the following id: ${insertResult.insertedId}`);
             succeed = true;
         } else {
-            console.log("Mod already exists: " + mod.modName);
+            console.log("Mod already exists: " + findResult.modName);
         }
     } catch (e) {
         console.error(e);
