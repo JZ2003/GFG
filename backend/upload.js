@@ -216,35 +216,53 @@ function handleFilterTagRequest(req,res){
 }
 
 /**
- * Notice that this function is unfinished
- * 这个函数还未完成
+ * This function means to change basic information of a mod, including: name,
+ * URL, slug, and description.
+ * USE: use BODY in such way:
+ * modName : <name of the mod> (optional)
+ * newName : <new name> (optional)
+ * newUrl : <new URL> (optional)
+ * newDesc : <new description> (optional)
+ * newGame : <new game name> (optional)
+ * newSlug : <new slug> (optional)
  */
 function handleUpdateRequest(req,res){
-  new_mod = req.body["newMod"]
-  // let arr = [];
-  // req.on("data",(chunk) => {
-  //   arr.push(chunk);
-  // })
-  // req.on("end", ()=>
-  // {
-  //   let targetName = JSON.parse(arr)["targetName"];
-  //   let modChange = JSON.parse(arr)["mod"];
-  //   let changeInfo = new ModsDB.Mod();
-  //   changeInfo.modName = modChange["modName"];
-  //   changeInfo.author = modChange["author"];
-  //   ModsDB.update(targetName,changeInfo).then((data)=>
-  //   {
-  //     if(data){
-  //       res.statusCode = 404;
-  //       res.write("Mod does not exist " + targetName + " or new mod name already exists");
-  //       res.end();
-  //     }
-  //     else{
-  //       res.statusCode = 204;
-  //       res.end("Update successfully!");
-  //     }
-  //   })
-  // })
+  let modName = req.body["modName"];
+  ModsDB.find(modName).then((mod) =>{
+    if(mod === null){
+      res.statusCode = 404;
+      res.write("Can't find this mod!");
+      res.end();
+    }
+    else{
+      let currMod = copyMod(mod);
+      if(req.body["newName"] !== undefined){
+        currMod["modName"] = req.body["newName"];
+      }
+      if(req.body["newUrl"] !== undefined){
+        currMod["url"] = req.body["newUrl"];
+      }
+      if(req.body["newDesc"] !== undefined){
+        currMod["desc"] = req.body["newDesc"];
+      }
+      if(req.body["newGame"] !== undefined){
+        currMod["gameName"] = req.body["newGame"];
+      }
+      if(req.body["newSlug"] !== undefined){
+        currMod["slug"] = req.body["newSlug"];
+      }
+      ModsDB.update(modName,currMod).then((success)=>{
+        if(success){
+          res.statusCode = 204;
+          res.end();
+        }
+        else{
+          res.statusCode = 404;
+          res.end("Failed for some reason.Probably the new name already existed.");
+        }
+      })
+    }
+  })
 }
 
 /**
@@ -500,4 +518,4 @@ function handleGetAllGame(req, res) {
 
 module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
   handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag,
-  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser };
+  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser};
