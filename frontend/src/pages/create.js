@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-tagsinput
 import 'react-tagsinput/react-tagsinput.css'
+import './styles.css'
 
 // import moment from "moment";
 
@@ -66,7 +67,7 @@ function CE_Mods() {
 	}
 
     return (
-        <div className="make-mod">
+        <div className="container">
             <div className="mod-container">
 				<h1><center><b>Create/Edit your mod!</b></center></h1>
 				<form onSubmit={handleSubmit}>

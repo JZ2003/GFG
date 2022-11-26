@@ -1,63 +1,12 @@
 // import {useLocation} from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import React from 'react';
-import './mymods.css'
+import './styles.css'
 
 class Home extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            // modName: "",
-            // mods: [
-			// 	{
-			// 		modName: "persona 5 extra persona slots", 
-            // 		author: "sunny",
-            // 		desc: "whatever",
-            // 		dateCreated: "2002/11/3",
-            // 		dateModified: "2022/11/21",
-            // 		url: "http://www.persona5tianxiadiyi.com",
-            // 		gameName: "persona 5",
-            // 		tag: "none",
-            // 		views: 0,
-            // 		icon: "whatever"
-			// 	},
-			// 	{
-			// 		modName: "starcraft infinite minerals", 
-            // 		author: "sunny",
-            // 		desc: "whatever",
-            // 		dateCreated: "2002/11/3",
-            // 		dateModified: "2022/11/21",
-            // 		url: "http://www.persona5tianxiadiyi.com",
-            // 		gameName: "persona 5",
-            // 		tag: "none",
-            // 		views: 0,
-            // 		icon: "whatever"
-			// 	},
-			// 	{
-			// 		modName: "persona 5 costumes", 
-            // 		author: "sunny",
-            // 		desc: "whatever",
-            // 		dateCreated: "2002/11/3",
-            // 		dateModified: "2022/11/21",
-            // 		url: "http://www.persona5tianxiadiyi.com",
-            // 		gameName: "persona 5",
-            // 		tag: "none",
-            // 		views: 0,
-            // 		icon: "whatever"
-			// 	},
-			// 	{
-			// 		modName: "persona 5 more friends dlc", 
-            // 		author: "sunny",
-            // 		desc: "whatever",
-            // 		dateCreated: "2002/11/3",
-            // 		dateModified: "2022/11/21",
-            // 		url: "http://www.persona5tianxiadiyi.com",
-            // 		gameName: "persona 5",
-            // 		tag: "none",
-            // 		views: 0,
-            // 		icon: "whatever"
-			// 	},
-			// ],
 			displayMods: [],
 			query: "",
             selector: "modName",
@@ -161,7 +110,7 @@ class Home extends React.Component{
 
     render(){
         return (
-            <div>
+            <div className="container">
 				<h1><center>Welcome to gamersforgamers!</center></h1>
 				{/* {loggedIn && <p>Welcome {user}! Checkout our mods!</p>} */}
                 {/* <h2>Mod Name: {this.state.modName}</h2> */}
@@ -189,6 +138,7 @@ class Home extends React.Component{
 			</center>
 			{this.state.displayMods.map((mod) => {
 				return(
+                    <center>
 					<a href={"http://localhost:3000/" + mod.modName} className="card">
 						<p>
 							Mod Name: {mod.modName}
@@ -202,6 +152,7 @@ class Home extends React.Component{
 							Download URL: {mod.url}
 						</p>
 					</a>
+                    </center>
 				);
             })}
             </div>
