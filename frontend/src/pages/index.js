@@ -60,6 +60,7 @@ class Home extends React.Component{
 			// ],
 			displayMods: [],
 			query: "",
+            selector: "modName",
 			mods: []
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
@@ -125,8 +126,24 @@ class Home extends React.Component{
 		if (this.state.query !== prevState.query) {
 			let regex = new RegExp(this.state.query, "i");
 			if(this.state.query.length > 0) {
-				console.log(this.state.mods);
-				let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+				// console.log(this.state.mods);
+                // console.log("this is the current selector state: " + this.state.selector);
+                let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+                if(this.state.selector === "modName"){
+				    newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+                }
+                else if(this.state.selector === "gameName"){
+                    newMods = [...this.state.mods].filter((mod) =>regex.test(mod.gameName));
+                }
+                else if(this.state.selector === "author"){
+                    newMods = [...this.state.mods].filter((mod) =>regex.test(mod.author));
+                }
+                else if(this.state.selector === "tag"){
+                    newMods = [...this.state.mods].filter((mod) =>regex.test(mod.tag));
+                }
+                else{
+                    newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+                }
 				//display filtered mods
 				this.setState({displayMods:newMods});
 			} else if (this.state.query.length === 0) {
@@ -156,6 +173,13 @@ class Home extends React.Component{
                 value={this.state.query}
                 onChange={(e) => this.setState({query:e.target.value})}
             />
+
+            <select name="select-tag" id="options" onChange={(e) => this.setState({selector:e.target.value})} value={this.state.selector}>
+                <option value="modName">mod name</option>
+                <option value="gameName">game name</option>
+                <option value="author">author name</option>
+                <option value="tag">tags</option>
+            </select>
             
 			<button onClick={() => this.handleXClick()}
                 className="x-button"
