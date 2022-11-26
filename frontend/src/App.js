@@ -9,6 +9,7 @@ import Login from './pages/login_signup';
 import CE_Mods from './pages/create';
 import Signup from './pages/signup';
 import ModView from './pages/modView';
+import Comments from './pages/comments';
 
 function App() {
 return (
@@ -22,7 +23,7 @@ return (
 		<Route path='/create' element={<CE_Mods/>} />
 		<Route path='/signup' element={<Signup/>} />
 		<Route path='/mods' element={<ModView/>} />
-		<Route path='/mods/:modName' element={<ModPage/>} />
+		<Route path='/mods/:modName' element={<><ModPage/><Comments useParams={commentedmod}/></>} />
 	</Routes>
 	</Router>
 );
