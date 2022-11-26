@@ -16,6 +16,31 @@ const ModsDB = require('./database/modsDatabase.js');
 //     }
 //   });
 // }
+
+/**
+ * This is handy for striped out some outdated data
+ * Use this before you insert dummy
+ */
+ function handleRemoveAllRequest(req, res) {
+  ModsDB.removeAll().then(() => {
+    res.end();
+  })
+}
+
+/**
+ * This can be used to initialize some data in database
+ */
+function handleinsertDummyMods(req, res){
+  ModsDB.insertDummyMods(10).then((succeed) => {
+    if (succeed) {
+      res.statusCode = 204;
+      res.end();
+    } else {
+      res.statusCode = 409;
+      res.end("Database non empty");
+    }
+  })
+}
 /**
  * 
  * @param {mod} oldMod 
@@ -34,7 +59,8 @@ function copyMod(oldMod){
     oldMod["views"],
     oldMod["icon"],
     oldMod["likes"],
-    oldMod["comments"]
+    oldMod["comments"],
+    oldMod["slug"]
   );
   return newMod;
 }
@@ -42,27 +68,15 @@ function copyMod(oldMod){
 function handleUploadReqeust(req, res) {
   let newModInfo = req.body["mod"];
   
-  // This part handles the possible game thing...
+  // Uncomment this to handle the restricted game set thing
+  // ------------------------------------------------------
   // possible_game = ["Minecraft", "Terraria"];
   // if (!(newModInfo["gameName"] in possible_game)){
   //   res.statusCode = 409;
   //   res.send("This game doesn't exist");
   // }
 
-  let newMod = new ModsDB.Mod(
-    newModInfo["modName"],
-    newModInfo["author"],
-    newModInfo["desc"],
-    newModInfo["dateCreated"],
-    newModInfo["dateModified"],
-    newModInfo["url"],
-    newModInfo["gameName"],
-    newModInfo["tags"],
-    newModInfo["views"],
-    newModInfo["icon"],
-    newModInfo["likes"],
-    newModInfo["comments"]
-  );
+  let newMod = copyMod(newModInfo);
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
       res.statusCode = 201;
@@ -90,10 +104,6 @@ function handleDeleteModRequest(req, res) {
       res.end();
     }
   })
-}
-
-function handleRemoveAllRequest(req, res) {
-  ModsDB.removeAll();
 }
 
 // function handleChangeModRequest(req, res) {
@@ -291,25 +301,6 @@ function handleUpdateTag(req, res){
   })
 }
 
-function handleUpdatelike(req, res){
-
-}
-
-// function modCopy(mod){
-//   return new ModsDB.Mod( 
-//     newModInfo["modName"],
-//     newModInfo["author"],
-//     newModInfo["desc"],
-//     newModInfo["dateCreated"],
-//     newModInfo["dateModified"],
-//     newModInfo["url"],
-//     newModInfo["gameName"],
-//     newModInfo["tag"],
-//     newModInfo["views"],
-//     newModInfo["icon"]
-//   );
-// }
-
 /**
  *  USE: use headers in such way: 
  *  modName : <name of the mod>
@@ -359,9 +350,7 @@ function handleUpdateLikes(req, res) {
 }
 
 function handleGetAllTag(req, res) {
-  console.log("log1")
   ModsDB.getAll().then((allMods) => {
-    console.log(allMods)
     tagSet = new Set()
     for (let i = 0; i < allMods.length; i++) {
       for (let j = 0; j < allMods[i].tag.length; j++) {
@@ -378,10 +367,137 @@ function handleGetAllTag(req, res) {
   })
 }
 
+/**
+ * This function is designed to handle request like this
+ * 
+ * Method: POST
+ * 
+ * In body, passed json data formatted like
+ * 
+ * {
+ *   "comment": {
+ *      "content": "Hello random",
+ *      "username": "Random Dummy",
+ *      "modname": "Dummy Mod 0"
+ *   }
+ * }
+ * 
+ * with the the thing after the colon being changed to actual data
+ */
+function handlePostCommentRequest(req, res) {
+  const comment = req.body.comment.content;
+  const username = req.body.comment.username;
+  const modname = req.body.comment.modname;
+  ModsDB.find(modname).then((mod) => {
+    let new_mod = copyMod(mod);
+    new_mod.addComment(username, comment);
+    ModsDB.update(modname, new_mod).then((success) => {
+      if (success) {
+        res.statusCode = 201;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end("Failed with known reason");
+      }
+    }).catch(() => {
+      res.statusCode = 500;
+      res.end("Failed with unknown reason");
+    })
+  })
+}
+
+/**
+ * Usage: exactly the same with above
+ * Except change POST to DELETE
+ */
+function handleDeleteCommentRequest(req, res) {
+  const comment = req.body.comment.content;
+  const username = req.body.comment.username;
+  const modname = req.body.comment.modname;
+  ModsDB.find(modname).then((mod) => {
+    let new_mod = copyMod(mod);
+    const comments = new_mod.comments;
+    let new_comments = [];
+    for (let i = 0; i < comments.length; i++) {
+      if (comments[i].username !== username || comments[i].content !== comment) {
+        new_comments.push(comments[i]);
+      }
+    }
+    new_mod.comments = new_comments;
+    ModsDB.update(modname, new_mod).then((success) => {
+      if (success) {
+        res.statusCode = 204;
+        res.end();
+      } else {
+        res.statusCode = 409;
+        res.end("Failed with unknown reason");
+      }
+    }).catch(() => {
+      res.statusCode = 500;
+      res.end("Failed with unknown reasons");
+    })
+  })
+}
+
+/**
+ * I think maybe this will be somewhat handy
+ * 
+ * Manual for Usage:
+ * 
+ * Method: Get
+ * Headers: username: data
+ * 
+ * Returned value:
+ * Json objects, where "comments" has value of
+ * a list where each element is a json objects
+ * containing key with modname and value of comments
+ * written by user for this mod.
+ * 
+ * {
+ *   "comments": [
+ *      {
+ *         "Dummy Mod 0":[
+ *             "Dummy Comment1"
+ *         ]
+ *      },
+ *      {
+ *         "Dummy Mod 1":[
+ *             "Dummy Comment1"
+ *          ]
+ *      }
+ * }
+ */
+function handleGetCommentsForUser(req, res) {
+  const username = req.headers.username;
+  ModsDB.getAll().then((allMods) => {
+    let comments = [];
+    for (let i = 0; i < allMods.length; i++) {
+      let subComment = [];
+      for (let j = 0; j < allMods[i].comments.length; j++) {
+        if (allMods[i].comments[j].username === username) {
+          subComment.push(allMods[i].comments[j].content);
+        }
+      }
+      if (subComment.length > 0){
+        let commentObj = {};
+        modName = allMods[i].modName;
+        commentObj[modName] = subComment;
+        comments.push(commentObj);
+      }
+    }
+    res.json({"comments": comments});
+    res.end();
+  })
+}
+
+/**
+ * Need more things here
+ */
 function handleGetAllGame(req, res) {
   possible_game = ["Minecraft", "Terraria"];
   res.json({"Games":possible_game});
 }
 
 module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
-  handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag };
+  handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag,
+  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser };
