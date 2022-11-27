@@ -40,12 +40,12 @@ class Favorites extends React.Component{
         .then((response) => {
             // console.log(response);
             if(response /*status === 200*/){
-                console.log("response: " + response);
+                console.log(response);
                 this.setState({
                     mods: response
                 });
                 // this.state.mods = response;
-                console.log(this.state.mods);
+                console.log("mods:" + this.state.mods);
                 console.log("fetched");
             }
             else{
@@ -62,7 +62,7 @@ class Favorites extends React.Component{
             <div className="container">
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
                 {this.state.signedIn && <h1>Your favorites!</h1>}<br/>
-                {/* {this.state.signedIn && 
+                {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
                             <a href={"http://localhost:3000/" + mod.modName} className="card">
@@ -81,7 +81,7 @@ class Favorites extends React.Component{
                             
                         );
                     })
-                } */}
+                }
                 {/* {this.state.signedIn && <p>Game Name: {this.state.gameName}</p>}<br/>
                 {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}
                 

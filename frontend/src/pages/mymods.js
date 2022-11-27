@@ -43,7 +43,6 @@ class My_Mods extends React.Component{
         })
         .then(res => res.json())
         .then((response) => {
-            // console.log(response);
             if(response /*status === 200*/){
                 console.log("response: " + response);
                 this.setState({
@@ -78,8 +77,7 @@ class My_Mods extends React.Component{
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
-                            <center>
-                            <a href={"http://localhost:3000/" + mod.modName} className="card">
+                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
                                 <p>
                                     Mod Name: {mod.modName}
                                     Game: {mod.gameName} 
@@ -92,15 +90,12 @@ class My_Mods extends React.Component{
                                     Download URL: {mod.url}
                                 </p>
                             </a>
-                            </center>
                         );
                     })
                 }
                 {/* {this.state.signedIn && <p>Game Name: {this.state.gameName}</p>}<br/>
-                {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}
-                
-            </div>
-            
+                {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}  
+            </div> 
         );
     };
 }
