@@ -1,9 +1,8 @@
 import React from 'react';
-// import { Box } from '@mui/material';
-// import {useLocation} from 'react-router-dom';
 import './styles.css'
 
-class My_Mods extends React.Component{
+
+class Favorites extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -11,18 +10,14 @@ class My_Mods extends React.Component{
             signedIn: false,
             modObj: [],
             mods: []
-            // modName: "",
-            // gameName: "",
-            // Desc: "",
         };
-        // this.getInfo(this.state.user);
     }
 
     componentDidMount(){
-        this.getInfo(this.state.user);
-      }
+        this.getFavorites(this.state.user);
+    }
 
-    async getInfo (user) {
+    async getFavorites (user) {
         console.log("user is: " + user);
         if(user == null){
             window.alert("You are not signed into an account!");
@@ -34,31 +29,27 @@ class My_Mods extends React.Component{
             })
             console.log(this.state.signedIn);
         }
-        await fetch('http://localhost:3030/filterMod', {
+        await fetch('http://localhost:3030/allFavorite', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                filter : JSON.stringify({"author": user})
+                username: user
             },
         })
         .then(res => res.json())
         .then((response) => {
+            // console.log(response);
             if(response /*status === 200*/){
-                console.log("response: " + response);
+                console.log(response);
                 this.setState({
                     mods: response
                 });
                 // this.state.mods = response;
-                console.log(this.state.mods);
-                // this.setState({
-                //     modName:  this.state.mods[0].modName,
-                //     gameName: this.state.mods[0].gameName,
-                //     Desc: this.state.mods[0].desc
-                // })
+                console.log("mods:" + this.state.mods);
                 console.log("fetched");
             }
             else{
-                console.log('no mods associated with user');
+                console.log('no favorites associated with user');
             }
         })
         .catch((err) => {
@@ -69,15 +60,12 @@ class My_Mods extends React.Component{
     render(){
         return (
             <div className="container">
-                    {/* [ marginLeft: '10%',
-                    marginRight: '10%',
-                    marginTop: '20px',] */}
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
-                {this.state.signedIn && <center><h1>Your uploaded mods</h1></center>}<br/>
+                {this.state.signedIn && <h1>Your favorites!</h1>}<br/>
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
-                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
+                            <a href={"http://localhost:3000/" + mod.modName} className="card">
                                 <p>
                                     Mod Name: {mod.modName}
                                     Game: {mod.gameName} 
@@ -90,14 +78,18 @@ class My_Mods extends React.Component{
                                     Download URL: {mod.url}
                                 </p>
                             </a>
+                            
                         );
                     })
                 }
                 {/* {this.state.signedIn && <p>Game Name: {this.state.gameName}</p>}<br/>
-                {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}  
-            </div> 
+                {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}
+                
+            </div>
+            
         );
     };
+
 }
 
-export default My_Mods;
+export default Favorites;

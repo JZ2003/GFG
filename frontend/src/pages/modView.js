@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { useParams } from 'react-router-dom';
-
+// import { useParams } from 'react-router-dom';
+import { Button } from "@mui/material";
+import './styles.css'
 
 class ModView extends React.Component{
     constructor(props){
@@ -60,14 +60,74 @@ class ModView extends React.Component{
             });
     };
 
+    addFavorite(){
+        this.state.addFav(this.state.user, this.state.modName);
+        this.state.addLike(this.state.modName);
+    }
+
+    async addFav(user, modName){
+        await fetch('http://localhost:3030/addFavorite', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                username: user,
+                modname: modName
+            },
+        })
+            .then((response) => {
+                //console.log(response);
+                if(response.status === 200){
+                    console.log('favorited');
+                }
+                else{
+                    console.log('did not favorite');
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
+    async addLike(modName){
+        await fetch('http://localhost:3030/updateLikes', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                modname: modName,
+                change: '1'
+            },
+        })
+            .then((response) => {
+                //console.log(response);
+                if(response.status === 204){
+                    console.log('liked');
+                }
+                else{
+                    console.log('did not like');
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
+   
     render(){
         return (
             <div style = {{
                     marginLeft: '10%',
                     marginRight: '10%',
-                    marginTop: '20px',
+                    marginTop: '20px'
                 }}>
-                <h1>Mod Name: {this.state.modName}</h1>
+                <div style = {{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                }}>
+                    <h1>Mod Name: {this.state.modName}</h1>
+                    <Button variant="contained" color="primary" /*onClick={addFavorite}*/>
+                        Favorite
+                    </Button>
+                </div>
                 <img className='modIcon' src={this.state.url} alt='mod icon'></img>
                 <p>
                     Author: {this.state.author}<br></br>

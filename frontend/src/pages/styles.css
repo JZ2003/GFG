@@ -1,0 +1,26 @@
+.card {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 36rem;
+	height: 6rem;
+	margin: 0 auto;
+	background-color: #26292f;
+	border-radius: 10px;
+    padding: 15px;
+}
+/* Color scheme: #4E4E50, #6F2232, #950740, #C3073F */
+
+.title {
+    display:flex;
+    justify-content: space-between;
+}
+
+.text {
+    padding: 0.5rem;
+}
+
+.container{
+      padding: 20px;
+}
