@@ -1,21 +1,6 @@
-const e = require('cors');
+const fs = require('fs');
+const path = require('path')
 const ModsDB = require('./database/modsDatabase.js');
-
-// function handleUploadReqeust(req, res) {
-//   const { headers } = req;
-//   const Mod = headers.mod;
-  
-//   ModsDB.insert(Mod).then((canInsert) => {
-//     if (canInsert) {
-//       res.statusCode = 201;
-//       res.end();
-//     } else {
-//       res.statusCode = 409;
-//       res.write("Alreday existed");
-//       res.end();
-//     }
-//   });
-// }
 
 /**
  * This is handy for striped out some outdated data
@@ -41,6 +26,7 @@ function handleinsertDummyMods(req, res){
     }
   })
 }
+
 /**
  * 
  * @param {mod} oldMod 
@@ -65,9 +51,30 @@ function copyMod(oldMod){
   return newMod;
 }
 
+function handleImageRequest(req, res) {
+  base64_image = fs.readFileSync(req.files.image.path, {encoding:'base64'});
+  console.log(base64_image);
+  const buffer = Buffer.from(base64_image, "base64");
+  const image = fs.writeFileSync("new-path.jpg", buffer);
+  res.sendFile(image);
+  res.end();
+  // console.log(req.files.image);
+  // console.log(req.fields);
+  // console.image(req.files.image);
+  // res.end();
+}
+
+// Now this function handles file also, but the upload thing needs to be changed...
 function handleUploadReqeust(req, res) {
-  let newModInfo = req.body["mod"];
-  
+  let req_data = JSON.parse(req.fields.modinfo);
+  let newModInfo = {};
+  // This handles over stringified data...
+  if (typeof req_data === "string") {
+    newModInfo = JSON.parse(req_data).mod;
+  } else {
+    newModInfo = req_data.mod;
+  }
+
   // Uncomment this to handle the restricted game set thing
   // ------------------------------------------------------
   // possible_game = ["Minecraft", "Terraria"];
@@ -75,18 +82,38 @@ function handleUploadReqeust(req, res) {
   //   res.statusCode = 409;
   //   res.send("This game doesn't exist");
   // }
-
+  let new_path = '';
+  fs.readFile(req.files.image.path, function (err, data) {
+    const image_path = path.dirname(__dirname) + '/images';
+    const imageName = newModInfo.modName + '.png';
+    new_path = image_path + '/' + imageName;
+    fs.writeFile(new_path, data, function(err) {
+      console.log(err);
+    })
+  })
+  newModInfo["icon"] = new_path;
   let newMod = copyMod(newModInfo);
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
       res.statusCode = 201;
-      res.end();
+      res.send(new_path);
     } else {
       res.statusCode = 409;
-      res.write("Alreday existed");
       res.end();
     }
-  });
+  })
+
+  // let newMod = copyMod(newModInfo);
+  // ModsDB.insert(newMod).then((canInsert) => {
+  //   if (canInsert) {
+  //     res.statusCode = 201;
+  //     res.end();
+  //   } else {
+  //     res.statusCode = 409;
+  //     res.write("Alreday existed");
+  //     res.end();
+  //   }
+  // });
   // })
 }
 
@@ -227,7 +254,7 @@ function handleFilterTagRequest(req,res){
  * newSlug : <new slug> (optional)
  */
 function handleUpdateRequest(req,res){
-  let modName = req.body["modName"];
+  let modName = req.fields["modName"];
   ModsDB.find(modName).then((mod) =>{
     if(mod === null){
       res.statusCode = 404;
@@ -236,20 +263,20 @@ function handleUpdateRequest(req,res){
     }
     else{
       let currMod = copyMod(mod);
-      if(req.body["newName"] !== undefined){
-        currMod["modName"] = req.body["newName"];
+      if(req.fields["newName"] !== undefined){
+        currMod["modName"] = req.fields["newName"];
       }
-      if(req.body["newUrl"] !== undefined){
-        currMod["url"] = req.body["newUrl"];
+      if(req.fields["newUrl"] !== undefined){
+        currMod["url"] = req.fields["newUrl"];
       }
-      if(req.body["newDesc"] !== undefined){
-        currMod["desc"] = req.body["newDesc"];
+      if(req.fields["newDesc"] !== undefined){
+        currMod["desc"] = req.fields["newDesc"];
       }
-      if(req.body["newGame"] !== undefined){
-        currMod["gameName"] = req.body["newGame"];
+      if(req.fields["newGame"] !== undefined){
+        currMod["gameName"] = req.fields["newGame"];
       }
-      if(req.body["newSlug"] !== undefined){
-        currMod["slug"] = req.body["newSlug"];
+      if(req.fields["newSlug"] !== undefined){
+        currMod["slug"] = req.fields["newSlug"];
       }
       ModsDB.update(modName,currMod).then((success)=>{
         if(success){
@@ -272,9 +299,9 @@ function handleUpdateRequest(req,res){
  *  modName : <name of the mod>
  */
 function handleUpdateTag(req, res){
-  let addList = req.body["add"];
-  let deleteList = req.body["delete"];
-  let modName = req.body["modName"];
+  let addList = req.fields["add"];
+  let deleteList = req.fields["delete"];
+  let modName = req.fields["modName"];
   ModsDB.find(modName).then((mod) => {
     if(mod !== null){
       let currMod = copyMod(mod); // Copy the mod
@@ -346,6 +373,7 @@ function handleUpdateView(req, res){
  *  modName : <name of the mod>
  */
 function handleUpdateLikes(req, res) {
+  res.end();
   modName = req.headers.modname;
   add = req.headers.change;
   ModsDB.find(modName).then((mod) => {
@@ -403,9 +431,9 @@ function handleGetAllTag(req, res) {
  * with the the thing after the colon being changed to actual data
  */
 function handlePostCommentRequest(req, res) {
-  const comment = req.body.comment.content;
-  const username = req.body.comment.username;
-  const modname = req.body.comment.modname;
+  const comment = req.fields.comment.content;
+  const username = req.fields.comment.username;
+  const modname = req.fields.comment.modname;
   ModsDB.find(modname).then((mod) => {
     let new_mod = copyMod(mod);
     new_mod.addComment(username, comment);
@@ -429,9 +457,9 @@ function handlePostCommentRequest(req, res) {
  * Except change POST to DELETE
  */
 function handleDeleteCommentRequest(req, res) {
-  const comment = req.body.comment.content;
-  const username = req.body.comment.username;
-  const modname = req.body.comment.modname;
+  const comment = req.fields.comment.content;
+  const username = req.fields.comment.username;
+  const modname = req.fields.comment.modname;
   ModsDB.find(modname).then((mod) => {
     let new_mod = copyMod(mod);
     const comments = new_mod.comments;
@@ -518,4 +546,4 @@ function handleGetAllGame(req, res) {
 
 module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
   handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag,
-  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser};
+  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser, handleImageRequest };
