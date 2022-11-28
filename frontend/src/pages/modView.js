@@ -26,15 +26,39 @@ class ModView extends React.Component{
 
     componentDidMount(){
         this.getMod(this.state.modName);
+        this.checkViewer(this.state.author);
       }
+
+    checkViewer(author){
+        if (author != this.state.user){
+            this.addView(this.state.modName);
+        }
+    }
+
+    async addView(modName){
+            await fetch('http://localhost:3030/updateView', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                modname: modName
+            },
+        })
+        .then((response) => {
+            if(response.status === 204){
+                console.log('viewed');
+            }
+            else{
+                console.log('no viewed');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    }
 
     async getMod(name){
         await fetch('http://localhost:3030/currMod?modName=' + name, {
             method: 'GET',
-            // body: JSON.stringify({
-            //     user: '',
-            //     pass: ''
-            // }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
