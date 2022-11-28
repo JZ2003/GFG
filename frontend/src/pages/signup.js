@@ -33,6 +33,7 @@ const Signup = (props) => {
                 console.log(response);
                 if(response.status >= 200 && response.status <= 204){
                     navigate('/',{state:{username:user}});
+                    localStorage.setItem('user', user);
                 }
                 else{
                     console.log('did not succeed lol');

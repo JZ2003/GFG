@@ -16,18 +16,49 @@ class ModView extends React.Component{
             gameName: '',
             tag: '',
             views: 0,
-            icon: ''
+            icon: '',
+            likes: 0,
+            comments: [],
+            user: localStorage.getItem('user')
         };
+        // this.getMod(this.state.modName);
+    }
+
+    componentDidMount(){
         this.getMod(this.state.modName);
+        this.checkViewer(this.state.author);
+      }
+
+    checkViewer(author){
+        if (author != this.state.user){
+            this.addView(this.state.modName);
+        }
+    }
+
+    async addView(modName){
+            await fetch('http://localhost:3030/updateView', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                modname: modName
+            },
+        })
+        .then((response) => {
+            if(response.status === 204){
+                console.log('viewed');
+            }
+            else{
+                console.log('no viewed');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
     }
 
     async getMod(name){
         await fetch('http://localhost:3030/currMod?modName=' + name, {
             method: 'GET',
-            // body: JSON.stringify({
-            //     user: '',
-            //     pass: ''
-            // }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
@@ -47,7 +78,9 @@ class ModView extends React.Component{
                             gameName: data.gameName,
                             tag: data.tag,
                             views: data.views,
-                            icon: data.icon
+                            icon: data.icon,
+                            likes: data.likes,
+                            comments: data.comments
                         });
                     });
                 }
@@ -60,57 +93,127 @@ class ModView extends React.Component{
             });
     };
 
-    addFavorite(){
-        this.state.addFav(this.state.user, this.state.modName);
-        this.state.addLike(this.state.modName);
+    addFavorite=()=>{
+        this.addFav(this.state.user, this.state.modName);
+        this.addLike(this.state.modName);
+        // this.removeAll();
     }
 
+    async removeAll(){
+        console.log('removing');
+        await fetch('http://localhost:3030/cancelAllUsers', {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        .then((response) => {
+            //console.log(response);
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    };
+
+
     async addFav(user, modName){
+        console.log(user);
         await fetch('http://localhost:3030/addFavorite', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 username: user,
                 modname: modName
             },
         })
-            .then((response) => {
-                //console.log(response);
-                if(response.status === 200){
-                    console.log('favorited');
-                }
-                else{
-                    console.log('did not favorite');
-                }
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+        .then((response) => {
+            //console.log(response);
+            if(response.status === 200){
+                console.log('favorited');
+            }
+            else{
+                console.log('did not favorite');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
     };
 
     async addLike(modName){
         await fetch('http://localhost:3030/updateLikes', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 modname: modName,
                 change: '1'
             },
         })
-            .then((response) => {
-                //console.log(response);
-                if(response.status === 204){
-                    console.log('liked');
-                }
-                else{
-                    console.log('did not like');
-                }
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+        .then((response) => {
+            //console.log(response);
+            if(response.status === 204){
+                console.log('liked');
+            }
+            else{
+                console.log('did not like');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
     };
 
+    remFavorite=()=>{
+        this.remFav(this.state.user, this.state.modName);
+        this.remLike(this.state.modName);
+    }
+
+    async remFav(user, modName){
+        console.log(user);
+        await fetch('http://localhost:3030/addFavorite', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                username: user,
+                modname: modName
+            },
+        })
+        .then((response) => {
+            //console.log(response);
+            if(response.status === 200){
+                console.log('favorited');
+            }
+            else{
+                console.log('did not favorite');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    };
+
+    async remLike(modName){
+        await fetch('http://localhost:3030/updateLikes', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                modname: modName,
+                change: '1'
+            },
+        })
+        .then((response) => {
+            //console.log(response);
+            if(response.status === 204){
+                console.log('liked');
+            }
+            else{
+                console.log('did not like');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    };
    
     render(){
         return (
@@ -124,20 +227,22 @@ class ModView extends React.Component{
                     justifyContent: 'space-between'
                 }}>
                     <h1>Mod Name: {this.state.modName}</h1>
-                    <Button variant="contained" color="primary" /*onClick={addFavorite}*/>
+                    <Button variant="contained" color="primary" onClick={this.addFavorite}>
                         Favorite
                     </Button>
                 </div>
                 <img className='modIcon' src={this.state.url} alt='mod icon'></img>
                 <p>
-                    Author: {this.state.author}<br></br>
-                    Desc: {this.state.desc}<br></br>
-                    Date Created: {this.state.dateCreated}<br></br>
-                    Date Modified: {this.state.dateModified}<br></br>
-                    Download URL: {this.state.url}<br></br>
-                    Game: {this.state.gameName}  
-                    tag: {this.state.tag}  
-                    views: {this.state.views}     
+                    Game: {this.state.gameName} <br/> 
+                    Author: {this.state.author}<br/>
+                    Likes: {this.state.likes}<br/>
+                    views: {this.state.views}<br/>
+                    Desc: {this.state.desc}<br/>
+                    Date Created: {this.state.dateCreated}<br/>
+                    Date Modified: {this.state.dateModified}<br/>
+                    Download URL: {this.state.url}<br/>
+                    Tag: {this.state.tag}<br/>
+                    Comments: {this.state.comments}                         
                 </p>
             </div>
             

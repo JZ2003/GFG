@@ -42,10 +42,10 @@ class Favorites extends React.Component{
             if(response /*status === 200*/){
                 console.log(response);
                 this.setState({
-                    mods: response
+                    mods: response.Favorite
                 });
                 // this.state.mods = response;
-                console.log("mods:" + this.state.mods);
+                console.log(this.state.mods);
                 console.log("fetched");
             }
             else{
