@@ -62,19 +62,19 @@ function CE_Mods() {
             <div className="mod-container">
 				<h1><center><b>Create/Edit your mod!</b></center></h1>
 				<form onSubmit={handleSubmit}>
-					<label for="gameName"> Game Name: </label><br/>
+					<label htmlFor="gameName"> Game Name: </label><br/>
 					<input type="text" className="form-control" value={gameName} onChange={(e) => setGameName(e.target.value)} /><br/>
-					<label for="modName"> Mod Name: </label><br/>
+					<label htmlFor="modName"> Mod Name: </label><br/>
 					<input type="text" className="form-control" value={modName} onChange={(e) => setModName(e.target.value)} /><br/>
 					{/* <label for="tags"> Tags: </label><br/>
 					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>*/}
-					<label for="tags"> Tags: </label><br/>
+					<label htmlFor="tags"> Tags: </label><br/>
 					<TagsInput value={tags} onChange={handleTagsChange} onlyUnique={true}/>
-					<label for="url"> Upload URL: </label><br/>
+					<label htmlFor="url"> Upload URL: </label><br/>
 					<input type="url" className="form-control" value={url} onChange={(e) => setUrl(e.target.value)} /><br/>
-					<label for="desc"> Description: </label><br/>
+					<label htmlFor="desc"> Description: </label><br/>
 					<input type="text" size="50" maxLength="2500" className="form-control" value={desc} onChange={(e) => setDesc(e.target.value)} /><br/>
-					<label for="icon"> Upload icon: </label><br/>
+					<label htmlFor="icon"> Upload icon: </label><br/>
 					<input type="file" value={icon} onChange={(e) => setIcon(e.target.value)}/>
 					<br/>
 					<button type="submit">Submit</button>

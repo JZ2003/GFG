@@ -66,6 +66,10 @@ class My_Mods extends React.Component{
         });
     };
 
+    handleEdit(){
+        // working
+    }
+
     render(){
         return (
             <div className="container">
@@ -77,25 +81,30 @@ class My_Mods extends React.Component{
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
-                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-                                <p>
-                                    Mod Name: {mod.modName}<br/>
-                                    Game: {mod.gameName} <br/>
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes} <br/>
-                                    Views: {mod.views}<br/>
-                                    {/* Mod Name: {mod.modName}
-                                    Game: {mod.gameName} 
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes}
-                                    Views: {mod.views}<br/>
-                                    Date Created: {mod.dateCreated}
-                                    Date Modified: {mod.dateModified}<br/>
-                                    Desc: {mod.desc}<br/>
-                                    Tag: {mod.tag}<br/>
-                                    Download URL: {mod.url}<br/> */}
-                                </p>
-                            </a>
+                            <div>
+                                <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
+                                    <p>
+                                        Mod Name: {mod.modName}<br/>
+                                        Game: {mod.gameName} <br/>
+                                        Author: {mod.author}<br/>
+                                        Likes: {mod.likes} <br/>
+                                        Views: {mod.views}<br/>
+                                        {/* Mod Name: {mod.modName}
+                                        Game: {mod.gameName} 
+                                        Author: {mod.author}<br/>
+                                        Likes: {mod.likes}
+                                        Views: {mod.views}<br/>
+                                        Date Created: {mod.dateCreated}
+                                        Date Modified: {mod.dateModified}<br/>
+                                        Desc: {mod.desc}<br/>
+                                        Tag: {mod.tag}<br/>
+                                        Download URL: {mod.url}<br/> */}
+                                    </p>
+                                </a>
+                                <a href={"http://localhost:3000/edit/" + mod.modName} className="card">
+                                    Edit
+                                </a>
+                            </div>
                         );
                     })
                 }

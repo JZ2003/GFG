@@ -11,6 +11,7 @@ import Signup from './pages/signup';
 import ModView from './pages/modView';
 import Comments from './pages/comments';
 import Favorites from './pages/favorites';
+import Edit from './pages/edit';
 
 function App() {
 return (
@@ -26,9 +27,17 @@ return (
 		<Route path='/mods' element={<ModView/>} />
 		<Route path='/mods/:modName' element={<ModPage/>} />
 		<Route path='/favorites' element={<Favorites/>} />
+		<Route path='/edit/:modName' element = {<Editpage/>} />
 	</Routes>
 	</Router>
 );
+}
+
+function Editpage(){
+	let{modName} = useParams();
+	return(
+		<Edit modName={modName}/>
+	);
 }
 
 function ModPage() {
