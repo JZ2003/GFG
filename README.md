@@ -74,5 +74,6 @@ node backend
 ## Run Client
 Start up client instance on http://localhost:3000
 ```
+cd frontend
 npm start
 ```
