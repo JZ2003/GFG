@@ -1,2 +1,5 @@
 #!/bin/bash
-# TODO
+echo "Loading sample data..."
+cd ./backend/database
+node import.js
+echo "Sample data loaded."
