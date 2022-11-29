@@ -15,7 +15,51 @@ class Favorites extends React.Component{
 
     componentDidMount(){
         this.getFavorites(this.state.user);
+        console.log(this.state.mods.length);
     }
+
+    async getMod(name){
+        await fetch('http://localhost:3030/currMod?modName=' + name, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((response) => {
+                //console.log(response);
+                if(response.status >= 200 && response.status <= 204){
+                    this.state.mods = response.json().then((data) => {
+                        console.log(data);
+                        this.setState({
+                            modObj:[
+                                ...this.state.modObj,
+                                {
+                                    modName: data.modName, 
+                                    author: data.author,
+                                    desc: data.desc,
+                                    dateCreated: data.dateCreated,
+                                    dateModified: data.dateCreated,
+                                    url: data.url,
+                                    gameName: data.gameName,
+                                    tag: data.tag,
+                                    views: data.views,
+                                    icon: data.icon,
+                                    likes: data.likes,
+                                    comments: data.comments
+                                }
+                            ]
+                            
+                        });
+                    });
+                }
+                else{
+                    console.log('did not succeed lol');
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
 
     async getFavorites (user) {
         console.log("user is: " + user);
@@ -47,6 +91,10 @@ class Favorites extends React.Component{
                 // this.state.mods = response;
                 console.log(this.state.mods);
                 console.log("fetched");
+                for (let i = 0; i < this.state.mods.length; i++){
+                    this.getMod(this.state.mods[i])
+                    console.log(i);
+                }
             }
             else{
                 console.log('no favorites associated with user');
@@ -63,9 +111,9 @@ class Favorites extends React.Component{
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
                 {this.state.signedIn && <h1>Your favorites!</h1>}<br/>
                 {this.state.signedIn && 
-                    this.state.mods.map((mod) => {
+                    this.state.modObj.map((mod) => {
                         return(
-                            <a href={"http://localhost:3000/" + mod.modName} className="card">
+                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
                                 <p>
                                     Mod Name: {mod.modName}
                                     Game: {mod.gameName} 

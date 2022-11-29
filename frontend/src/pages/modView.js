@@ -30,7 +30,7 @@ class ModView extends React.Component{
       }
 
     checkViewer(author){
-        if (author != this.state.user){
+        if (author !== this.state.user){
             this.addView(this.state.modName);
         }
     }
