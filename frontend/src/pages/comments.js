@@ -127,16 +127,10 @@ class Comments extends React.Component{
             });
     };
 
-<<<<<<< HEAD
-    handleSubmit(){
-        console.log("repeat this")
-        console.log(this)
-=======
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this);
 
->>>>>>> 1ec781ad48af54e387f42c3abcc53f7e14410622
         this.addComments();
         console.log("updated this");
         this.setState({
