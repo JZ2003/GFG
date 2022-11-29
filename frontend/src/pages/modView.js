@@ -30,7 +30,7 @@ class ModView extends React.Component{
       }
 
     checkViewer(author){
-        if (author != this.state.user){
+        if (author !== this.state.user){
             this.addView(this.state.modName);
         }
     }
@@ -231,7 +231,8 @@ class ModView extends React.Component{
                         Favorite
                     </Button>
                 </div>
-                <img className='modIcon' src={this.state.url} alt='mod icon'></img>
+                <img className='modIcon' src={`data:image/jpeg;base64,${this.state.icon}`} 
+                        alt="Mod Icon" width="50" height="50"></img>
                 <p>
                     Game: {this.state.gameName} <br/> 
                     Author: {this.state.author}<br/>

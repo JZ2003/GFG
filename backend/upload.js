@@ -82,19 +82,20 @@ function handleUploadReqeust(req, res) {
   //   res.statusCode = 409;
   //   res.send("This game doesn't exist");
   // }
-  let new_path = '';
-  fs.readFile(req.files.image.path, function (err, data) {
-    const image_path = path.dirname(__dirname) + '/images';
-    const imageName = newModInfo.modName + '.png';
-    new_path = image_path + '/' + imageName;
-    fs.writeFile(new_path, data, function(err) {
-      console.log(err);
-    })
-  })
-  newModInfo["icon"] = new_path;
+  const image_path = '../images';
+  const imageName = newModInfo.modName + '.png';
+  let new_path = image_path + '/' + imageName;
   let newMod = copyMod(newModInfo);
+  base64_image = fs.readFileSync(req.files.image.path, {encoding:'base64'});
+  newMod.icon = base64_image;
+  // console.log("Base64"+newMod.icon);
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
+      fs.readFile(req.files.image.path, function (err, data) {
+        fs.writeFile(new_path, data, function(err) {
+          console.log(err);
+        })
+      })
       res.statusCode = 201;
       res.send(new_path);
     } else {
@@ -164,6 +165,7 @@ function handleGetModRequest(req, res) {
     } else {
       res.statusCode = 200;
       res.setHeader("Content-Type","application/json");
+      console.log(data);
       res.end(JSON.stringify(data));
     }
   })
