@@ -12,18 +12,10 @@ class Comments extends React.Component{
                 // {username: "anonymous", content: "so boring"}
             ]
         };
-<<<<<<< HEAD
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount(){
-        if(localStorage.getItem('user') != null){
-=======
     }
 
     componentDidMount(){
         if(localStorage.getItem('user') !== null){
->>>>>>> 1ec781ad48af54e387f42c3abcc53f7e14410622
 			this.setState({
                 username: localStorage.getItem('user')
             });
