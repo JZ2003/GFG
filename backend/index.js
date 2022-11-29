@@ -4,6 +4,7 @@ const cors = require('cors');
 const login = require('./login');
 const upload = require('./upload');
 const express = require('express');
+const formidable = require('express-formidable');
 // var express = require('express')
 // var app = express()
 
@@ -25,7 +26,8 @@ const express = require('express');
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
+app.use(formidable())
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
@@ -62,6 +64,10 @@ app.post('/insertDummyMods', (req, res) => {
 
 app.post('/insertDummyUsers', (req, res) => {
   login.handleinsertDummyUsers(req, res);
+})
+
+app.post('/image', (req, res) => {
+  upload.handleImageRequest(req, res);
 })
 
 app.get('/login', (req, res) => {

@@ -24,7 +24,7 @@ return (
 		<Route path='/create' element={<CE_Mods/>} />
 		<Route path='/signup' element={<Signup/>} />
 		<Route path='/mods' element={<ModView/>} />
-		<Route path='/mods/:modName' element={<><ModPage/><Comments/></>} />
+		<Route path='/mods/:modName' element={<ModPage/>} />
 		<Route path='/favorites' element={<Favorites/>} />
 	</Routes>
 	</Router>
@@ -34,7 +34,10 @@ return (
 function ModPage() {
 	let { modName } = useParams();
 	return (
+		<>
 		<ModView modName={modName} />
+		<Comments modName={modName} />
+		</>
 	);
 }
 

@@ -79,8 +79,8 @@ class ModView extends React.Component{
                             tag: data.tag,
                             views: data.views,
                             icon: data.icon,
-                            likes: data.likes,
-                            comments: data.comments
+                            likes: data.likes
+                            // comments: data.comments
                         });
                     });
                 }
@@ -242,7 +242,7 @@ class ModView extends React.Component{
                     Date Modified: {this.state.dateModified}<br/>
                     Download URL: {this.state.url}<br/>
                     Tag: {this.state.tag}<br/>
-                    Comments: {this.state.comments}                         
+                    {/* Comments: {this.state.comments}                          */}
                 </p>
             </div>
             
