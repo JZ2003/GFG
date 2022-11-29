@@ -1,12 +1,4 @@
 import React from "react";
-// import {
-// 	Nav,
-// 	NavLink,
-// 	Bars,
-// 	NavMenu,
-// 	NavBtn,
-// 	NavBtnLink,
-//   } from './NavbarElements';
 import "./Navbar.css"
 
 export default function Navbar () {
@@ -20,6 +12,9 @@ export default function Navbar () {
         <ul>
           <li>
             <a href="/mymods">My Mods</a>
+          </li>
+          <li>
+            <a href="/favorites">My Favorites</a>
           </li>
           <li>
             <a href="/create">Upload/Edit Mods</a>

@@ -5,13 +5,15 @@
     align-items: center;
     position: relative;
     padding: 0.5rem 0rem;
-    background-color: #1A1A1D;
+    background-color: #282828;
     color: black;
 }
 
+/* Color scheme: #1A1A1D, #4E4E50, #6F2232, #950740, #C3073F */
+
 .brand-name {
 text-decoration: none;
-color: #C3073F;
+color: #950740;
 font-size: 1.3rem;
 margin-left: 1rem;
 }
@@ -36,6 +38,7 @@ margin: 0 1rem;
 text-decoration: none;
 display: block;
 width: 100%;
+color: #6F2232;
 }
 
 

@@ -1,27 +1,17 @@
 import React, { useState } from 'react';
 import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-tagsinput
 import 'react-tagsinput/react-tagsinput.css'
+import './styles.css'
 
 // import moment from "moment";
 
 function CE_Mods() {
-
-	// * @param {string} modName - name of the mod
-	// * @param {string} author - author username of the mod
-	// * @param {string} desc - description of the mod
-	// * @param {string} dateCreated - date of creation of the mod
-	// * @param {string} dateModified - date of modification of the mod
-	// * @param {string} url - download link of the mod
-	// * @param {string} gameName - name of the game the mod is for
-	// * @param {List<string>} tags - tags of the mod
-	// * @param {int} views - number of views of the mod
-	// * @param {string} icon - path to the icon image of the mod
-
     const [gameName, setGameName] = useState('');
     const [modName, setModName] = useState('');
 	const [desc, setDesc] = useState('');
 	const [url, setUrl] = useState('');
 	const [tags, setTags] = useState([]);
+	const [icon, setIcon] = useState(null);
 	const current = new Date();
 
     const addMod = async (gameName, modName, desc, url, tags) => {
@@ -38,7 +28,9 @@ function CE_Mods() {
 					"views": 0,
 					"icon": "placeholder",
 					"dateCreated": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`,
-					"dateModified": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`
+					"dateModified": `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`,
+					"likes": 0,
+					"comments": []
 				}
             }),
             headers: {
@@ -66,7 +58,7 @@ function CE_Mods() {
 	}
 
     return (
-        <div className="make-mod">
+        <div className="container">
             <div className="mod-container">
 				<h1><center><b>Create/Edit your mod!</b></center></h1>
 				<form onSubmit={handleSubmit}>
@@ -82,6 +74,8 @@ function CE_Mods() {
 					<input type="url" className="form-control" value={url} onChange={(e) => setUrl(e.target.value)} /><br/>
 					<label for="desc"> Description: </label><br/>
 					<input type="text" size="50" maxLength="2500" className="form-control" value={desc} onChange={(e) => setDesc(e.target.value)} /><br/>
+					<label for="icon"> Upload icon: </label><br/>
+					<input type="file" value={icon} onChange={(e) => setIcon(e.target.value)}/>
 					<br/>
 					<button type="submit">Submit</button>
 				</form>
