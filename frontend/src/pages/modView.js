@@ -191,6 +191,7 @@ class ModView extends React.Component{
                     Download URL: {this.state.url}<br/>
                     Tag: {this.state.tag}<br/>
                     {/* Comments: {this.state.comments} */}
+
                 </p>
             </div>
             
