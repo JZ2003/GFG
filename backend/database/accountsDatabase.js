@@ -1,7 +1,7 @@
 const {MongoClient} = require('mongodb');
 const uri = "mongodb://localhost:27017";
 const { getLogger } = require('../logUtil.js');
-logger = getLogger("ModsDB");
+logger = getLogger("AccountsDB");
 
 /** Representation of an account */
 class Account {

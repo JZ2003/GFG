@@ -19,7 +19,7 @@ const myFormat = printf(({ level, message, label }) => {
 });
 
 function getLogger(mylabel) {
-    return logger = createLogger({
+    const logger = createLogger({
         format: combine(
             format.colorize(),
             label({ label: mylabel }),
@@ -27,6 +27,7 @@ function getLogger(mylabel) {
         ),
         transports: [new transports.Console()],
     });
+    return logger;
 }
 
 module.exports = { getLogger };

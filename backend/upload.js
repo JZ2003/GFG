@@ -1,6 +1,7 @@
 const fs = require('fs');
-const path = require('path')
 const ModsDB = require('./database/modsDatabase.js');
+const { getLogger } = require('./logUtil.js');
+const logger = getLogger('ModsAPI');
 
 /**
  * This is handy for striped out some outdated data
@@ -51,7 +52,17 @@ function copyMod(oldMod){
   return newMod;
 }
 
-// Now this function handles file also, but the upload thing needs to be changed...
+/**
+ * This handles the upload mod POST request.
+ * @param {Request} req
+ * The request must be given a multipart/form-data body with the following fields:
+ * - image: the image file
+ * - modinfo: a JSON string containing the mod info @see ModsDB.Mod
+ * @param {Response} res
+ * Response code: 
+ * 200 if the mod was uploaded successfully,
+ * 409 if the mod already exists
+ */
 function handleUploadReqeust(req, res) {
   let req_data = JSON.parse(req.fields.modinfo);
   let newModInfo = {};
@@ -77,31 +88,21 @@ function handleUploadReqeust(req, res) {
   newMod.icon = base64_image;
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
+      // TODO: Remove this because we now use base64
       fs.readFile(req.files.image.path, function (err, data) {
         fs.writeFile(new_path, data, function(err) {
-          console.log(err);
+          logger.error(err);
         })
       })
+      logger.info("Succeeded to handle upload request");
       res.statusCode = 201;
       res.send(new_path);
     } else {
+      logger.warn("Failed to handle upload request");
       res.statusCode = 409;
       res.end();
     }
   })
-
-  // let newMod = copyMod(newModInfo);
-  // ModsDB.insert(newMod).then((canInsert) => {
-  //   if (canInsert) {
-  //     res.statusCode = 201;
-  //     res.end();
-  //   } else {
-  //     res.statusCode = 409;
-  //     res.write("Alreday existed");
-  //     res.end();
-  //   }
-  // });
-  // })
 }
 
 function handleDeleteModRequest(req, res) {
@@ -110,32 +111,17 @@ function handleDeleteModRequest(req, res) {
 
   ModsDB.remove(modName).then((canRemove) => {
     if (canRemove) {
+      logger.info("Succeeded to handle delete request");
       res.statusCode = 204;
       res.end();
     } else {
+      logger.warn("Failed to handle delete request");
       res.statusCode = 409;
       res.write("Failed");
       res.end();
     }
   })
 }
-
-// function handleChangeModRequest(req, res) {
-//   const { headers } = req;
-//   to_be_update = headers.modName;
-//   update = headers.mod;
-
-//   ModsDB.update(to_be_update, update).then((canUpdate) => {
-//     if (canUpdate) {
-//       res.statusCode = 204;
-//       res.end();
-//     } else {
-//       res.statusCode = 409;
-//       res.write("Modname does not exist or new mod name conflict");
-//       res.end();
-//     }
-//   })
-// }
 
 function handleGetModRequest(req, res) {
   const baseURL = 'http://' + req.headers.host + '/';
@@ -144,10 +130,12 @@ function handleGetModRequest(req, res) {
   const modName = queryObject.get('modName');
   ModsDB.find(modName).then((data) => {
     if (data == null) {
+      logger.warn("Failed to handle get mod request");
       res.statusCode = 404;
       res.write("Mod does not exist");
       res.end();
     } else {
+      logger.info("Succeeded to handle get mod request");
       res.statusCode = 200;
       res.setHeader("Content-Type","application/json");
       res.end(JSON.stringify(data));
@@ -158,10 +146,12 @@ function handleGetModRequest(req, res) {
 function handleGetAllRequest(req, res) {
   ModsDB.getAll().then((data) => {
     if (data === null) {
+      logger.warn("Failed to handle get all request");
       res.statusCode = 404;
       res.write("Empty");
       res.end();
     } else {
+      logger.info("Succeeded to handle get all request");
       res.statusCode = 200;
       res.setHeader("Content-Type","application/json");
       res.end(JSON.stringify({data}));
@@ -178,11 +168,13 @@ function handleFilterRequest(req, res) {
     ModsDB.search(obj).then((data) =>
     {
       if(data.length === 0){
+        logger.warn("Failed to handle filter request");
         res.statusCode = 404;
         res.write("Can't find any mod with this filter");
         res.end();
       }
       else{
+        logger.info("Succeeded to handle filter request");
         res.statusCode = 200;
         res.setHeader("Content-Type","application/json");
         // Give all matched mods, and the number of matching
@@ -215,11 +207,13 @@ function handleFilterTagRequest(req,res){
       }
     }
     if(result.length === 0){
+      logger.warn("Failed to handle filter tag request");
       res.statusCode = 404;
       res.write("Can't find any mod with these tag filters");
       res.end();
     }
     else{
+      logger.info("Succeeded to handle filter tag request");
       res.statusCode = 200;
       res.setHeader("Content-Type","application/json");
       res.end(JSON.stringify({result, "num":result.length})); 
@@ -265,10 +259,12 @@ function handleUpdateRequest(req,res){
       }
       ModsDB.update(modName,currMod).then((success)=>{
         if(success){
+          logger.info("Succeeded to handle update mod request");
           res.statusCode = 204;
           res.end();
         }
         else{
+          logger.warn("Failed to handle update mod request");
           res.statusCode = 404;
           res.end("Failed for some reason.Probably the new name already existed.");
         }
@@ -313,10 +309,12 @@ function handleUpdateTag(req, res){
       currMod.tags = newTags;
       ModsDB.update(modName,currMod).then((success)=>{
         if(success){
+          logger.info("Succeeded to handle update tag request");
           res.statusCode = 204;
           res.end();
         }
         else{
+          logger.warn("Failed to handle update tag request");
           res.statusCode = 404;
           res.write("Failed for some unclear reason");
         }
@@ -324,6 +322,7 @@ function handleUpdateTag(req, res){
     }
     // If we can't find such modName, we write 404
     else{
+      logger.warn("Failed to handle update tag request");
       res.statusCode = 404;
       res.write("Can't find this mod!");
       res.end();
@@ -342,9 +341,11 @@ function handleUpdateView(req, res){
     currMod["views"] = currMod["views"] + 1;
     ModsDB.update(modName, currMod).then((success) => {
       if (success) {
+        logger.info("Succeeded to handle update view request");
         res.statusCode = 204;
         res.end();
       } else {
+        logger.warn("Failed to handle update view request");
         res.statusCode = 409;
         res.end();
       }
@@ -370,10 +371,12 @@ function handleUpdateLikes(req, res) {
     }
     ModsDB.update(modName, currMod).then((success) => {
       if (success) {
+        logger.info("Succeeded to handle update likes request");
         console.log("log Robin")
         res.statusCode = 200;
         res.end();
       } else {
+        logger.warn("Failed to handle update likes request");
         res.statusCode = 409;
         res.end();
       }
@@ -390,10 +393,12 @@ function handleGetAllTag(req, res) {
       }
     }
     let tagArr = Array.from(tagSet);
+    logger.info("Succeeded to handle get all tag request");
     res.statusCode = 204;
     res.json({"tag":tagArr});
     res.end();
   }).catch(() => {
+    logger.warn("Failed to handle get all tag request");
     res.statusCode = 404;
     res.end();
   })
@@ -427,13 +432,16 @@ function handlePostCommentRequest(req, res) {
     new_mod.addComment(username, comment);
     ModsDB.update(modname, new_mod).then((success) => {
       if (success) {
+        logger.info("Succeeded to handle post comment request");
         res.statusCode = 201;
         res.end();
       } else {
+        logger.warn("Failed to handle post comment request with known reason");
         res.statusCode = 409;
         res.end("Failed with known reason");
       }
     }).catch(() => {
+      logger.warn("Failed to handle post comment request with unknown reason");
       res.statusCode = 500;
       res.end("Failed with unknown reason");
     })
@@ -460,13 +468,16 @@ function handleDeleteCommentRequest(req, res) {
     new_mod.comments = new_comments;
     ModsDB.update(modname, new_mod).then((success) => {
       if (success) {
+        logger.info("Succeeded to handle delete comment request");
         res.statusCode = 204;
         res.end();
       } else {
+        logger.warn("Failed to handle delete comment request with known reason");
         res.statusCode = 409;
         res.end("Failed with unknown reason");
       }
     }).catch(() => {
+      logger.warn("Failed to handle delete comment request with unknown reason");
       res.statusCode = 500;
       res.end("Failed with unknown reasons");
     })
