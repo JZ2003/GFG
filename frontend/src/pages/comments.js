@@ -169,9 +169,6 @@ class Comments extends React.Component{
                             <>
                                 user {usercontent.username} left this comment: {usercontent.content}
                             </>
-                            <button onClick={this.handleDelete}>
-                                X
-                            </button>
                         </div>
 				    );
                 })}
