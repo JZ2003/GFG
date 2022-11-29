@@ -431,11 +431,13 @@ function handleGetAllTag(req, res) {
  * with the the thing after the colon being changed to actual data
  */
 function handlePostCommentRequest(req, res) {
+  console.log(req.fields);
   const comment = req.fields.comment.content;
   const username = req.fields.comment.username;
   const modname = req.fields.comment.modname;
   ModsDB.find(modname).then((mod) => {
     let new_mod = copyMod(mod);
+    console.log(new_mod)
     new_mod.addComment(username, comment);
     ModsDB.update(modname, new_mod).then((success) => {
       if (success) {

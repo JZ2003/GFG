@@ -12,6 +12,10 @@ class Comments extends React.Component{
                 {username: "anonymous", content: "so boring"}
             ]
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount(){
         if(localStorage.getItem('user') != null){
 			this.setState({
                 username: localStorage.getItem('user')
@@ -60,13 +64,14 @@ class Comments extends React.Component{
     // };
     
     async addComments(){
+        console.log("hi")
         await fetch('http://localhost:3030/addComments', {
             method: 'POST',
             body: JSON.stringify({
                 "comment": {
                     "content": this.state.content,
                     "username": this.state.username,
-                    "modName": this.state.modName
+                    "modname": this.state.modName
 				}
             }),
             headers: {
@@ -126,6 +131,7 @@ class Comments extends React.Component{
 
     handleSubmit(){
         console.log("repeat this")
+        console.log(this)
         this.addComments();
         this.setState({
             comments: [
@@ -149,14 +155,14 @@ class Comments extends React.Component{
     render(){
         return(
             <div>
-                {/* this part will enable comment input */}
-                <form onSubmit={this.handleSubmit}>
+                this part will enable comment input
+                
 					<label> Please leave your comments: </label>
 					<input type="text" className="form-control" onChange={(e) => this.setState({content:e.target.value})} value={this.state.content} />
-					<button type="submit">Submit</button>
-				</form> <br></br>
+					<button type="submit" onClick={() => this.handleSubmit()}>Submit</button>
+				 <br></br>
                 
-                {/* this part forward will be comment content rendering and comment deletion */}
+                {/* /* this part forward will be comment content rendering and comment deletion */}
                 {this.state.comments.map((usercontent) => {
 				    return(
                         <div>
