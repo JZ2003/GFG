@@ -8,18 +8,20 @@ class Comments extends React.Component{
             username:"Anonymous User",
             content: "",
             comments: [
-                {username: "sunny", content: "hahaha"},
-                {username: "anonymous", content: "so boring"}
+                // {username: "sunny", content: "hahaha"},
+                // {username: "anonymous", content: "so boring"}
             ]
         };
-        if(localStorage.getItem('user') != null){
+    }
+
+    componentDidMount(){
+        if(localStorage.getItem('user') !== null){
 			this.setState({
                 username: localStorage.getItem('user')
             });
 		}
         this.getMod(this.state.modName);
     }
-
 
     // async getComments(name){
     //     await fetch('http://localhost:3030/getUserComments' + name, {
@@ -124,9 +126,12 @@ class Comments extends React.Component{
             });
     };
 
-    handleSubmit(){
-        console.log("repeat this")
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(this);
+
         this.addComments();
+        console.log("updated this");
         this.setState({
             comments: [
                 ...this.state.comments,
@@ -147,14 +152,15 @@ class Comments extends React.Component{
 	// }
 
     render(){
+        console.log("print comments array");
         return(
             <div>
                 {/* this part will enable comment input */}
-                <form onSubmit={this.handleSubmit}>
-					<label> Please leave your comments: </label>
-					<input type="text" className="form-control" onChange={(e) => this.setState({content:e.target.value})} value={this.state.content} />
-					<button type="submit">Submit</button>
-				</form> <br></br>
+                
+                <label> Please leave your comments: </label>
+                <input type="text" className="form-control" onChange={(e) => this.setState({content:e.target.value})} value={this.state.content} />
+                <button type="submit" onClick={this.a}>Submit</button>
+				<br></br>
                 
                 {/* this part forward will be comment content rendering and comment deletion */}
                 {this.state.comments.map((usercontent) => {

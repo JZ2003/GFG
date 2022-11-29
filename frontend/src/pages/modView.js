@@ -30,7 +30,7 @@ class ModView extends React.Component{
       }
 
     checkViewer(author){
-        if (author != this.state.user){
+        if (author !== this.state.user){
             this.addView(this.state.modName);
         }
     }
@@ -242,7 +242,7 @@ class ModView extends React.Component{
                     Date Modified: {this.state.dateModified}<br/>
                     Download URL: {this.state.url}<br/>
                     Tag: {this.state.tag}<br/>
-                    Comments: {this.state.comments}                         
+                    {/* Comments: {this.state.comments}                          */}
                 </p>
             </div>
             
