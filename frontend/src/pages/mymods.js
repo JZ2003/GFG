@@ -66,6 +66,10 @@ class MyMods extends React.Component{
         });
     };
 
+    handleEdit(){
+        // working
+    }
+
     render(){
         return (
             <div className="container">
