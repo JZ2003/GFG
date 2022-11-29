@@ -24,7 +24,6 @@ return (
 		<Route path='/login_signup' element={<Login/>} />
 		<Route path='/create' element={<CeMods/>} />
 		<Route path='/signup' element={<Signup/>} />
-		<Route path='/mods' element={<ModView/>} />
 		<Route path='/mods/:modName' element={<ModPage/>} />
 		<Route path='/favorites' element={<Favorites/>} />
 		<Route path='/edit/:modName' element = {<Editpage/>} />
