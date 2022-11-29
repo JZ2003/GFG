@@ -166,14 +166,32 @@ class Favorites extends React.Component{
                     this.state.modObj.map((mod) => {
                         return(
                             <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-                                <p>
+                                <p style={{
+                                    display: 'flex',
+                                    gap: '5px'
+                                    // justifyContent: 'space-between'
+                                }}>
+                                    <img className='modIcon' src={`data:image/jpeg;base64,${mod.icon}`} 
+                                    alt="Mod Icon" width="100" height="100"></img>
+                                    Mod Name: {mod.modName}<br/>
+                                    Game: {mod.gameName} <br/>
+                                    Author: {mod.author}<br/>
+                                    Likes: {mod.likes} <br/>
+                                    Views: {mod.views}<br/>
+                                    {/* Date Created: {mod.dateCreated}
+                                    Date Modified: {mod.dateModified}<br/>
+                                    Desc: {mod.desc}<br/>
+                                    Tag: {mod.tag}<br/>
+                                    Download URL: {mod.url}<br/> */}
+                                </p>
+                                {/* <p>
                                     Mod Name: {mod.modName}<br/>
                                     Game: {mod.gameName} <br/>
                                     Author: {mod.author}<br/>
                                     Likes: {mod.likes} <br/>
                                     Views: {mod.views}<br/>
 
-                                    {/* Mod Name: {mod.modName}
+                                    Mod Name: {mod.modName}
                                     Game: {mod.gameName} 
                                     Author: {mod.author}
                                     views: {mod.views}<br/>
@@ -181,11 +199,11 @@ class Favorites extends React.Component{
                                     Date Modified: {mod.dateModified}<br/>
                                     Desc: {mod.desc}<br/>
                                     tag: {mod.tag}<br/>
-                                    Download URL: {mod.url} */}
-                                </p>
-                                <button onClick={this.remFavorite}>
+                                    Download URL: {mod.url}
+                                </p> */}
+                                {/* <button onClick={this.remFavorite}>
                                     Unfavorite
-                                </button>
+                                </button> */}
                             </a>
                             
                         );
