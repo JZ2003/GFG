@@ -3,7 +3,7 @@ import React from 'react';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
 
-class My_Mods extends React.Component{
+class MyMods extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -77,7 +77,7 @@ class My_Mods extends React.Component{
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
-                            <a style="text-decoration:none" href={"http://localhost:3000/mods/" + mod.modName} className="card">
+                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
                                 <p>
                                     Mod Name: {mod.modName}<br/>
                                     Game: {mod.gameName} <br/>
@@ -106,4 +106,4 @@ class My_Mods extends React.Component{
     };
 }
 
-export default My_Mods;
+export default MyMods;

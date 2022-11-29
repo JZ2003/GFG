@@ -95,10 +95,9 @@ class ModView extends React.Component{
 
     addFavorite=()=>{
         this.addFav(this.state.user, this.state.modName);
-        this.addLike(this.state.modName);
         // this.removeAll();
     }
-
+    
     async removeAll(){
         console.log('removing');
         await fetch('http://localhost:3030/cancelAllUsers', {
@@ -130,8 +129,10 @@ class ModView extends React.Component{
             //console.log(response);
             if(response.status === 200){
                 console.log('favorited');
+                this.addLike(this.state.modName);
             }
             else{
+                window.alert("You already favorited this mod!");
                 console.log('did not favorite');
             }
         })
@@ -150,8 +151,8 @@ class ModView extends React.Component{
             },
         })
         .then((response) => {
-            //console.log(response);
-            if(response.status === 204){
+            console.log(response.status);
+            if(response.status === 200){
                 console.log('liked');
             }
             else{
@@ -170,15 +171,10 @@ class ModView extends React.Component{
                     marginRight: '10%',
                     marginTop: '20px'
                 }}>
-                <div style = {{
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                }}>
+                <div>
                     <h1>Mod Name: {this.state.modName}</h1>
-                    <Button variant="contained" color="primary" onClick={this.addFavorite}>
-                        Favorite
-                    </Button>
                 </div>
+                
                 <img className='modIcon' src={this.state.url} alt='mod icon'></img>
                 <p>
                     Game: {this.state.gameName} <br/> 
@@ -191,8 +187,11 @@ class ModView extends React.Component{
                     Download URL: {this.state.url}<br/>
                     Tag: {this.state.tag}<br/>
                     {/* Comments: {this.state.comments} */}
-
                 </p>
+                <Button variant="contained" color="primary" onClick={this.addFavorite}>
+                    Favorite
+                </Button>
+                <br/>
             </div>
             
         );

@@ -3,10 +3,11 @@ import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-
 import 'react-tagsinput/react-tagsinput.css'
 import './styles.css'
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 // import moment from "moment";
 
-function CE_Mods() {
+function CeMods() {
     const [gameName, setGameName] = useState('');
     const [modName, setModName] = useState('');
 	const [desc, setDesc] = useState('');
@@ -14,6 +15,7 @@ function CE_Mods() {
 	const [tags, setTags] = useState([]);
 	const current = new Date();
 	const { register, handleSubmit } = useForm();
+	const navigate = useNavigate();
 
     const addMod = async (gameName, modName, desc, url, tags, submittedIcon) => {
 		const formData = new FormData();
@@ -45,7 +47,12 @@ function CE_Mods() {
 				'Accept': '*/*'
 			},
         })
-            .then((response) => console.log(response))
+            .then((response) => {
+				if(response.status === 201){
+					navigate('/');
+					console.log(response)
+				}
+			})
             .catch((err) => {
                 console.log(err.message);
             });
@@ -75,8 +82,6 @@ function CE_Mods() {
 					<input type="text" className="form-control" value={gameName} onChange={(e) => setGameName(e.target.value)} /><br/>
 					<label for="modName"> Mod Name: </label><br/>
 					<input type="text" className="form-control" value={modName} onChange={(e) => setModName(e.target.value)} /><br/>
-					{/* <label for="tags"> Tags: </label><br/>
-					<input type="text" className="form-control" value={tags} onChange={(e) => setTags(e.target.value)}/><br/>*/}
 					<label for="tags"> Tags: </label><br/>
 					<TagsInput value={tags} onChange={handleTagsChange} onlyUnique={true}/>
 					<label for="url"> Upload URL: </label><br/>
@@ -95,4 +100,4 @@ function CE_Mods() {
     );
 };
 
-export default CE_Mods;
+export default CeMods;

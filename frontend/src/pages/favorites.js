@@ -165,7 +165,7 @@ class Favorites extends React.Component{
                 {this.state.signedIn && 
                     this.state.modObj.map((mod) => {
                         return(
-                            <a style="text-decoration:none" href={"http://localhost:3000/mods/" + mod.modName} className="card">
+                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
                                 <p>
                                     Mod Name: {mod.modName}<br/>
                                     Game: {mod.gameName} <br/>

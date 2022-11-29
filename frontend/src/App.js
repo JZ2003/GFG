@@ -4,9 +4,9 @@ import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import Home from './pages/index';
 import About from './pages/about';
-import My_Mods from './pages/mymods';
+import MyMods from './pages/mymods';
 import Login from './pages/login_signup';
-import CE_Mods from './pages/create';
+import CeMods from './pages/create';
 import Signup from './pages/signup';
 import ModView from './pages/modView';
 import Comments from './pages/comments';
@@ -19,9 +19,9 @@ return (
 	<Routes>
 		<Route exact path='/' element={<Home/>} />
 		<Route path='/about' element={<About/>} />
-		<Route path='/mymods' element={<My_Mods/>} />
+		<Route path='/mymods' element={<MyMods/>} />
 		<Route path='/login_signup' element={<Login/>} />
-		<Route path='/create' element={<CE_Mods/>} />
+		<Route path='/create' element={<CeMods/>} />
 		<Route path='/signup' element={<Signup/>} />
 		<Route path='/mods' element={<ModView/>} />
 		<Route path='/mods/:modName' element={<ModPage/>} />

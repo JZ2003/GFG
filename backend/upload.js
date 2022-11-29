@@ -387,7 +387,8 @@ function handleUpdateLikes(req, res) {
     }
     ModsDB.update(modName, currMod).then((success) => {
       if (success) {
-        res.statusCode = 204;
+        console.log("log Robin")
+        res.statusCode = 200;
         res.end();
       } else {
         res.statusCode = 409;
@@ -406,7 +407,7 @@ function handleGetAllTag(req, res) {
       }
     }
     let tagArr = Array.from(tagSet);
-    res.statusCode = 200;
+    res.statusCode = 204;
     res.json({"tag":tagArr});
     res.end();
   }).catch(() => {
