@@ -105,6 +105,58 @@ class Favorites extends React.Component{
         });
     };
 
+    remFavorite=()=>{
+        this.remFav(this.state.user, this.state.modName);
+        this.remLike(this.state.modName);
+    }
+
+    async remFav(user, modName){
+        console.log(user);
+        await fetch('http://localhost:3030/addFavorite', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                username: user,
+                modname: modName
+            },
+        })
+        .then((response) => {
+            //console.log(response);
+            if(response.status === 200){
+                console.log('favorited');
+            }
+            else{
+                console.log('did not favorite');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    };
+
+    async remLike(modName){
+        await fetch('http://localhost:3030/updateLikes', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                modname: modName,
+                change: '1'
+            },
+        })
+        .then((response) => {
+            //console.log(response);
+            if(response.status === 204){
+                console.log('liked');
+            }
+            else{
+                console.log('did not like');
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    };
+
     render(){
         return (
             <div className="container">
@@ -113,9 +165,15 @@ class Favorites extends React.Component{
                 {this.state.signedIn && 
                     this.state.modObj.map((mod) => {
                         return(
-                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
+                            <a style="text-decoration:none" href={"http://localhost:3000/mods/" + mod.modName} className="card">
                                 <p>
-                                    Mod Name: {mod.modName}
+                                    Mod Name: {mod.modName}<br/>
+                                    Game: {mod.gameName} <br/>
+                                    Author: {mod.author}<br/>
+                                    Likes: {mod.likes} <br/>
+                                    Views: {mod.views}<br/>
+
+                                    {/* Mod Name: {mod.modName}
                                     Game: {mod.gameName} 
                                     Author: {mod.author}
                                     views: {mod.views}<br/>
@@ -123,8 +181,11 @@ class Favorites extends React.Component{
                                     Date Modified: {mod.dateModified}<br/>
                                     Desc: {mod.desc}<br/>
                                     tag: {mod.tag}<br/>
-                                    Download URL: {mod.url}
+                                    Download URL: {mod.url} */}
                                 </p>
+                                <button onClick={this.remFavorite}>
+                                    Unfavorite
+                                </button>
                             </a>
                             
                         );

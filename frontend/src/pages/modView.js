@@ -162,58 +162,6 @@ class ModView extends React.Component{
             console.log(err.message);
         });
     };
-
-    remFavorite=()=>{
-        this.remFav(this.state.user, this.state.modName);
-        this.remLike(this.state.modName);
-    }
-
-    async remFav(user, modName){
-        console.log(user);
-        await fetch('http://localhost:3030/addFavorite', {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                username: user,
-                modname: modName
-            },
-        })
-        .then((response) => {
-            //console.log(response);
-            if(response.status === 200){
-                console.log('favorited');
-            }
-            else{
-                console.log('did not favorite');
-            }
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-    };
-
-    async remLike(modName){
-        await fetch('http://localhost:3030/updateLikes', {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                modname: modName,
-                change: '1'
-            },
-        })
-        .then((response) => {
-            //console.log(response);
-            if(response.status === 204){
-                console.log('liked');
-            }
-            else{
-                console.log('did not like');
-            }
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-    };
    
     render(){
         return (
@@ -242,7 +190,7 @@ class ModView extends React.Component{
                     Date Modified: {this.state.dateModified}<br/>
                     Download URL: {this.state.url}<br/>
                     Tag: {this.state.tag}<br/>
-                    {/* Comments: {this.state.comments}                          */}
+                    {/* Comments: {this.state.comments} */}
                 </p>
             </div>
             

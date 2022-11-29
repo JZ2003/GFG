@@ -133,7 +133,7 @@ class Home extends React.Component{
 			</center>
 			{this.state.displayMods.map((mod) => {
 				return(
-					<a href={"http://localhost:3000/mods/" + mod.modName} className="card">
+					<a style="text-decoration:none" href={"http://localhost:3000/mods/" + mod.modName} className="card">
 						<p>
                             Mod Name: {mod.modName}<br/>
                             Game: {mod.gameName} <br/>
