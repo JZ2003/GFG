@@ -73,7 +73,7 @@ class My_Mods extends React.Component{
 
     async editMod(prevName, currName, gameName, desc, url){
         await fetch('http://localhost:3030/updateMod', {
-            method: 'POST',
+            method: 'PUT',
             body: JSON.stringify({
                 modName : prevName,
                 newName : currName,
@@ -93,7 +93,6 @@ class My_Mods extends React.Component{
 
     handleSubmit = (e) => {
         e.preventDefault();
-
         if(localStorage.getItem('user') == null){
 			console.log("please sign in...");
 		}
@@ -116,7 +115,7 @@ class My_Mods extends React.Component{
                 <label htmlFor="desc"> Description: </label><br/>
                 <input type="text" size="50" maxLength="2500" className="form-control" value={this.state.currDesc} onChange={(e) => this.setState({currDesc:e.target.value})} /><br/>
                 <br/>
-                <button type="submit" onClick={this.a}>Submit</button>
+                <button type="submit" onClick={this.handleSubmit}>Submit</button>
 				
 				
             	

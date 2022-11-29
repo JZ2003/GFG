@@ -100,10 +100,11 @@ class My_Mods extends React.Component{
                                         Tag: {mod.tag}<br/>
                                         Download URL: {mod.url}<br/> */}
                                     </p>
+                                    <a href={"http://localhost:3000/edit/" + mod.modName}>
+                                        Edit
+                                    </a>
                                 </a>
-                                <a href={"http://localhost:3000/edit/" + mod.modName} className="card">
-                                    Edit
-                                </a>
+                                
                             </div>
                         );
                     })
