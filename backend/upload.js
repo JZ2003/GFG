@@ -51,19 +51,6 @@ function copyMod(oldMod){
   return newMod;
 }
 
-function handleImageRequest(req, res) {
-  base64_image = fs.readFileSync(req.files.image.path, {encoding:'base64'});
-  console.log(base64_image);
-  const buffer = Buffer.from(base64_image, "base64");
-  const image = fs.writeFileSync("new-path.jpg", buffer);
-  res.sendFile(image);
-  res.end();
-  // console.log(req.files.image);
-  // console.log(req.fields);
-  // console.image(req.files.image);
-  // res.end();
-}
-
 // Now this function handles file also, but the upload thing needs to be changed...
 function handleUploadReqeust(req, res) {
   let req_data = JSON.parse(req.fields.modinfo);
@@ -88,7 +75,6 @@ function handleUploadReqeust(req, res) {
   let newMod = copyMod(newModInfo);
   base64_image = fs.readFileSync(req.files.image.path, {encoding:'base64'});
   newMod.icon = base64_image;
-  // console.log("Base64"+newMod.icon);
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
       fs.readFile(req.files.image.path, function (err, data) {
@@ -156,7 +142,6 @@ function handleGetModRequest(req, res) {
   const url = new URL(req.url, baseURL);
   const queryObject = url.searchParams;
   const modName = queryObject.get('modName');
-  console.log(modName);
   ModsDB.find(modName).then((data) => {
     if (data == null) {
       res.statusCode = 404;
@@ -165,7 +150,6 @@ function handleGetModRequest(req, res) {
     } else {
       res.statusCode = 200;
       res.setHeader("Content-Type","application/json");
-      console.log(data);
       res.end(JSON.stringify(data));
     }
   })
@@ -191,7 +175,6 @@ function handleGetAllRequest(req, res) {
 function handleFilterRequest(req, res) {
     let filter = req.headers.filter;
     let obj = JSON.parse(filter);
-    console.log(obj)
     ModsDB.search(obj).then((data) =>
     {
       if(data.length === 0){
@@ -308,7 +291,7 @@ function handleUpdateTag(req, res){
     if(mod !== null){
       let currMod = copyMod(mod); // Copy the mod
       // delete currMod["_id"]; // remove the id part
-      console.log(currMod);
+      // console.log(currMod);
       let newTags = currMod.tags;
       // First, we remove all tags that need to be deleted
       let delete_len = deleteList.length;
@@ -434,13 +417,13 @@ function handleGetAllTag(req, res) {
  * with the the thing after the colon being changed to actual data
  */
 function handlePostCommentRequest(req, res) {
-  console.log(req.fields);
+  // console.log(req.fields);
   const comment = req.fields.comment.content;
   const username = req.fields.comment.username;
   const modname = req.fields.comment.modname;
   ModsDB.find(modname).then((mod) => {
     let new_mod = copyMod(mod);
-    console.log(new_mod)
+    // console.log(new_mod)
     new_mod.addComment(username, comment);
     ModsDB.update(modname, new_mod).then((success) => {
       if (success) {
@@ -551,4 +534,4 @@ function handleGetAllGame(req, res) {
 
 module.exports = { handleUploadReqeust, handleGetModRequest, handleGetAllRequest, handleDeleteModRequest, handleFilterRequest,
   handleFilterTagRequest,handleUpdateRequest, handleRemoveAllRequest, handleUpdateView, handleGetAllTag, handleUpdateLikes, handleGetAllGame,handleUpdateTag,
-  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser, handleImageRequest };
+  handleinsertDummyMods, handlePostCommentRequest, handleDeleteCommentRequest, handleGetCommentsForUser };
