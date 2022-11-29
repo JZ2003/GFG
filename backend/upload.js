@@ -83,18 +83,20 @@ function handleUploadReqeust(req, res) {
   //   res.send("This game doesn't exist");
   // }
   let new_path = '';
+  let tempData;
   fs.readFile(req.files.image.path, function (err, data) {
     const image_path = path.dirname(__dirname) + '/images';
     const imageName = newModInfo.modName + '.png';
     new_path = image_path + '/' + imageName;
-    fs.writeFile(new_path, data, function(err) {
-      console.log(err);
-    })
+    tempData = data;
   })
   newModInfo["icon"] = new_path;
   let newMod = copyMod(newModInfo);
   ModsDB.insert(newMod).then((canInsert) => {
     if (canInsert) {
+      fs.writeFile(new_path, tempData, function(err) {
+        console.log(err);
+      })
       res.statusCode = 201;
       res.send(new_path);
     } else {
