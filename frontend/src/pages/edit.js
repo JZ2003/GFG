@@ -2,7 +2,7 @@ import React from 'react';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
 
-class My_Mods extends React.Component{
+class Edit extends React.Component{    
     constructor(props){
         super(props);
         this.state = {
@@ -72,6 +72,7 @@ class My_Mods extends React.Component{
     };
 
     async editMod(prevName, currName, gameName, desc, url){
+        const current = new Date();
         await fetch('http://localhost:3030/updateMod', {
             method: 'PUT',
             body: JSON.stringify({
@@ -79,7 +80,8 @@ class My_Mods extends React.Component{
                 newName : currName,
                 newUrl : url,
                 newDesc : desc,
-                newGame : gameName
+                newGame : gameName,
+                dateModified: `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -127,4 +129,4 @@ class My_Mods extends React.Component{
 
 }
 
-export default My_Mods;
+export default Edit;
