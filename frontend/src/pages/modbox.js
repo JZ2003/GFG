@@ -10,8 +10,13 @@ class ModBox extends React.Component {
         };
     }
 
+    handleDel = () => {
+        this.props.onHandleDelete(this.state.mod.modName);
+    }
+
     render() {
         return (
+            <>
             <a href={"http://localhost:3000/mods/" + this.state.mod.modName} className="modbox">
                     <img className='modIcon' 
                     src={`data:image/jpeg;base64,${this.state.mod.icon}`} 
@@ -44,7 +49,12 @@ class ModBox extends React.Component {
                     <a href={"http://localhost:3000/edit/" + this.state.mod.modName}>
                         Edit
                     </a>
+                    
             </a>
+            <button onClick={() => this.handleDel()}>
+                delete
+            </button>
+            </>
         );
     }
 

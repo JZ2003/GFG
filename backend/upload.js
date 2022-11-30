@@ -107,7 +107,7 @@ function handleUploadReqeust(req, res) {
 
 function handleDeleteModRequest(req, res) {
   const { headers } = req;
-  modName = headers.modName;
+  modName = headers.modname;
 
   ModsDB.remove(modName).then((canRemove) => {
     if (canRemove) {
