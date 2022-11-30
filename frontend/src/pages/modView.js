@@ -73,7 +73,7 @@ class ModView extends React.Component{
                             author: data.author,
                             desc: data.desc,
                             dateCreated: data.dateCreated,
-                            dateModified: data.dateCreated,
+                            dateModified: data.dateModified,
                             url: data.url,
                             gameName: data.gameName,
                             tag: data.tag,
