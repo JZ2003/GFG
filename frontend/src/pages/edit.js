@@ -2,7 +2,7 @@ import React from 'react';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
 
-class My_Mods extends React.Component{
+class Edit extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -127,4 +127,4 @@ class My_Mods extends React.Component{
 
 }
 
-export default My_Mods;
+export default Edit;
