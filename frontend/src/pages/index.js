@@ -151,7 +151,6 @@ class Home extends React.Component{
 				//display all mods
 				this.setState({displayMods:this.state.mods});
 			}
-            await this.sortByKey(this.state.displayMods,this.state.sorter)
         }
         if (this.state.sorter !== prevState.sorter) {
             console.log(this.state.sorter);
