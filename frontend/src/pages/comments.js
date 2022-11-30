@@ -155,15 +155,11 @@ class Comments extends React.Component{
     render(){
         console.log("print comments array");
         return(
-<<<<<<< HEAD
-            <div>
-=======
             <div style = {{
                 marginLeft: '10%',
                 marginRight: '10%',
                 marginTop: '20px'
             }}>
->>>>>>> 5547c6def1c0907f47ba3518acea7e808d693195
                 {/* this part will enable comment input */}
                 
                 <label> Please leave your comments: </label>
