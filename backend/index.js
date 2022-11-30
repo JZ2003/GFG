@@ -66,10 +66,6 @@ app.post('/insertDummyUsers', (req, res) => {
   login.handleinsertDummyUsers(req, res);
 })
 
-app.post('/image', (req, res) => {
-  upload.handleImageRequest(req, res);
-})
-
 app.get('/login', (req, res) => {
   login.handleLoginRequest(req, res);
 })

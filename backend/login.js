@@ -1,4 +1,6 @@
 const AccountsDB = require('./database/accountsDatabase.js');
+const { getLogger } = require('./logUtil.js');
+const logger = getLogger('AccountsAPI');
 
 /**
  * Initialize the database with a bunch of dummy accounts
@@ -6,9 +8,11 @@ const AccountsDB = require('./database/accountsDatabase.js');
 function handleinsertDummyUsers(req, res) {
   AccountsDB.insertDummyAccounts().then((success) => {
     if (success) {
+      logger.info("Succedded to handle insert dummy accounts");
       res.statusCode = 204;
       res.end();
     } else {
+      logger.warn("Failed to handle insert dummy accounts");
       res.statusCode = 409;
       res.end("Datebase non empty");
     }
@@ -21,6 +25,7 @@ function handleinsertDummyUsers(req, res) {
  */
 function handleremoveAllUsers(req, res) {
   AccountsDB.removeAll().then(() => {
+    logger.info("Succedded to handle remove all accounts");
     res.statusCode = 204;
     res.end();
   })
@@ -32,9 +37,11 @@ function handleremoveAllUsers(req, res) {
 function getAllUsers(req, res) {
   AccountsDB.search({}).then((data) => {
     if (data.length === 0){
+      logger.info("No users found");
       res.statusCode = 200;
       res.end();
     } else {
+      logger.info("Found users");
       res.statusCode = 200;
       res.json({"Users":data});
       res.end();
@@ -53,9 +60,11 @@ function handleSignupRequest(req, res) {
   newUser = new AccountsDB.Account(headers.username, headers.password);
   AccountsDB.insert(newUser).then((canInsert) => {
     if (canInsert) {
+      logger.info("Succedded to handle signup request");
       res.statusCode = 201;
       res.end();
     } else {
+      logger.warn("Failed to handle signup request");
       res.statusCode = 409;
       res.end();
     }
@@ -71,20 +80,23 @@ function handleLoginRequest(req, res) {
 
   AccountsDB.find(username).then((data) => {
     if (data === null) {
+      logger.warn("Failed to handle login request: User not found");
       res.statusCode = 404;
       res.write("Incorrect username");
       res.end("!");
     } else if (data.password === password) {
+      logger.info("Succeeded to handle login request: User found");
       res.statusCode = 200;
       res.write("Success");
       res.end("!")
     } else {
+      logger.warn("Failed to handle login request: User found but password incorrect");
       res.statusCode = 404;
       res.write("Failed");
       res.end("!")
     }
   }, () => {
-    //console.log(find);
+    logger.warn("Failed to handle login request: User not found due to server error");
     res.write("Server Error");
     res.end("!")
     res.statusCode = 500;
@@ -97,15 +109,17 @@ function handleCancleRequest(req, res) {
   password = headers.password;
   AccountsDB.find(username).then((account) => {
     if (account === null) {
+      logger.warn("User not found");
       res.statusCode = 404;
-      res.write("Account does not exist");
+      res.write("Failed to handle cancel request: Account does not exist");
       res.end();
     } else if (account.password !== password) {
       res.statusCode = 409;
-      res.write("Incorrect password");
+      res.write("Failed to handle cancel request: Incorrect password");
       res.end();
     } else {
       AccountsDB.remove(username).then(() => {
+        logger.info("Succedded to handle cancel request");
         res.statusCode = 204;
         res.end();
       });
@@ -120,9 +134,11 @@ function handleUpdateRequest(req, res) {
   newpassword = headers.newpass;
   AccountsDB.update(oldusername, oldpassword, newpassword).then((canupdate) => {
     if (canupdate) {
+      logger.info("Succedded to handle update request");
       res.statusCode = 204;
       res.end();
     } else {
+      logger.warn("Failed to handle update request");
       res.statusCode = 409;
       res.write("User not exist or password incorrect.");
       res.end();
@@ -168,10 +184,12 @@ function handleGetAllFavoriteRequest(req, res) {
   username = req.headers.username;
   AccountsDB.find(username).then((account) => {
     if (account !== null) {
+      logger.info("Succedded to handle get all favorite request");
       res.statusCode = 200;
       res.json({"Favorite": account.favoriteModNames});
       res.end();
     } else {
+      logger.warn("Failed to handle get all favorite request");
       res.statusCode = 409;
       res.end("Failed with some reasons")
     }

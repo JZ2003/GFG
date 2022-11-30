@@ -1,5 +1,6 @@
 // import {useLocation} from 'react-router-dom';
 // import {useState,useEffect} from 'react';
+import { formHelperTextClasses } from '@mui/material';
 import React from 'react';
 import './styles.css'
 
@@ -134,7 +135,13 @@ class Home extends React.Component{
 			{this.state.displayMods.map((mod) => {
 				return(
 					<a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-						<p>
+						<p style={{
+                            display: 'flex',
+                            gap: '5px'
+                            // justifyContent: 'space-between'
+                        }}>
+                            <img className='modIcon' src={`data:image/jpeg;base64,${mod.icon}`} 
+                            alt="Mod Icon" width="100" height="100"></img>
                             Mod Name: {mod.modName}<br/>
                             Game: {mod.gameName} <br/>
                             Author: {mod.author}<br/>

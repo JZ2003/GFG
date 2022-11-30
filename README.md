@@ -1,4 +1,6 @@
-# 35L project
+# Gamers for Gamers: CS35L Project
+
+Gamers For Gamers (GFG) is a community driven video game modding content sharing website. You can browse, search, favorite, comment, and view the mod contents created by the gaming community. Meanwhile, you can also be a creator to share your wonderful contents to the community. 
 
 ## Build
 
@@ -18,27 +20,60 @@ cd frontend ; npm install ; cd ..
 cd backend; npm install ; cd ..
 ```
 
-## Run Server
+## Install MongoDB Database
 
-- Install MongoDB if you have not
+### MacOS
+
+- Install MongoDB Community 6.0: [Official Guide](https://www.mongodb.com/docs/manual/installation/)
+- For easy installation, we recommend [Homebrew](https://brew.sh/)
 ```
 brew tap mongodb/brew
 brew update
 brew install mongodb-community@6.0
 ```
-- Run the start server script
-```
-./start-server.sh
-```
 
-- To stop server
+### Windows
+- Install MongoDB Community 6.0 for Windows: [Official Guide](https://www.mongodb.com/docs/manual/installation/)
+- Follow the procedure in the official guide to install it on your specific machine.
+
+### Linux
+- Install MongoDB Community 6.0 for Linux: [Official Guide](https://www.mongodb.com/docs/manual/installation/)
+- Follow the procedure in the official guide to install it on your specific machine.
+
+## Start Database
+
+### MacOS
 ```
-./stop-server.sh
+# To start database:
+brew services start mongodb-community@6.0
+# To shutdown database:
+brew services stop mongodb-community@6.0
+```
+### Windows
+Click the .exe executable of mongodb. For details, check installation guide above.
+
+### Linux
+For details, check installation guide above.
+
+## Load Sample Database
+
+Our application is at its core a content driven website. 
+To view its full functions in limited time, we have provided
+some sample data for you to load as default content. 
+
+To load them, run the script `load-sample-data.sh` in
+your shell and it should automatically fill the database
+(make sure you started it already) with sample data.
+
+## Run Server
+Start up server instance on http://localhost:3030
+```
+node backend
 ```
 
 ## Run Client
+Start up client instance on http://localhost:3000
 ```
+cd frontend
 npm start
 ```
-
-

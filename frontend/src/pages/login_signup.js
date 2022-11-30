@@ -69,6 +69,7 @@ function Login() {
                 <center>
                     <form onSubmit={handleSubmit}>
                     <TextField
+                            InputLabelProps={{style : {color : 'grey'} }}
                             value={user}
                             label="Username or Email"
                             variant="outlined"
@@ -78,6 +79,7 @@ function Login() {
                         />
                         <br></br>
                         <TextField
+                            InputLabelProps={{style : {color : 'grey'} }}
                             value={pass}
                             label="Password"
                             variant="outlined"
@@ -85,7 +87,8 @@ function Login() {
                             margin="normal"
                             onChange={(e) => {setPass(e.target.value);}}
                         />
-                        <br></br>
+                        <br/>
+                        <br/>
                         <Button type="submit" variant="contained" color="primary">
                             Log in
                         </Button>
@@ -95,6 +98,7 @@ function Login() {
 					<Link to="/signup">
 						No account? Sign up here
         			</Link>
+                    <br/>
                     <br/>
                     <Button onClick={logOut} variant="contained" color="primary">
                             Log out
