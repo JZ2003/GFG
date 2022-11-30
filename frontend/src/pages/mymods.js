@@ -2,6 +2,7 @@ import React from 'react';
 // import { Box } from '@mui/material';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
+import ModBox from './modbox'; 
 
 class My_Mods extends React.Component{
     constructor(props){
@@ -82,29 +83,7 @@ class My_Mods extends React.Component{
                     this.state.mods.map((mod) => {
                         return(
                             <div>
-                                <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-                                    <p>
-                                        Mod Name: {mod.modName}<br/>
-                                        Game: {mod.gameName} <br/>
-                                        Author: {mod.author}<br/>
-                                        Likes: {mod.likes} <br/>
-                                        Views: {mod.views}<br/>
-                                        {/* Mod Name: {mod.modName}
-                                        Game: {mod.gameName} 
-                                        Author: {mod.author}<br/>
-                                        Likes: {mod.likes}
-                                        Views: {mod.views}<br/>
-                                        Date Created: {mod.dateCreated}
-                                        Date Modified: {mod.dateModified}<br/>
-                                        Desc: {mod.desc}<br/>
-                                        Tag: {mod.tag}<br/>
-                                        Download URL: {mod.url}<br/> */}
-                                    </p>
-                                    <a href={"http://localhost:3000/edit/" + mod.modName}>
-                                        Edit
-                                    </a>
-                                </a>
-                                
+                                <ModBox mod={mod} />
                             </div>
                         );
                     })
