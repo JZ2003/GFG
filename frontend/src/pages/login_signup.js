@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { TextField,Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import './styles.css'
 
 
 function Login() {
     const navigate = useNavigate();
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
-    const [emailErr, setEmailErr] = useState(false);
-    const validEmail = new RegExp(
-        '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
-    );
+    // const [emailErr, setEmailErr] = useState(false);
+    // const validEmail = new RegExp(
+    //     '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
+    // );
     // const[signedIn, setSignedIn] = usestate(false);
     const loggedIn = localStorage.getItem('user');
 
@@ -44,9 +45,9 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!validEmail.test(user)) {
-            setEmailErr(true);
-         }
+        // if (!validEmail.test(user)) {
+        //     setEmailErr(true);
+        //  }
         log_Acc(user, pass);
         console.log(user);
         console.log(pass);
@@ -69,6 +70,7 @@ function Login() {
                 <center>
                     <form onSubmit={handleSubmit}>
                     <TextField
+                            sx={{ input: { color: 'white' } }}
                             InputLabelProps={{style : {color : 'grey'} }}
                             value={user}
                             label="Username or Email"
@@ -79,6 +81,7 @@ function Login() {
                         />
                         <br></br>
                         <TextField
+                            sx={{ input: { color: 'white' } }}
                             InputLabelProps={{style : {color : 'grey'} }}
                             value={pass}
                             label="Password"
@@ -93,7 +96,6 @@ function Login() {
                             Log in
                         </Button>
                     </form>
-                    {/* {emailErr && <p>Your email is invalid</p>} */}
 					<br/>
 					<Link to="/signup">
 						No account? Sign up here

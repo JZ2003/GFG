@@ -45,3 +45,38 @@
 a {
     text-decoration: none;
 }
+
+.input {
+    background-color: #fff;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-top: 5px;
+    width: 360px;
+    border-radius: 3px;
+  }
+
+.form-control{
+    width: 360px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.form-slug{
+    width: 360px;
+    height: 25px;
+    border-radius: 3px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-bottom: 0.4em;
+    padding-right: 0.4em;
+}
+
+.form-desc{
+    width: 500px;
+    height: 200px;
+    border-radius: 3px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 0.4em;
+    padding-right: 0.4em;
+}
