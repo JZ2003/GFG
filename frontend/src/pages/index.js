@@ -1,6 +1,6 @@
 // import {useLocation} from 'react-router-dom';
 // import {useState,useEffect} from 'react';
-import { formHelperTextClasses } from '@mui/material';
+// import { formHelperTextClasses } from '@mui/material';
 import React from 'react';
 import './styles.css'
 
@@ -11,11 +11,55 @@ class Home extends React.Component{
 			displayMods: [],
 			query: "",
             selector: "modName",
+            sorter: "",
 			mods: []
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
         };
+        this.sortByKey = this.sortByKey.bind(this);
     }
+
+    sortByKey(key) {
+    
+        this.state.mods.sort((a,b) => {
+            // console.log("The key now is " + key + " a[key] is "+a[key])
+            if (a[key] > b[key]) {
+                console.log("return 1")
+                return -1;
+            } else if (a[key] < b[key]) {
+                console.log("return -1")
+                return 1;
+            } else {
+                console.log("return 0")
+                return 0;
+            }
+        })
+        if(key === "modName"){
+            this.state.mods.reverse()
+        }
+        this.setState({
+            displayMods:this.state.mods
+        });
+        console.log(this.state.displayMods)
+        // if(key === "default"){
+        //     this.state.displayMods.sort((a.views, b) => {
+                
+        //     });
+        // }
+        // else if(key === "likes"){
+            // this.state.displayMods.sort((a, b) => a[key] - b[key]);
+
+        // }
+        // else if(key === ""){
+        //     this.state.displayMods.sort((a, b) => (a.modName > b.modName) ? 1 : -1);
+        // }
+        // else if(key === "date"){
+        //     this.state.displayMods.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
+        // }
+        // else{
+        //     console.log("no keys called");
+        // }
+      }
 
     async getDB () {
 		// if(user != null){
@@ -40,6 +84,7 @@ class Home extends React.Component{
                 // this.state.mods = response;
                 console.log(this.state.mods);
                 console.log("fetched");
+                this.sortByKey("views");
             }
             else{
                 console.log('no mods associated with user');
@@ -96,6 +141,13 @@ class Home extends React.Component{
 				this.setState({displayMods:this.state.mods});
 			}
 		  }
+          if (this.state.sorter !== prevState.sorter) {
+            console.log(this.state.sorter);
+            this.sortByKey(this.state.sorter);
+          }
+          if (this.state.displayMods !== prevState.displayMods) {
+            console.log("this will rerender");
+          }
 	}
 
 	handleXClick(){
@@ -105,6 +157,7 @@ class Home extends React.Component{
 
 
     render(){
+        console.log("************ rerendering data ***************")
         return (
             <div className="container">
 				<h1><center>Welcome to gamersforgamers!</center></h1>
@@ -125,7 +178,15 @@ class Home extends React.Component{
                 <option value="author">author name</option>
                 <option value="tag">tags</option>
             </select>
-            
+
+            <select name="sort-tag" id="options" onChange={(e) => this.setState({sorter:e.target.value})} value={this.state.sorter}>
+                <option value="views">views</option>
+                <option value="likes">likes</option>
+                <option value="modName">alphabet</option>
+                <option value="dateCreated">date created</option>
+            </select>
+
+
 			<button onClick={() => this.handleXClick()}
                 className="x-button"
             >
@@ -147,6 +208,7 @@ class Home extends React.Component{
                             Author: {mod.author}<br/>
                             Likes: {mod.likes} <br/>
                             Views: {mod.views}<br/>
+                            Description: {mod.slug}
                             {/* Date Created: {mod.dateCreated}
                             Date Modified: {mod.dateModified}<br/>
                             Desc: {mod.desc}<br/>

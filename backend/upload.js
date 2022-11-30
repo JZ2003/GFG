@@ -107,7 +107,7 @@ function handleUploadReqeust(req, res) {
 
 function handleDeleteModRequest(req, res) {
   const { headers } = req;
-  modName = headers.modName;
+  modName = headers.modname;
 
   ModsDB.remove(modName).then((canRemove) => {
     if (canRemove) {
@@ -257,9 +257,8 @@ function handleUpdateRequest(req,res){
       if(req.fields["newSlug"] !== undefined){
         currMod["slug"] = req.fields["newSlug"];
       }
-      if(req.fields["newIcon"] !== undefined){
-        base64_image = fs.readFileSync(req.files.image.path, {encoding:'base64'});
-        newMod.icon = base64_image;
+      if(req.fields["dateModified"] !== undefined){
+        currMod["dateModified"] = req.fields["dateModified"];
       }
       ModsDB.update(modName,currMod).then((success)=>{
         if(success){

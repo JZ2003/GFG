@@ -62,6 +62,7 @@ const Signup = (props) => {
                 <center>
                     <form onSubmit={handleSubmit}>
                         <TextField
+                            sx={{ input: { color: 'white' } }}
                             value={user}
                             label="Username or Email"
                             variant="outlined"
@@ -71,6 +72,7 @@ const Signup = (props) => {
                         />
                         <br/>
                         <TextField
+                            sx={{ input: { color: 'white' } }}
                             value={pass}
                             label="Password"
                             variant="outlined"

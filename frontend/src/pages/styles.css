@@ -1,3 +1,121 @@
+/* */
+
+.grid-container {
+    width: 800px;
+	height: 160px;
+	margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 120px 540px 120px;
+    grid-gap: 15px 15px;
+    background-color: #26292f;
+	border-radius: 15px;
+    padding: 15px;
+    color: #d4d4d4;    
+}
+
+.icon-item {
+    grid-column: 1 / 1;
+
+    background-color: #26292f;
+    color: #d4d4d4;
+    border: 2px solid #d4d4d4;
+    border-radius: 5px;
+    /* padding: 5px;
+    margin: 5px; */
+}
+
+.center-item {
+    width: 400px;
+	height: 150px;
+
+    grid-column: 2 / 2;
+
+    display: grid;
+
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-gap: 2px 2px;
+    background-color: #26292f;
+    color: #d4d4d4; 
+}
+
+.right-item {
+    width: 120px;
+    height: 150px;
+
+    grid-column: 3 / 3;
+
+    display: grid;
+
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-gap: 2px 2px;
+
+    background-color: #26292f;
+    color: #d4d4d4;
+}
+
+.num-views-item {
+    grid-row: 1 / 1;
+    align-self: center;
+}
+
+.num-likes-item {
+    grid-row: 2 / 2;
+    align-self: center;
+}
+
+.title-item {
+    grid-row: 1 / 1;
+    align-self: center;
+}
+
+.game-item {
+    grid-row: 2 / 2;
+    align-self: center;
+}
+
+.slug-item {
+    grid-row: 3 / 3;
+    align-self: center;
+}
+
+.tags-item {
+    grid-row: 4 / 4;
+    align-self: center;
+}
+
+.date-item {
+    grid-row: 5 / 5;
+    align-self: center;
+}
+
+/* .edit-button {
+    grid-column: 3 / 3;
+    grid-row: 1 / 1;
+
+    background-color: #26292f;
+    color: #d4d4d4;
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+} */
+
+
+.modbox {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 36rem;
+	height: 6rem;
+	margin: 0 auto;
+	background-color: #26292f;
+	border-radius: 10px;
+    padding: 15px;
+    color: #d4d4d4;
+}
+
 .card {
     display:flex;
     justify-content: space-between;
@@ -29,4 +147,39 @@
 
 a {
     text-decoration: none;
+}
+
+.input {
+    background-color: #fff;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-top: 5px;
+    width: 360px;
+    border-radius: 3px;
+  }
+
+.form-control{
+    width: 360px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.form-slug{
+    width: 360px;
+    height: 25px;
+    border-radius: 3px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-bottom: 0.4em;
+    padding-right: 0.4em;
+}
+
+.form-desc{
+    width: 500px;
+    height: 200px;
+    border-radius: 3px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 0.4em;
+    padding-right: 0.4em;
 }

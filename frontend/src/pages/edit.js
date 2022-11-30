@@ -57,7 +57,11 @@ class Edit extends React.Component{
                             tag: data.tag,
                             views: data.views,
                             icon: data.icon,
-                            likes: data.likes
+                            likes: data.likes,
+                            currGame: data.gameName,
+                            currMod: data.modName,
+                            currDesc: data.desc,
+                            currUrl: data.url
                             // comments: data.comments
                         });
                     });

@@ -2,6 +2,7 @@ import React from 'react';
 // import { Box } from '@mui/material';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
+import ModBox from './modbox'; 
 
 class My_Mods extends React.Component{
     constructor(props){
@@ -49,13 +50,13 @@ class My_Mods extends React.Component{
                     mods: response
                 });
                 // this.state.mods = response;
-                console.log(this.state.mods);
-                // this.setState({
-                //     modName:  this.state.mods[0].modName,
-                //     gameName: this.state.mods[0].gameName,
-                //     Desc: this.state.mods[0].desc
-                // })
-                console.log("fetched");
+                // console.log(this.state.mods);
+                // // this.setState({
+                // //     modName:  this.state.mods[0].modName,
+                // //     gameName: this.state.mods[0].gameName,
+                // //     Desc: this.state.mods[0].desc
+                // // })
+                // console.log("fetched");
             }
             else{
                 console.log('no mods associated with user');
@@ -66,11 +67,49 @@ class My_Mods extends React.Component{
         });
     };
 
+    async deleteMods(modname){
+        await fetch('http://localhost:3030/cancelMod', {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'modname':modname,
+            },
+        })
+            .then((response) => console.log(response))
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    handleX = (modname) => {
+        console.log(modname);
+        this.deleteMods(modname).then(()=>{
+            this.getInfo(this.state.user
+        )})
+        // console.log('before getinfo')
+        // console.log(this.state.mods);
+        
+        console.log('after getinfo')
+        console.log(this.state.mods);
+    }
+
     handleEdit(){
         // working
     }
 
+    // componentDidUpdate(prevProps, prevState){
+	// 	if (this.state.mods !== prevState.mods) {
+    //         console.log("this changed*******");
+    //         console.log(this.state.mods);
+    //         this.setState({
+    //             mods:this.state.mods
+    //         });
+    //     }
+    // }
+
     render(){
+        console.log("rendering...")
+        console.log(this.state.mods);
         return (
             <div className="container">
                     {/* [ marginLeft: '10%',
@@ -80,31 +119,11 @@ class My_Mods extends React.Component{
                 {this.state.signedIn && <center><h1>Your uploaded mods</h1></center>}<br/>
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
+                        console.log("consider mods map")
+                        console.log(this.state.mods)
                         return(
                             <div>
-                                <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-                                    <p>
-                                        Mod Name: {mod.modName}<br/>
-                                        Game: {mod.gameName} <br/>
-                                        Author: {mod.author}<br/>
-                                        Likes: {mod.likes} <br/>
-                                        Views: {mod.views}<br/>
-                                        {/* Mod Name: {mod.modName}
-                                        Game: {mod.gameName} 
-                                        Author: {mod.author}<br/>
-                                        Likes: {mod.likes}
-                                        Views: {mod.views}<br/>
-                                        Date Created: {mod.dateCreated}
-                                        Date Modified: {mod.dateModified}<br/>
-                                        Desc: {mod.desc}<br/>
-                                        Tag: {mod.tag}<br/>
-                                        Download URL: {mod.url}<br/> */}
-                                    </p>
-                                    <a href={"http://localhost:3000/edit/" + mod.modName}>
-                                        Edit
-                                    </a>
-                                </a>
-                                
+                                <ModBox mod={mod} onHandleDelete={this.handleX}/>
                             </div>
                         );
                     })
