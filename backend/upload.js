@@ -257,6 +257,9 @@ function handleUpdateRequest(req,res){
       if(req.fields["newSlug"] !== undefined){
         currMod["slug"] = req.fields["newSlug"];
       }
+      if(req.fields["dateModified"] !== undefined){
+        currMod["dateModified"] = req.fields["dateModified"];
+      }
       ModsDB.update(modName,currMod).then((success)=>{
         if(success){
           logger.info("Succeeded to handle update mod request");
