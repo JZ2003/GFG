@@ -3,7 +3,7 @@ import React from 'react';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
 
-class MyMods extends React.Component{
+class My_Mods extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -81,43 +81,31 @@ class MyMods extends React.Component{
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
-                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-                                <p style={{
-                                    display: 'flex',
-                                    gap: '5px'
-                                    // justifyContent: 'space-between'
-                                }}>
-                                    <img className='modIcon' src={`data:image/jpeg;base64,${mod.icon}`} 
-                                    alt="Mod Icon" width="100" height="100"></img>
-                                    Mod Name: {mod.modName}<br/>
-                                    Game: {mod.gameName} <br/>
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes} <br/>
-                                    Views: {mod.views}<br/>
-                                    {/* Date Created: {mod.dateCreated}
-                                    Date Modified: {mod.dateModified}<br/>
-                                    Desc: {mod.desc}<br/>
-                                    Tag: {mod.tag}<br/>
-                                    Download URL: {mod.url}<br/> */}
-                                </p>
-                                {/* <p>
-                                    Mod Name: {mod.modName}<br/>
-                                    Game: {mod.gameName} <br/>
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes} <br/>
-                                    Views: {mod.views}<br/>
-                                    Mod Name: {mod.modName}
-                                    Game: {mod.gameName} 
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes}
-                                    Views: {mod.views}<br/>
-                                    Date Created: {mod.dateCreated}
-                                    Date Modified: {mod.dateModified}<br/>
-                                    Desc: {mod.desc}<br/>
-                                    Tag: {mod.tag}<br/>
-                                    Download URL: {mod.url}<br/>
-                                </p> */}
-                            </a>
+                            <div>
+                                <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
+                                    <p>
+                                        Mod Name: {mod.modName}<br/>
+                                        Game: {mod.gameName} <br/>
+                                        Author: {mod.author}<br/>
+                                        Likes: {mod.likes} <br/>
+                                        Views: {mod.views}<br/>
+                                        {/* Mod Name: {mod.modName}
+                                        Game: {mod.gameName} 
+                                        Author: {mod.author}<br/>
+                                        Likes: {mod.likes}
+                                        Views: {mod.views}<br/>
+                                        Date Created: {mod.dateCreated}
+                                        Date Modified: {mod.dateModified}<br/>
+                                        Desc: {mod.desc}<br/>
+                                        Tag: {mod.tag}<br/>
+                                        Download URL: {mod.url}<br/> */}
+                                    </p>
+                                    <a href={"http://localhost:3000/edit/" + mod.modName}>
+                                        Edit
+                                    </a>
+                                </a>
+                                
+                            </div>
                         );
                     })
                 }
@@ -128,4 +116,4 @@ class MyMods extends React.Component{
     };
 }
 
-export default MyMods;
+export default My_Mods;
