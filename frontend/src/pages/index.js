@@ -11,11 +11,31 @@ class Home extends React.Component{
 			displayMods: [],
 			query: "",
             selector: "modName",
+            sorter: "",
 			mods: []
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
         };
+        this.sortByKey = this.sortByKey.bind(this);
     }
+
+    sortByKey(key) {
+        if(key === "default"){
+            this.state.displayMods.sort((a, b) => (a.views > b.views) ? 1 : -1);
+        }
+        else if(key === "likes"){
+            this.state.displayMods.sort((a, b) => (a.likes > b.likes) ? 1 : -1);
+        }
+        else if(key === "alphabet"){
+            this.state.displayMods.sort((a, b) => (a.modName > b.modName) ? 1 : -1);
+        }
+        else if(key === "date"){
+            this.state.displayMods.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
+        }
+        else{
+            console.log("no keys called");
+        }
+      }
 
     async getDB () {
 		// if(user != null){
@@ -40,6 +60,7 @@ class Home extends React.Component{
                 // this.state.mods = response;
                 console.log(this.state.mods);
                 console.log("fetched");
+                this.sortByKey("default");
             }
             else{
                 console.log('no mods associated with user');
@@ -96,6 +117,10 @@ class Home extends React.Component{
 				this.setState({displayMods:this.state.mods});
 			}
 		  }
+          if (this.state.sorter !== prevState.sorter) {
+            console.log(this.state.sorter);
+            this.sortByKey(this.state.sorter);
+          }
 	}
 
 	handleXClick(){
@@ -125,7 +150,15 @@ class Home extends React.Component{
                 <option value="author">author name</option>
                 <option value="tag">tags</option>
             </select>
-            
+
+            <select name="sort-tag" id="options" onChange={(e) => this.setState({sorter:e.target.value})} value={this.state.sorter}>
+                <option value="default">views</option>
+                <option value="likes">likes</option>
+                <option value="alphabet">alphabet</option>
+                <option value="date">date created</option>
+            </select>
+
+
 			<button onClick={() => this.handleXClick()}
                 className="x-button"
             >
