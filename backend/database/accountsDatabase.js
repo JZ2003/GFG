@@ -1,5 +1,7 @@
 const {MongoClient} = require('mongodb');
 const uri = "mongodb://localhost:27017";
+const { getLogger } = require('../logUtil.js');
+logger = getLogger("AccountsDB");
 
 /** Representation of an account */
 class Account {
@@ -45,11 +47,10 @@ class Account {
         const findResult = await collection.findOne({username: account.username});
         if (findResult == null) {
             const insertResult = await collection.insertOne(account);
-            console.log("Account inserted: " + account.username);
-            console.log(`New account created with the following id: ${insertResult.insertedId}`);
+            logger.info(`Account [${account.username}] created with ID: ${insertResult.insertedId}`)
             succeed = true;
         } else {
-            console.log("Account already exists: " + account.username);
+            logger.warn(`Account [${account.username}] already exists`)
         }
     } catch (e) {
         console.error(e);
@@ -78,11 +79,10 @@ async function insertDummyAccounts() {
                 {username: "user", password: "user", favoriteModNames: []},
                 {username: "author", password: "author", favoriteModNames: []}
             ]);
-            console.log("Dummy accounts inserted");
-            console.log(`New accounts created with the following ids: ${insertResult.insertedIds}`);
+            logger.info(`Dummy accounts inserted with IDs: ${insertResult.insertedIds}`)
             succeed = true;
         } else {
-            console.log("Database is not empty");
+            logger.warn(`Database is not empty, dummy accounts not inserted`)
         }
     } catch (e) {
         console.error(e);
@@ -109,9 +109,9 @@ async function find(username) {
         await client.close();
     }
     if (account == null) {
-        console.log("Account not found: " + username);
+        logger.warn(`Account [${username}] not found`)
     } else {
-        console.log("Account found: " + account.username);
+        logger.info(`Account [${username}] found`)
     }
     return account;
 }
@@ -154,9 +154,9 @@ async function search(filter) {
         await client.close();
     }
     if (accounts.length == 0) {
-        console.log("No accounts found");
+        logger.warn(`No accounts found with filter: ${JSON.stringify(filter)}`)
     } else {
-        console.log("Accounts found: " + accounts.length);
+        logger.info(`Accounts found with filter: ${JSON.stringify(filter)}`)
     }
     return accounts;
 }
@@ -176,11 +176,10 @@ async function remove(username) {
         const findResult = await collection.findOne({username: username});
         if (findResult != null) {
             const deleteResult = await collection.deleteOne({username: username});
-            console.log("Account deleted: " + username);
-            console.log(`Deleted ${deleteResult.deletedCount} account(s)`);
+            logger.info(`Account [${username}] deleted`)
             succeed = true;
         } else {
-            console.log("Account does not exist: " + username);
+            logger.warn(`Account [${username}] does not exist, cannot delete`)
         }
     } catch (e) {
         console.error(e);
@@ -205,11 +204,10 @@ async function removeAll() {
         const count = await collection.countDocuments();
         if (count > 0) {
             const deleteResult = await collection.deleteMany({});
-            console.log("All accounts deleted");
-            console.log(`Deleted ${deleteResult.deletedCount} account(s)`);
+            logger.info(`All ${deleteResult.deletedCount} account(s) deleted`)
             succeed = true;
         } else {
-            console.log("Database is empty");
+            logger.warn(`Database is empty, cannot delete`)
         }
     } catch (e) {
         console.error(e);
@@ -239,14 +237,13 @@ async function update(oldUsername, oldPassword, newPassword) {
             if (findResult.password == oldPassword) {
                 const updateResult = await collection.updateOne({username: oldUsername}, {$set: {username: oldUsername, password: newPassword}});
                 console.log("Account updated: " + oldUsername);
-                console.log("New password: " + newPassword);
-                console.log(`Updated ${updateResult.modifiedCount} account(s)`);
+                logger.info(`Account [${oldUsername}] updated with new password [${newPassword}]`)
                 succeed = true;
             } else {
-                console.log("Password does not match: " + oldUsername);
+                logger.warn(`Account [${oldUsername}] password does not match, cannot update`)
             }
         } else {
-            console.log("Account does not exist: " + oldUsername);
+            logger.warn(`Account [${oldUsername}] does not exist, cannot update`)
         }
     } catch (e) {
         console.error(e);

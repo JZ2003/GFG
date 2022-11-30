@@ -1,5 +1,7 @@
 const {MongoClient} = require('mongodb');
 const uri = "mongodb://localhost:27017";
+const { getLogger } = require('../logUtil.js');
+logger = getLogger("ModsDB");
 
 /** Representation of a mod */
 class Mod {
@@ -75,11 +77,10 @@ async function insert(mod) {
         const findResult = await collection.findOne(filter);
         if (findResult == null) {
             const insertResult = await collection.insertOne(mod);
-            console.log("Mod inserted: " + mod.modName);
-            console.log(`New mod created with the following id: ${insertResult.insertedId}`);
+            logger.info(`Mod [${mod.modName}] created with ID: ${insertResult.insertedId}`);
             succeed = true;
         } else {
-            console.log("Mod already exists: " + findResult.modName);
+            logger.warn(`Mod [${findResult.modName}] already exists: `);
         }
     } catch (e) {
         console.error(e);
@@ -190,9 +191,9 @@ async function insertDefault() {
         await client.close();
     }
     if (mod == null) {
-        console.log("Mod not found: " + modName);
+        logger.warn(`Mod [${modName}] not found`);
     } else {
-        console.log("Mod found: " + mod.modName);
+        logger.info(`Mod [${modName}] found`);
     }
     return mod;
 }
@@ -224,9 +225,9 @@ async function search(filter) {
         await client.close();
     }
     if (mods.length == 0) {
-        console.log("No mods found");
+        logger.warn(`No mods found with filter: ${JSON.stringify(filter)}`);
     } else {
-        console.log("Mods found: " + mods.length);
+        logger.info(`${mods.length} mod(s) found with filter: ${JSON.stringify(filter)}`);
     }
     return mods;
 }
@@ -246,11 +247,10 @@ async function search(filter) {
         const findResult = await collection.findOne({modName: modName});
         if (findResult != null) {
             const deleteResult = await collection.deleteOne({modName: modName});
-            console.log("Mod deleted: " + modName);
-            console.log(`Deleted ${deleteResult.deletedCount} mod(s)`);
+            logger.info(`Mod [${modName}] deleted`);
             succeed = true;
         } else {
-            console.log("Mod does not exist: " + username);
+            logger.warn(`Mod [${modName}] does not exist`);
         }
     } catch (e) {
         console.error(e);
@@ -275,11 +275,10 @@ async function removeAll() {
         const findResult = await collection.findOne();
         if (findResult != null) {
             const deleteResult = await collection.deleteMany({});
-            console.log("All mods deleted");
-            console.log(`Deleted ${deleteResult.deletedCount} mod(s)`);
+            logger.info(`All ${deleteResult.deletedCount} mods deleted`);
             succeed = true;
         } else {
-            console.log("Database is empty");
+            logger.warn("Database is empty so no mods are deleted");
         }
     } catch (e) {
         console.error(e);
@@ -307,12 +306,10 @@ async function update(modName, mod) {
         const findResultNew = await collection.findOne({modName: mod.modName});
         if ((findResult != null && findResultNew == null) || (modName === mod.modName)) {
             const updateResult = await collection.updateOne({modName: modName}, {$set: mod});
-            console.log("Mod updated: " + modName);
-            console.log("New mod: " + mod.modName);
-            console.log(`${updateResult.matchedCount} mod(s) matched the filter, updated ${updateResult.modifiedCount} mod(s)`);
+            logger.info(`Mod [${modName}] updated`);            
             succeed = true;
         } else {
-            console.log("Mod does not exist: " + modName + ", or new mod name already exists: " + mod.modName);
+            logger.warn(`Mod [${modName}] does not exist or new mod name already exists`);
         }
     } catch (e) {
         console.error(e);

@@ -95,10 +95,9 @@ class ModView extends React.Component{
 
     addFavorite=()=>{
         this.addFav(this.state.user, this.state.modName);
-        this.addLike(this.state.modName);
         // this.removeAll();
     }
-
+    
     async removeAll(){
         console.log('removing');
         await fetch('http://localhost:3030/cancelAllUsers', {
@@ -130,8 +129,10 @@ class ModView extends React.Component{
             //console.log(response);
             if(response.status === 200){
                 console.log('favorited');
+                this.addLike(this.state.modName);
             }
             else{
+                window.alert("You already favorited this mod!");
                 console.log('did not favorite');
             }
         })
@@ -150,60 +151,8 @@ class ModView extends React.Component{
             },
         })
         .then((response) => {
-            //console.log(response);
-            if(response.status === 204){
-                console.log('liked');
-            }
-            else{
-                console.log('did not like');
-            }
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-    };
-
-    remFavorite=()=>{
-        this.remFav(this.state.user, this.state.modName);
-        this.remLike(this.state.modName);
-    }
-
-    async remFav(user, modName){
-        console.log(user);
-        await fetch('http://localhost:3030/addFavorite', {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                username: user,
-                modname: modName
-            },
-        })
-        .then((response) => {
-            //console.log(response);
+            console.log(response.status);
             if(response.status === 200){
-                console.log('favorited');
-            }
-            else{
-                console.log('did not favorite');
-            }
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-    };
-
-    async remLike(modName){
-        await fetch('http://localhost:3030/updateLikes', {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                modname: modName,
-                change: '1'
-            },
-        })
-        .then((response) => {
-            //console.log(response);
-            if(response.status === 204){
                 console.log('liked');
             }
             else{
@@ -222,17 +171,11 @@ class ModView extends React.Component{
                     marginRight: '10%',
                     marginTop: '20px'
                 }}>
-                <div style = {{
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                }}>
+                <div>
                     <h1>Mod Name: {this.state.modName}</h1>
-                    <Button variant="contained" color="primary" onClick={this.addFavorite}>
-                        Favorite
-                    </Button>
                 </div>
                 <img className='modIcon' src={`data:image/jpeg;base64,${this.state.icon}`} 
-                        alt="Mod Icon" width="50" height="50"></img>
+                        alt="Mod Icon" width="200" height="200"></img>
                 <p>
                     Game: {this.state.gameName} <br/> 
                     Author: {this.state.author}<br/>
@@ -243,8 +186,12 @@ class ModView extends React.Component{
                     Date Modified: {this.state.dateModified}<br/>
                     Download URL: {this.state.url}<br/>
                     Tag: {this.state.tag}<br/>
-                    {/* Comments: {this.state.comments}                          */}
+                    {/* Comments: {this.state.comments} */}
                 </p>
+                <Button variant="contained" color="primary" onClick={this.addFavorite}>
+                    Favorite
+                </Button>
+                <br/>
             </div>
             
         );

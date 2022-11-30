@@ -75,6 +75,7 @@ const Signup = (props) => {
                             variant="outlined"
                             required
                             margin="normal"
+                            // color="white"
                             onChange={(e) => {setPass(e.target.value);}}
                         />
                         <br/>

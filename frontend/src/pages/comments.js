@@ -155,12 +155,20 @@ class Comments extends React.Component{
     render(){
         console.log("print comments array");
         return(
+<<<<<<< HEAD
             <div>
+=======
+            <div style = {{
+                marginLeft: '10%',
+                marginRight: '10%',
+                marginTop: '20px'
+            }}>
+>>>>>>> 5547c6def1c0907f47ba3518acea7e808d693195
                 {/* this part will enable comment input */}
                 
                 <label> Please leave your comments: </label>
                 <input type="text" className="form-control" onChange={(e) => this.setState({content:e.target.value})} value={this.state.content} />
-                <button type="submit" onClick={this.a}>Submit</button>
+                <button type="submit" onClick={this.handleSubmit}>Submit</button>
 				<br></br>
                 
                 {/* /* this part forward will be comment content rendering and comment deletion */}

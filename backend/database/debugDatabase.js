@@ -12,9 +12,9 @@ async function testAccounts() {
     // console.log(account1);
     // await AccountsDB.removeAll();
 
-    account = new AccountsDB.Account('T1', 'pwd1');
-    account.addFavoriteMod('Test Mod');
-    console.log(account);
+    // account = new AccountsDB.Account('T1', 'pwd1');
+    // account.addFavoriteMod('Test Mod');
+    // console.log(account);
 }
 
 async function testMods() {
@@ -38,16 +38,18 @@ async function testMods() {
     // mods = await ModsDB.search({});
     // console.log(mods);
     //await ModsDB.removeAll();
-    await ModsDB.insertDummyMods(10);
-    // mods = await ModsDB.search({"author": "kevin"});
+    // await ModsDB.insertDummyMods(10);
+    // // mods = await ModsDB.search({"author": "kevin"});
 
-    mods = await ModsDB.getAll();
-    // ModsDB.removeAll();
-    mod = new ModsDB.Mod('train', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon', 0, []);
-    // mod = new ModsDB.Mod('Test Mod', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon');
+    // mods = await ModsDB.getAll();
+    // // ModsDB.removeAll();
+    // mod = new ModsDB.Mod('train', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon', 0, []);
+    // // mod = new ModsDB.Mod('Test Mod', 'Test Author', 'Test Description', '2022/11/01', '2022/11/01', 'https://www.google.com', 'Test Game', 'Test Tag', 0, 'Test Icon');
     
-    ModsDB.insert(mod);
-    console.log(mods);
+    // ModsDB.insert(mod);
+    // console.log(mods);
+
+    ModsDB.removeAll();
 }
 
 async function main() {
