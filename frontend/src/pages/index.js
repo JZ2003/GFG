@@ -2,6 +2,7 @@
 // import {useState,useEffect} from 'react';
 // import { formHelperTextClasses } from '@mui/material';
 import React from 'react';
+import ModBox from './modbox';
 import './styles.css'
 
 class Home extends React.Component{
@@ -9,56 +10,64 @@ class Home extends React.Component{
         super(props);
         this.state = {
 			displayMods: [],
+            renderedItem: [],
 			query: "",
             selector: "modName",
-            sorter: "",
+            sorter: "view",
 			mods: []
 			// user: localStorage.getItem('user'),
 			// loggedIn: "false"
         };
-        this.sortByKey = this.sortByKey.bind(this);
+        // this.sortByKey = this.sortByKey.bind(this);
     }
 
-    sortByKey(key) {
-    
-        this.state.mods.sort((a,b) => {
+    async sortByKey(mods,key) {
+        await mods.sort((a,b) => {
             // console.log("The key now is " + key + " a[key] is "+a[key])
             if (a[key] > b[key]) {
-                console.log("return 1")
+                // console.log("return 1")
                 return -1;
             } else if (a[key] < b[key]) {
-                console.log("return -1")
+                // console.log("return -1")
                 return 1;
             } else {
-                console.log("return 0")
+                // console.log("return 0")
                 return 0;
             }
         })
         if(key === "modName"){
-            this.state.mods.reverse()
+            await mods.reverse();
         }
+        console.log("*** displayed array after sort ***");
         this.setState({
-            displayMods:this.state.mods
+            displayMods: mods
         });
-        console.log(this.state.displayMods)
-        // if(key === "default"){
-        //     this.state.displayMods.sort((a.views, b) => {
-                
-        //     });
-        // }
-        // else if(key === "likes"){
-            // this.state.displayMods.sort((a, b) => a[key] - b[key]);
+        console.log(this.state.displayMods);
+      }
 
-        // }
-        // else if(key === ""){
-        //     this.state.displayMods.sort((a, b) => (a.modName > b.modName) ? 1 : -1);
-        // }
-        // else if(key === "date"){
-        //     this.state.displayMods.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
-        // }
-        // else{
-        //     console.log("no keys called");
-        // }
+      async updateMods(mods,key) {
+        console.log("************************************************")
+        await mods.sort((a,b) => {
+            // console.log("The key now is " + key + " a[key] is "+a[key])
+            if (a[key] > b[key]) {
+                // console.log("return 1")
+                return -1;
+            } else if (a[key] < b[key]) {
+                // console.log("return -1")
+                return 1;
+            } else {
+                // console.log("return 0")
+                return 0;
+            }
+        })
+        if(key === "modName"){
+            await mods.reverse();
+        }
+        console.log("*** displayed array after sort ***");
+        this.setState({
+            mods: mods
+        });
+        console.log(this.state.mods);
       }
 
     async getDB () {
@@ -72,19 +81,20 @@ class Home extends React.Component{
             },
         })
         .then(res => res.json())
-        .then((response) => {
+        .then(async (response) => {
             // console.log(response);
             if(response /*status === 200*/){
                 console.log("response: " + response);
 				// console.log(response.length);
                 this.setState({
-                    mods: response.data,
-					displayMods: this.state.mods
+					mods: response.data,
+                    displayMods: response.data
                 });
                 // this.state.mods = response;
                 console.log(this.state.mods);
-                console.log("fetched");
-                this.sortByKey("views");
+                console.log("displayMods: ");
+                console.log(this.state.displayMods)
+                
             }
             else{
                 console.log('no mods associated with user');
@@ -106,14 +116,14 @@ class Home extends React.Component{
 		}
 	  }
 
-	componentDidMount(){
-		this.getDB();
-
-		console.log("display mods: " + this.state.displayMods);
+	async componentDidMount(){
+		await this.getDB();
+        await this.sortByKey(this.state.mods,"views");
 	}
 
-	componentDidUpdate(prevProps, prevState){
+	async componentDidUpdate(prevProps, prevState){
 		if (this.state.query !== prevState.query) {
+            this.updateMods(this.state.mods,this.state.sorter);
 			let regex = new RegExp(this.state.query, "i");
 			if(this.state.query.length > 0) {
 				// console.log(this.state.mods);
@@ -136,18 +146,23 @@ class Home extends React.Component{
                 }
 				//display filtered mods
 				this.setState({displayMods:newMods});
-			} else if (this.state.query.length === 0) {
+			} 
+            else if (this.state.query.length === 0) {
 				//display all mods
 				this.setState({displayMods:this.state.mods});
 			}
-		  }
-          if (this.state.sorter !== prevState.sorter) {
+            await this.sortByKey(this.state.displayMods,this.state.sorter)
+        }
+        if (this.state.sorter !== prevState.sorter) {
             console.log(this.state.sorter);
-            this.sortByKey(this.state.sorter);
-          }
-          if (this.state.displayMods !== prevState.displayMods) {
-            console.log("this will rerender");
-          }
+            await this.sortByKey(this.state.displayMods,this.state.sorter);
+            this.render();
+        }
+        if (this.state.displayMods !== prevState.displayMods) {
+            this.setState({ displayMods: this.state.displayMods });
+            console.log("have rerendered");
+            this.render();
+        }
 	}
 
 	handleXClick(){
@@ -157,7 +172,6 @@ class Home extends React.Component{
 
 
     render(){
-        console.log("************ rerendering data ***************")
         return (
             <div className="container">
 				<h1><center>Welcome to gamersforgamers!</center></h1>
@@ -193,29 +207,50 @@ class Home extends React.Component{
                 X
             </button>
 			</center>
+            {console.log("almost there")}
+            {console.log(this.state.displayMods)}
 			{this.state.displayMods.map((mod) => {
+                console.log(mod);
 				return(
-					<a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-						<p style={{
-                            display: 'flex',
-                            gap: '5px'
-                            // justifyContent: 'space-between'
-                        }}>
-                            <img className='modIcon' src={`data:image/jpeg;base64,${mod.icon}`} 
+                    <div className="grid-container" key={mod.modName}>
+                <img className='icon-item' src={`data:image/jpeg;base64,${mod.icon}`}
                             alt="Mod Icon" width="100" height="100"></img>
-                            Mod Name: {mod.modName}<br/>
-                            Game: {mod.gameName} <br/>
-                            Author: {mod.author}<br/>
-                            Likes: {mod.likes} <br/>
-                            Views: {mod.views}<br/>
-                            Description: {mod.slug}
-                            {/* Date Created: {mod.dateCreated}
-                            Date Modified: {mod.dateModified}<br/>
-                            Desc: {mod.desc}<br/>
-                            Tag: {mod.tag}<br/>
-                            Download URL: {mod.url}<br/> */}
-                        </p>
-					</a>
+                <a href={"http://localhost:3000/mods/" + mod.modName} className="center-item">
+
+                        <div className="title-item">
+                            <h2>{mod.modName}</h2>
+                        </div><br/>
+                        <div className="game-item">
+                            For <b>{mod.gameName}</b>
+                        </div><br/>
+                        <div className="slug-item">
+                            {mod.slug}
+                        </div><br/>
+                        <div className="tags-item">
+                            Tags:&nbsp;
+                            {mod.tags.map((tag) => {
+                                return(
+                                    <b>{tag}&nbsp;&nbsp;</b>
+                                );
+                            })}
+                        </div><br/>
+                        <div className="date-item">
+                            Created at {mod.dateCreated} &nbsp;&nbsp; Updated at {mod.dateModified}
+                        </div><br/>
+
+                    
+                    
+                </a>
+                <div className="right-item">
+                    <b className="num-views-item">Views: {mod.views}</b><br/>
+                    <b className="num-likes-item">Likes: {mod.likes}</b><br/>
+                </div>
+
+
+                {/* <a className="edit-button" href={"http://localhost:3000/edit/" + this.state.mod.modName}>
+                    Edit
+                </a> */}
+            </div>
 				);
             })}
             </div>
