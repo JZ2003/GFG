@@ -70,6 +70,7 @@ function Login() {
                 <center>
                     <form onSubmit={handleSubmit}>
                     <TextField
+                            sx={{ input: { color: 'white' } }}
                             InputLabelProps={{style : {color : 'grey'} }}
                             value={user}
                             label="Username or Email"
@@ -80,6 +81,7 @@ function Login() {
                         />
                         <br></br>
                         <TextField
+                            sx={{ input: { color: 'white' } }}
                             InputLabelProps={{style : {color : 'grey'} }}
                             value={pass}
                             label="Password"

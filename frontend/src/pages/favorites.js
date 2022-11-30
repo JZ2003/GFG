@@ -178,6 +178,7 @@ class Favorites extends React.Component{
                                     Author: {mod.author}<br/>
                                     Likes: {mod.likes} <br/>
                                     Views: {mod.views}<br/>
+                                    Description: {mod.slug}
                                     {/* Date Created: {mod.dateCreated}
                                     Date Modified: {mod.dateModified}<br/>
                                     Desc: {mod.desc}<br/>

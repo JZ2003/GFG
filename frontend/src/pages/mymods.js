@@ -89,6 +89,7 @@ class My_Mods extends React.Component{
                                         Author: {mod.author}<br/>
                                         Likes: {mod.likes} <br/>
                                         Views: {mod.views}<br/>
+                                        Description: {mod.slug}
                                         {/* Mod Name: {mod.modName}
                                         Game: {mod.gameName} 
                                         Author: {mod.author}<br/>

@@ -1,6 +1,6 @@
 // import {useLocation} from 'react-router-dom';
 // import {useState,useEffect} from 'react';
-import { formHelperTextClasses } from '@mui/material';
+// import { formHelperTextClasses } from '@mui/material';
 import React from 'react';
 import './styles.css'
 
@@ -147,6 +147,7 @@ class Home extends React.Component{
                             Author: {mod.author}<br/>
                             Likes: {mod.likes} <br/>
                             Views: {mod.views}<br/>
+                            Description: {mod.slug}
                             {/* Date Created: {mod.dateCreated}
                             Date Modified: {mod.dateModified}<br/>
                             Desc: {mod.desc}<br/>
