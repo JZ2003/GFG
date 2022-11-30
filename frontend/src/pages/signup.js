@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { TextField,Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import './styles.css'
 
 const Signup = (props) => {
     const navigate = useNavigate();
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
-    const [emailErr, setEmailErr] = useState(false);
-    const validEmail = new RegExp(
-        '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
-    );
+    // const [emailErr, setEmailErr] = useState(false);
+    // const validEmail = new RegExp(
+    //     '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
+    // );
     const loggedIn = localStorage.getItem('user');
 
     const addAcc = async (user, pass) => {
@@ -46,9 +47,9 @@ const Signup = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!validEmail.test(user)) {
-            setEmailErr(true);
-         }
+        // if (!validEmail.test(user)) {
+        //     setEmailErr(true);
+        //  }
         console.log(user);
         console.log(pass);
         addAcc(user, pass);
