@@ -280,6 +280,10 @@ function handleUpdateRequest(req,res){
       if(req.fields["newSlug"] !== undefined){
         currMod["slug"] = req.fields["newSlug"];
       }
+      if(req.fields["newIcon"] !== undefined){
+        base64_image = fs.readFileSync(req.files.image.path, {encoding:'base64'});
+        newMod.icon = base64_image;
+      }
       ModsDB.update(modName,currMod).then((success)=>{
         if(success){
           res.statusCode = 204;
@@ -433,13 +437,11 @@ function handleGetAllTag(req, res) {
  * with the the thing after the colon being changed to actual data
  */
 function handlePostCommentRequest(req, res) {
-  console.log(req.fields);
   const comment = req.fields.comment.content;
   const username = req.fields.comment.username;
   const modname = req.fields.comment.modname;
   ModsDB.find(modname).then((mod) => {
     let new_mod = copyMod(mod);
-    console.log(new_mod)
     new_mod.addComment(username, comment);
     ModsDB.update(modname, new_mod).then((success) => {
       if (success) {
