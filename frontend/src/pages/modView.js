@@ -14,11 +14,11 @@ class ModView extends React.Component{
             dateModified: '',
             url: '',
             gameName: '',
-            tag: '',
+            tags: [],
             views: 0,
             icon: '',
             likes: 0,
-            comments: [],
+            slug: '',
             user: localStorage.getItem('user')
         };
         // this.getMod(this.state.modName);
@@ -76,11 +76,11 @@ class ModView extends React.Component{
                             dateModified: data.dateModified,
                             url: data.url,
                             gameName: data.gameName,
-                            tag: data.tag,
+                            tags: data.tags,
                             views: data.views,
                             icon: data.icon,
-                            likes: data.likes
-                            // comments: data.comments
+                            likes: data.likes,
+                            slug: data.slug
                         });
                     });
                 }
@@ -172,7 +172,7 @@ class ModView extends React.Component{
                     marginTop: '20px'
                 }}>
                 <div>
-                    <h1>Mod Name: {this.state.modName}</h1>
+                    <h1>{this.state.modName}</h1>
                 </div>
                 <img className='modIcon' src={`data:image/jpeg;base64,${this.state.icon}`} 
                         alt="Mod Icon" width="200" height="200"></img>
@@ -185,8 +185,7 @@ class ModView extends React.Component{
                     Date Created: {this.state.dateCreated}<br/>
                     Date Modified: {this.state.dateModified}<br/>
                     Download URL: {this.state.url}<br/>
-                    Tag: {this.state.tag}<br/>
-                    {/* Comments: {this.state.comments} */}
+                    Tags: {this.state.tags}<br/>
                 </p>
                 <Button variant="contained" color="primary" onClick={this.addFavorite}>
                     Favorite
