@@ -1,6 +1,9 @@
 import React from 'react';
+import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-tagsinput
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
+import 'react-tagsinput/react-tagsinput.css'
+
 
 class Edit extends React.Component{    
     constructor(props){
@@ -14,17 +17,21 @@ class Edit extends React.Component{
             dateModified: '',
             url: '',
             gameName: '',
-            tag: '',
+            tags: [],
             views: 0,
             icon: '',
             likes: 0,
             user: localStorage.getItem('user'),
+            slug: '',
 
             // new mod data
             currMod: '',
             currGame: '',
             currDesc: '',
-            currUrl: ''
+            currUrl: '',
+            currSlug: '',
+            currTags: [],
+            currIcon: '',
         };
         
     }
@@ -58,11 +65,13 @@ class Edit extends React.Component{
                             views: data.views,
                             icon: data.icon,
                             likes: data.likes,
+                            slug: data.slug,
                             currGame: data.gameName,
                             currMod: data.modName,
                             currDesc: data.desc,
-                            currUrl: data.url
-                            // comments: data.comments
+                            currUrl: data.url,
+                            currSlug: data.slug,
+                            currTags: data.tags,
                         });
                     });
                 }
@@ -75,16 +84,19 @@ class Edit extends React.Component{
             });
     };
 
-    async editMod(prevName, currName, gameName, desc, url){
+    async editMod(){
         const current = new Date();
+        console.log("newTags", this.state.currTags);
         await fetch('http://localhost:3030/updateMod', {
             method: 'PUT',
             body: JSON.stringify({
-                modName : prevName,
-                newName : currName,
-                newUrl : url,
-                newDesc : desc,
-                newGame : gameName,
+                modName : this.state.modName,
+                newName : this.state.currMod,
+                newUrl : this.state.currUrl,
+                newDesc : this.state.currDesc,
+                newGame : this.state.currGame,
+                newTags : this.state.currTags,
+                newSlug : this.state.currSlug,
                 dateModified: `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`,
             }),
             headers: {
@@ -103,9 +115,13 @@ class Edit extends React.Component{
 			console.log("please sign in...");
 		}
 		else{
-			this.editMod(this.state.modName, this.state.currMod, this.state.currGame, this.state.currDesc, this.state.currUrl);
+			this.editMod();
 		}
     }
+
+    handleTagsChange = (tags) => {
+		this.setState({currTags: tags});
+	};
 
     render(){
         return(
@@ -116,15 +132,23 @@ class Edit extends React.Component{
                 <input type="text" className="form-control" value={this.state.currGame} onChange={(e) => this.setState({currGame:e.target.value})} /><br/>
                 <label htmlFor="modName"> Mod Name: </label><br/>
                 <input type="text" className="form-control" value={this.state.currMod} onChange={(e) => this.setState({currMod:e.target.value})} /><br/>
+                <label for="tags"> Tags: </label><br/>
+				<TagsInput value={this.state.currTags} onChange={this.handleTagsChange} onlyUnique={true} className="input"/>
+				
                 <label htmlFor="url"> Upload URL: </label><br/>
                 <input type="url" className="form-control" value={this.state.currUrl} onChange={(e) => this.setState({currUrl:e.target.value})} /><br/>
-                <label htmlFor="desc"> Description: </label><br/>
-                <input type="text" size="50" maxLength="2500" className="form-control" value={this.state.currDesc} onChange={(e) => this.setState({currDesc:e.target.value})} /><br/>
-                <br/>
+                <label htmlFor="slug"> Short Summary: </label><br/>
+					<textarea rows="5" cols="50" className="form-slug" maxlength="50" value={this.state.currSlug} onChange={(e) => this.setState({currSlug:e.target.value})}>
+						Enter a short description of 50 characters or less:
+					</textarea><br/>
+
+				<label htmlFor="desc"> Description: </label><br/>
+					<textarea rows="5" cols="50" className="form-desc" maxlength="2500" value={this.state.currDesc} onChange={(e) => this.setState({currDesc:e.target.value})}>
+						Enter a description:
+					</textarea><br/>
+
                 <button type="submit" onClick={this.handleSubmit}>Submit</button>
-				
-				
-            	
+
             </div>
         </div>
         );
