@@ -1,4 +1,5 @@
 const AccountsDB = require('./database/accountsDatabase.js');
+const ModsDB = require('./database/modsDatabase')
 const { getLogger } = require('./logUtil.js');
 const logger = getLogger('AccountsAPI');
 
@@ -182,11 +183,16 @@ function handleFavoriteRequest(req, res) {
  */
 function handleGetAllFavoriteRequest(req, res) {
   username = req.headers.username;
-  AccountsDB.find(username).then((account) => {
+  AccountsDB.find(username).then(async (account) => {
     if (account !== null) {
       logger.info("Succedded to handle get all favorite request");
       res.statusCode = 200;
-      res.json({"Favorite": account.favoriteModNames});
+      let mods = []
+      for (let i = 0; i < account.favoriteModNames.length; i++) {
+        await promiseAction(account.favoriteModNames[i], mods);
+      }
+      console.log(mods);
+      res.json({"Favorite": mods});
       res.end();
     } else {
       logger.warn("Failed to handle get all favorite request");
@@ -194,6 +200,10 @@ function handleGetAllFavoriteRequest(req, res) {
       res.end("Failed with some reasons")
     }
   })
+}
+
+async function promiseAction(modName, mods) {
+  mods.push(await ModsDB.find(modName));
 }
 
 module.exports = { handleLoginRequest, handleSignupRequest, handleCancleRequest, handleUpdateRequest, handleinsertDummyUsers, handleremoveAllUsers,
