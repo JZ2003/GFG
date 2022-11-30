@@ -92,8 +92,14 @@ class Favorites extends React.Component{
             if(response /*status === 200*/){
                 console.log(response.Favorite);
                 console.log(response);
+                let valid_favorite = []
+                for (let i = 0; i < response.Favorite.length; i++) {
+                    if (response.Favorite[i] !== null) {
+                        valid_favorite.push(response.Favorite[i]);
+                    }
+                }
                 this.setState({
-                    mods: response.Favorite
+                    mods: valid_favorite
                 });
                 // this.state.mods = response;
                 console.log(this.state.mods);
@@ -168,7 +174,7 @@ class Favorites extends React.Component{
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
-                            <div>
+                            <div key={mod.modName}>
                                 <ModBox mod={mod}/><br/>
                             </div>
                         );
