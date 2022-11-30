@@ -83,7 +83,7 @@ class My_Mods extends React.Component{
                     this.state.mods.map((mod) => {
                         return(
                             <div>
-                                <ModBox mod={mod} />
+                                <ModBox mod={mod} /><br/>
                             </div>
                         );
                     })
