@@ -7,13 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #d4d4d4;
-  /* padding: 20px; */
-  /* width: 80%; */
 }
-
-/* * {
-  box-sizing: border-box;
-} */
 
 .container {
   max-width: 90%;
@@ -22,13 +16,7 @@ body {
   padding: 1rem;
 }
 
-/* article h1 {
-  margin: 1rem 0;
-} */
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-/* Color scheme: #4E4E50, #6F2232, #950740, #C3073F */

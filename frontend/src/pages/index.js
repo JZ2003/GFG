@@ -12,57 +12,43 @@ class Home extends React.Component{
             sorter: "views",
 			mods: []
         };
-        // this.sortByKey = this.sortByKey.bind(this);
     }
 
     async sortByKey(mods,key) {
         await mods.sort((a,b) => {
-            // console.log("The key now is " + key + " a[key] is "+a[key])
             if (a[key] > b[key]) {
-                // console.log("return 1")
                 return -1;
             } else if (a[key] < b[key]) {
-                // console.log("return -1")
                 return 1;
             } else {
-                // console.log("return 0")
                 return 0;
             }
         })
         if(key === "modName"){
             await mods.reverse();
         }
-        console.log("*** displayed array after sort ***");
         this.setState({
             displayMods: mods
         });
-        console.log(this.state.displayMods);
       }
 
-    //   async updateMods(mods,key) {
-    //     console.log("************************************************")
-    //     await mods.sort((a,b) => {
-    //         // console.log("The key now is " + key + " a[key] is "+a[key])
-    //         if (a[key] > b[key]) {
-    //             // console.log("return 1")
-    //             return -1;
-    //         } else if (a[key] < b[key]) {
-    //             // console.log("return -1")
-    //             return 1;
-    //         } else {
-    //             // console.log("return 0")
-    //             return 0;
-    //         }
-    //     })
-    //     if(key === "modName"){
-    //         await mods.reverse();
-    //     }
-    //     console.log("*** displayed array after sort ***");
-    //     this.setState({
-    //         mods: mods
-    //     });
-    //     console.log(this.state.mods);
-    //   }
+      async updateMods(mods,key) {
+        await mods.sort((a,b) => {
+            if (a[key] > b[key]) {
+                return -1;
+            } else if (a[key] < b[key]) {
+                return 1;
+            } else {
+                return 0;
+            }
+        })
+        if(key === "modName"){
+            await mods.reverse();
+        }
+        this.setState({
+            mods: mods
+        });
+      }
 
     async getDB () {
         await fetch('http://localhost:3030/listall', {
@@ -73,22 +59,13 @@ class Home extends React.Component{
         })
         .then(res => res.json())
         .then(async (response) => {
-            // console.log(response);
-            if(response /*status === 200*/){
-                console.log("response: " + response);
-				// console.log(response.length);
+            if(response){
                 this.setState({
 					mods: response.data,
                     displayMods: response.data
                 });
-                // this.state.mods = response;
-                console.log(this.state.mods);
-                console.log("displayMods: ");
-                console.log(this.state.displayMods)
-                
             }
             else{
-                console.log('no mods associated with user');
             }
         })
         .catch((err) => {
@@ -116,11 +93,12 @@ class Home extends React.Component{
 		if (this.state.query !== prevState.query) {
 			let regex = new RegExp(this.state.query, "i");
 			if(this.state.query.length > 0) {
-				// console.log(this.state.mods);
-                // console.log("this is the current selector state: " + this.state.selector);
+                let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
                 if(this.state.selector === "modName"){
                     console.log(this.state.selector)
-				    let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+				    let newMods = [...this.state.mods].filter((mod) => {
+                        return regex.test(mod.modName);
+                    });
                     await this.sortByKey(newMods,this.state.sorter)
                 }
                 else if(this.state.selector === "gameName"){
@@ -135,7 +113,9 @@ class Home extends React.Component{
                 }
                 else if(this.state.selector === "tag"){
                     console.log(this.state.selector)
-                    let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.tag));
+                    let newMods = [...this.state.mods].filter((mod) => {
+                        return regex.test(mod.tags.join(''))
+                    });
                     await this.sortByKey(newMods,this.state.sorter)
                 }
                 else{
@@ -190,7 +170,7 @@ class Home extends React.Component{
                 <option value="views">views</option>
                 <option value="likes">likes</option>
                 <option value="modName">alphabet</option>
-                <option value="dateCreated">date created</option>
+                {/* <option value="dateCreated">date created</option> */}
             </select>
 
 
@@ -199,7 +179,7 @@ class Home extends React.Component{
             >
                 X
             </button>
-			</center>
+			</center><br/>
 			{this.state.displayMods.map((mod) => {
 				return(
                     <div className="grid-container" key={mod.modName}>
@@ -230,6 +210,7 @@ class Home extends React.Component{
                             <div className="right-item">
                                 <b className="num-views-item">Views: {mod.views}</b><br/>
                                 <b className="num-likes-item">Likes: {mod.likes}</b><br/>
+                                <b className="author-item">Author: {mod.author}</b><br/>
                             </div>
                     </div>
 				);

@@ -6,7 +6,7 @@
 	margin: 0 auto;
     margin-bottom: 1rem;
     display: grid;
-    grid-template-columns: 120px 540px 120px;
+    grid-template-columns: 120px 500px 120px;
     grid-gap: 15px 15px;
     background-color: #26292f;
 	border-radius: 15px;
@@ -16,13 +16,10 @@
 
 .icon-item {
     grid-column: 1 / 1;
-
     background-color: #26292f;
     color: #d4d4d4;
     border: 2px solid #d4d4d4;
     border-radius: 5px;
-    /* padding: 5px;
-    margin: 5px; */
 }
 
 .center-item {
@@ -64,6 +61,16 @@
     align-self: center;
 }
 
+.author-item {
+    grid-row: 3 / 3;
+    align-self: center;
+}
+
+.edit-item {
+    grid-row: 4 / 4;
+    align-self: center;
+}
+
 .title-item {
     grid-row: 1 / 1;
     align-self: center;
@@ -88,19 +95,6 @@
     grid-row: 5 / 5;
     align-self: center;
 }
-
-/* .edit-button {
-    grid-column: 3 / 3;
-    grid-row: 1 / 1;
-
-    background-color: #26292f;
-    color: #d4d4d4;
-    border: 1px solid #d4d4d4;
-    border-radius: 5px;
-    padding: 5px;
-    margin: 5px;
-} */
-
 
 .modbox {
     display:flex;
@@ -128,9 +122,7 @@
 	border-radius: 10px;
     padding: 15px;
     color: #d4d4d4;
-    /* row-gap: 1em; */
 }
-/* Color scheme: #4E4E50, #6F2232, #950740, #C3073F */
 
 .title {
     display:flex;
