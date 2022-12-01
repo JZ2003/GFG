@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useParams } from 'react-router-dom';
 import { Button } from "@mui/material";
 import './styles.css'
 
@@ -21,7 +20,6 @@ class ModView extends React.Component{
             slug: '',
             user: localStorage.getItem('user')
         };
-        // this.getMod(this.state.modName);
     }
 
     componentDidMount(){
@@ -64,7 +62,6 @@ class ModView extends React.Component{
             },
         })
             .then((response) => {
-                //console.log(response);
                 if(response.status >= 200 && response.status <= 204){
                     this.state.mods = response.json().then((data) => {
                         console.log(data);

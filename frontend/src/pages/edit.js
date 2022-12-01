@@ -1,6 +1,5 @@
 import React from 'react';
-import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-tagsinput
-// import {useLocation} from 'react-router-dom';
+import TagsInput from 'react-tagsinput';
 import './styles.css'
 import 'react-tagsinput/react-tagsinput.css'
 
@@ -49,7 +48,6 @@ class Edit extends React.Component{
             },
         })
             .then((response) => {
-                //console.log(response);
                 if(response.status >= 200 && response.status <= 204){
                     this.state.mods = response.json().then((data) => {
                         console.log(data);
