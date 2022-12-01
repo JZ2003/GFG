@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import TagsInput from 'react-tagsinput';
-import 'react-tagsinput/react-tagsinput.css'
-import './styles.css'
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
+import 'react-tagsinput/react-tagsinput.css'
+import './styles.css'
 
 function CeMods() {
     const [gameName, setGameName] = useState('');

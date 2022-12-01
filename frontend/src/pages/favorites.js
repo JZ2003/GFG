@@ -1,7 +1,6 @@
 import React from 'react';
-import './styles.css'
 import ModBox from './modbox'; 
-
+import './styles.css'
 
 class Favorites extends React.Component{
     constructor(props){
