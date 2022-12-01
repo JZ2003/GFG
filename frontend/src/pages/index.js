@@ -120,7 +120,9 @@ class Home extends React.Component{
                 // console.log("this is the current selector state: " + this.state.selector);
                 if(this.state.selector === "modName"){
                     console.log(this.state.selector)
-				    let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
+				    let newMods = [...this.state.mods].filter((mod) => {
+                        return regex.test(mod.modName);
+                    });
                     await this.sortByKey(newMods,this.state.sorter)
                 }
                 else if(this.state.selector === "gameName"){
@@ -135,7 +137,9 @@ class Home extends React.Component{
                 }
                 else if(this.state.selector === "tag"){
                     console.log(this.state.selector)
-                    let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.tag));
+                    let newMods = [...this.state.mods].filter((mod) => {
+                        return regex.test(mod.tags.join(''))
+                    });
                     await this.sortByKey(newMods,this.state.sorter)
                 }
                 else{
