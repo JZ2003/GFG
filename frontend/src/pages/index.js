@@ -1,8 +1,4 @@
-// import {useLocation} from 'react-router-dom';
-// import {useState,useEffect} from 'react';
-// import { formHelperTextClasses } from '@mui/material';
 import React from 'react';
-import ModBox from './modbox';
 import './styles.css'
 
 class Home extends React.Component{
@@ -241,9 +237,6 @@ class Home extends React.Component{
                                 <b className="num-views-item">Views: {mod.views}</b><br/>
                                 <b className="num-likes-item">Likes: {mod.likes}</b><br/>
                             </div>
-                        {/* <a className="edit-button" href={"http://localhost:3000/edit/" + this.state.mod.modName}>
-                            Edit
-                        </a> */}
                     </div>
 				);
             })}

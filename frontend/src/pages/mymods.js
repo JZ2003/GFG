@@ -2,7 +2,6 @@ import React from 'react';
 // import { Box } from '@mui/material';
 // import {useLocation} from 'react-router-dom';
 import './styles.css'
-import ModBox from './modbox'; 
 
 class My_Mods extends React.Component{
     constructor(props){
@@ -122,14 +121,40 @@ class My_Mods extends React.Component{
                         console.log("consider mods map")
                         console.log(this.state.mods)
                         return(
-                            <div>
-                                <ModBox mod={mod} onHandleDelete={this.handleX}/>
+                            <div className="grid-container" key={mod.modName}>
+                        <img className='icon-item' src={`data:image/jpeg;base64,${mod.icon}`}
+                                    alt="Mod Icon" width="100" height="100"></img>
+                        <a href={"http://localhost:3000/mods/" + mod.modName} className="center-item">
+                            <div className="title-item">
+                                <h2>{mod.modName}</h2>
+                            </div><br/>
+                            <div className="game-item">
+                                For <b>{mod.gameName}</b>
+                            </div><br/>
+                            <div className="slug-item">
+                                {mod.slug}
+                            </div><br/>
+                            <div className="tags-item">
+                                Tags:&nbsp;
+                                {mod.tags.map((tag) => {
+                                    return(
+                                        <b>{tag}&nbsp;&nbsp;</b>
+                                    );
+                                })}
+                            </div><br/>
+                            <div className="date-item">
+                                Created at {mod.dateCreated} &nbsp;&nbsp; Updated at {mod.dateModified}
+                            </div><br/>
+                        </a>
+                            <div className="right-item">
+                                <b className="num-views-item">Views: {mod.views}</b><br/>
+                                <b className="num-likes-item">Likes: {mod.likes}</b><br/>
+                                <a href={"http://localhost:3000/edit/" + mod.modName}>Edit</a>
                             </div>
+                    </div>
                         );
                     })
-                }
-                {/* {this.state.signedIn && <p>Game Name: {this.state.gameName}</p>}<br/>
-                {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}  
+                }  
             </div> 
         );
     };

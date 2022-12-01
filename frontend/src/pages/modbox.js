@@ -42,21 +42,12 @@ class ModBox extends React.Component {
                             Created at {this.state.mod.dateCreated} &nbsp;&nbsp; Updated at {this.state.mod.dateModified}
                         </div><br/>
 
-                    
-                    
                 </a>
                 <div className="right-item">
                     <b className="num-views-item">Views: {this.state.mod.views}</b><br/>
                     <b className="num-likes-item">Likes: {this.state.mod.likes}</b><br/>
                 </div>
-
-
-                {/* <a className="edit-button" href={"http://localhost:3000/edit/" + this.state.mod.modName}>
-                    Edit
-                </a> */}
             </div>
-            
-
         );
     }
 
