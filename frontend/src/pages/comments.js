@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css'
 
 class Comments extends React.Component{
     constructor(props){
@@ -155,25 +156,22 @@ class Comments extends React.Component{
     render(){
         console.log("print comments array");
         return(
-            <div style = {{
-                marginLeft: '10%',
-                marginRight: '10%',
-                marginTop: '20px'
-            }}>
+            <div className="modBody">
                 {/* this part will enable comment input */}
-                
-                <label> Please leave your comments: </label>
-                <input type="text" className="form-control" onChange={(e) => this.setState({content:e.target.value})} value={this.state.content} />
-                <button type="submit" onClick={this.handleSubmit}>Submit</button>
-				<br></br>
-                
+                <div classname="modBody">
+                    <label> Please leave your comments: </label>
+                    <input type="text" className="form-control" onChange={(e) => this.setState({content:e.target.value})} value={this.state.content} />
+                    <button type="submit" onClick={this.handleSubmit}>Submit</button>
+                    <br></br>
+                </div>
+            
                 {/* /* this part forward will be comment content rendering and comment deletion */}
                 {this.state.comments.map((usercontent) => {
 				    return(
                         <div>
-                            <>
-                                user {usercontent.username} left this comment: {usercontent.content}
-                            </>
+                            <br/>
+                                <b>{usercontent.username}</b> commented:<br/><hr/>
+                                {usercontent.content}
                         </div>
 				    );
                 })}
