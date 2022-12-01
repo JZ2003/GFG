@@ -4,7 +4,7 @@
     width: 800px;
 	height: 160px;
 	margin: 0 auto;
-
+    margin-bottom: 1rem;
     display: grid;
     grid-template-columns: 120px 540px 120px;
     grid-gap: 15px 15px;
@@ -182,4 +182,38 @@ a {
     padding-left: 5px;
     padding-bottom: 0.4em;
     padding-right: 0.4em;
+}
+
+.modTitle{
+    text-align: center;
+    position: relative;
+	margin: 0 auto;
+	background-color: #26292f;
+    padding: 5px;
+    margin: auto;
+    border-radius: 15px;
+    width: 800px;
+    height: fit-content;
+    color: #d4d4d4;  
+    margin-bottom: 1rem;
+}
+
+.modBody{
+    text-align: left;
+    position: relative;
+	margin: 0 auto;
+	background-color: #26292f;
+    padding: 15px;
+    margin: auto;
+    border-radius: 15px;
+    width: 800px;
+    height: fit-content;
+    color: #d4d4d4; 
+    margin-bottom: 1rem;
+}
+
+.modIcon{
+    width: 100%;
+    height: auto;
+    position: relative;
 }

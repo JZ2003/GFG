@@ -164,12 +164,12 @@ class Favorites extends React.Component{
         return (
             <div className="container">
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
-                {this.state.signedIn && <h1>Your favorites!</h1>}<br/>
+                {this.state.signedIn && <h1><center>Favorites!</center></h1>}<br/>
                 {this.state.signedIn && 
                     this.state.mods.map((mod) => {
                         return(
                             <div>
-                                <ModBox mod={mod}/><br/>
+                                <ModBox mod={mod}/>
                             </div>
                         );
                     })
