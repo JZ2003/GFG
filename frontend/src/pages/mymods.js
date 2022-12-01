@@ -19,7 +19,7 @@ class My_Mods extends React.Component{
     async getInfo (user) {
         console.log("user is: " + user);
         if(user == null){
-            window.alert("You are not signed into an account!");
+            // window.alert("You are not signed into an account!");
         }
         else{
             this.setState({

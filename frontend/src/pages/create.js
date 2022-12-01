@@ -85,7 +85,7 @@ function CeMods() {
     return (
         <div className="container">
             <div className="mod-container">
-				<h1><center><b>Create/Edit your mod!</b></center></h1>
+				<h1><center><b>Create your mod!</b></center></h1>
 				<form onSubmit={handleSubmit(onSubmit)} id="create-form">
 					<label for="gameName"> Game Name: </label><br/>
 					<input type="text" className="form-control" value={gameName} onChange={(e) => setGameName(e.target.value)} /><br/>

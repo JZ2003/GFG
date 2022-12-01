@@ -5,25 +5,25 @@ export default function Navbar () {
   return (
     <nav className="navigation">
       <a href="/" className="brand-name">
-        GamersforGamers
+        <b>Gamers for Gamers</b>
       </a>
       <div
         className="navigation-menu">
         <ul>
           <li>
-            <a href="/mymods">My Mods</a>
+            <a href="/mymods"><b>My Mods</b></a>
           </li>
           <li>
-            <a href="/favorites">My Favorites</a>
+            <a href="/favorites"><b>My Favorites</b></a>
           </li>
           <li>
-            <a href="/create">Upload/Edit Mods</a>
+            <a href="/create"><b>Create Mods</b></a>
           </li>
           <li>
-            <a href="/about">About Us</a>
+            <a href="/about"><b>About Us</b></a>
           </li>
           <li>
-            <a href="/login_signup">Log in/Sign Up</a>
+            <a href="/login_signup"><b>Log in/Sign Up</b></a>
           </li>
         </ul>
       </div>

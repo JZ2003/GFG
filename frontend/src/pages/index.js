@@ -164,7 +164,7 @@ class Home extends React.Component{
     render(){
         return (
             <div className="container">
-				<h1><center>Welcome to gamersforgamers!</center></h1>
+				<h1><center>Welcome to Gamers for Gamers!</center></h1>
             <center>
 			<input 
                 className="search-bar"
