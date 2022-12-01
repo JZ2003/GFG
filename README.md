@@ -1,5 +1,7 @@
 # Gamers for Gamers: CS35L Project
 
+![preview](Preview.png)
+
 Gamers For Gamers (GFG) is a community driven video game modding content sharing website. You can browse, search, favorite, comment, and view the mod contents created by the gaming community. Meanwhile, you can also be a creator to share your wonderful contents to the community. 
 
 [Presentation Slides](https://docs.google.com/presentation/d/1sCE8nqiZmZcsDqKnU30e6MoekDZ3dp1qeGLRXvcgids/edit?usp=sharing)
