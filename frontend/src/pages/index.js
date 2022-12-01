@@ -214,44 +214,38 @@ class Home extends React.Component{
 			{this.state.displayMods.map((mod) => {
 				return(
                     <div className="grid-container" key={mod.modName}>
-                <img className='icon-item' src={`data:image/jpeg;base64,${mod.icon}`}
-                            alt="Mod Icon" width="100" height="100"></img>
-                <a href={"http://localhost:3000/mods/" + mod.modName} className="center-item">
-
-                        <div className="title-item">
-                            <h2>{mod.modName}</h2>
-                        </div><br/>
-                        <div className="game-item">
-                            For <b>{mod.gameName}</b>
-                        </div><br/>
-                        <div className="slug-item">
-                            {mod.slug}
-                        </div><br/>
-                        <div className="tags-item">
-                            Tags:&nbsp;
-                            {mod.tags.map((tag) => {
-                                return(
-                                    <b>{tag}&nbsp;&nbsp;</b>
-                                );
-                            })}
-                        </div><br/>
-                        <div className="date-item">
-                            Created at {mod.dateCreated} &nbsp;&nbsp; Updated at {mod.dateModified}
-                        </div><br/>
-
-                    
-                    
-                </a>
-                <div className="right-item">
-                    <b className="num-views-item">Views: {mod.views}</b><br/>
-                    <b className="num-likes-item">Likes: {mod.likes}</b><br/>
-                </div>
-
-
-                {/* <a className="edit-button" href={"http://localhost:3000/edit/" + this.state.mod.modName}>
-                    Edit
-                </a> */}
-            </div>
+                        <img className='icon-item' src={`data:image/jpeg;base64,${mod.icon}`}
+                                    alt="Mod Icon" width="100" height="100"></img>
+                        <a href={"http://localhost:3000/mods/" + mod.modName} className="center-item">
+                            <div className="title-item">
+                                <h2>{mod.modName}</h2>
+                            </div><br/>
+                            <div className="game-item">
+                                For <b>{mod.gameName}</b>
+                            </div><br/>
+                            <div className="slug-item">
+                                {mod.slug}
+                            </div><br/>
+                            <div className="tags-item">
+                                Tags:&nbsp;
+                                {mod.tags.map((tag) => {
+                                    return(
+                                        <b>{tag}&nbsp;&nbsp;</b>
+                                    );
+                                })}
+                            </div><br/>
+                            <div className="date-item">
+                                Created at {mod.dateCreated} &nbsp;&nbsp; Updated at {mod.dateModified}
+                            </div><br/>
+                        </a>
+                            <div className="right-item">
+                                <b className="num-views-item">Views: {mod.views}</b><br/>
+                                <b className="num-likes-item">Likes: {mod.likes}</b><br/>
+                            </div>
+                        {/* <a className="edit-button" href={"http://localhost:3000/edit/" + this.state.mod.modName}>
+                            Edit
+                        </a> */}
+                    </div>
 				);
             })}
             </div>

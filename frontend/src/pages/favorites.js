@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles.css'
+import ModBox from './modbox'; 
 
 
 class Favorites extends React.Component{
@@ -14,9 +15,14 @@ class Favorites extends React.Component{
     }
 
     componentDidMount(){
-        this.getFavorites(this.state.user);
+        this.getFavorites(this.state.user)
         console.log(this.state.mods.length);
     }
+
+    // componentDidUpdate() {
+    //     this.getFavorites(this.state.user);
+    //     console.log(this.state.mods.length);
+    // }
 
     async getMod(name){
         await fetch('http://localhost:3030/currMod?modName=' + name, {
@@ -84,6 +90,7 @@ class Favorites extends React.Component{
         .then((response) => {
             // console.log(response);
             if(response /*status === 200*/){
+                console.log(response.Favorite);
                 console.log(response);
                 this.setState({
                     mods: response.Favorite
@@ -91,10 +98,6 @@ class Favorites extends React.Component{
                 // this.state.mods = response;
                 console.log(this.state.mods);
                 console.log("fetched");
-                for (let i = 0; i < this.state.mods.length; i++){
-                    this.getMod(this.state.mods[i])
-                    console.log(i);
-                }
             }
             else{
                 console.log('no favorites associated with user');
@@ -161,52 +164,13 @@ class Favorites extends React.Component{
         return (
             <div className="container">
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
-                {this.state.signedIn && <h1>Your favorites!</h1>}<br/>
+                {this.state.signedIn && <h1><center>Favorites!</center></h1>}<br/>
                 {this.state.signedIn && 
-                    this.state.modObj.map((mod) => {
+                    this.state.mods.map((mod) => {
                         return(
-                            <a href={"http://localhost:3000/mods/" + mod.modName} className="card">
-                                <p style={{
-                                    display: 'flex',
-                                    gap: '5px'
-                                    // justifyContent: 'space-between'
-                                }}>
-                                    <img className='modIcon' src={`data:image/jpeg;base64,${mod.icon}`} 
-                                    alt="Mod Icon" width="100" height="100"></img>
-                                    Mod Name: {mod.modName}<br/>
-                                    Game: {mod.gameName} <br/>
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes} <br/>
-                                    Views: {mod.views}<br/>
-                                    Description: {mod.slug}
-                                    {/* Date Created: {mod.dateCreated}
-                                    Date Modified: {mod.dateModified}<br/>
-                                    Desc: {mod.desc}<br/>
-                                    Tag: {mod.tag}<br/>
-                                    Download URL: {mod.url}<br/> */}
-                                </p>
-                                {/* <p>
-                                    Mod Name: {mod.modName}<br/>
-                                    Game: {mod.gameName} <br/>
-                                    Author: {mod.author}<br/>
-                                    Likes: {mod.likes} <br/>
-                                    Views: {mod.views}<br/>
-
-                                    Mod Name: {mod.modName}
-                                    Game: {mod.gameName} 
-                                    Author: {mod.author}
-                                    views: {mod.views}<br/>
-                                    Date Created: {mod.dateCreated}
-                                    Date Modified: {mod.dateModified}<br/>
-                                    Desc: {mod.desc}<br/>
-                                    tag: {mod.tag}<br/>
-                                    Download URL: {mod.url}
-                                </p> */}
-                                {/* <button onClick={this.remFavorite}>
-                                    Unfavorite
-                                </button> */}
-                            </a>
-                            
+                            <div>
+                                <ModBox mod={mod}/>
+                            </div>
                         );
                     })
                 }

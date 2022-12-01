@@ -14,11 +14,11 @@ class ModView extends React.Component{
             dateModified: '',
             url: '',
             gameName: '',
-            tag: '',
+            tags: [],
             views: 0,
             icon: '',
             likes: 0,
-            comments: [],
+            slug: '',
             user: localStorage.getItem('user')
         };
         // this.getMod(this.state.modName);
@@ -76,11 +76,11 @@ class ModView extends React.Component{
                             dateModified: data.dateModified,
                             url: data.url,
                             gameName: data.gameName,
-                            tag: data.tag,
+                            tags: data.tags,
                             views: data.views,
                             icon: data.icon,
-                            likes: data.likes
-                            // comments: data.comments
+                            likes: data.likes,
+                            slug: data.slug
                         });
                     });
                 }
@@ -171,27 +171,32 @@ class ModView extends React.Component{
                     marginRight: '10%',
                     marginTop: '20px'
                 }}>
-                <div>
-                    <h1>Mod Name: {this.state.modName}</h1>
+                <div className="modTitle">
+                    <h1>{this.state.modName}</h1>
                 </div>
-                <img className='modIcon' src={`data:image/jpeg;base64,${this.state.icon}`} 
-                        alt="Mod Icon" width="200" height="200"></img>
-                <p>
-                    Game: {this.state.gameName} <br/> 
-                    Author: {this.state.author}<br/>
-                    Likes: {this.state.likes}<br/>
-                    views: {this.state.views}<br/>
-                    Desc: {this.state.desc}<br/>
-                    Date Created: {this.state.dateCreated}<br/>
-                    Date Modified: {this.state.dateModified}<br/>
-                    Download URL: {this.state.url}<br/>
-                    Tag: {this.state.tag}<br/>
-                    {/* Comments: {this.state.comments} */}
-                </p>
-                <Button variant="contained" color="primary" onClick={this.addFavorite}>
-                    Favorite
-                </Button>
-                <br/>
+                <div className="modBody">
+                    <p>
+                        <img className="modIcon" src={`data:image/jpeg;base64,${this.state.icon}`} 
+                            alt="Mod Icon">
+                        </img><br/>
+                        <b>Author:</b> {this.state.author}<br/>
+                        <b>Date Created:</b> {this.state.dateCreated}<br/>
+                        <b>Date Modified:</b> {this.state.dateModified}<br/><br/>
+                        <b>Game</b><br/><hr/>
+                        {this.state.gameName} <br/><br/>
+                        {/* Likes: {this.state.likes}<br/>
+                        views: {this.state.views}<br/> */}
+                        <b>Description</b><br/><hr/>
+                        {this.state.desc} <br/><br/>
+                        <b>Download From</b><br/><hr/>
+                        <a href={this.state.url}>{this.state.url}</a><br/><br/>
+                        <b>Tags</b><br/><hr/>
+                        {this.state.tags} <br/><br/>
+                        <Button variant="contained" color="primary" onClick={this.addFavorite}>
+                            Favorite
+                        </Button>
+                    </p>
+                </div>
             </div>
             
         );
