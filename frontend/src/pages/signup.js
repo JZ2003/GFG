@@ -27,13 +27,11 @@ const Signup = (props) => {
             },
         })
             .then((response) => {
-                console.log(response);
                 if(response.status >= 200 && response.status <= 204){
                     navigate('/',{state:{username:user}});
                     localStorage.setItem('user', user);
                 }
                 else{
-                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -43,8 +41,6 @@ const Signup = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(user);
-        console.log(pass);
         addAcc(user, pass);
     };
 

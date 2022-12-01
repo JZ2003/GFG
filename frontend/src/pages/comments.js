@@ -22,7 +22,6 @@ class Comments extends React.Component{
     }
     
     async addComments(){
-        console.log("hi")
         await fetch('http://localhost:3030/addComments', {
             method: 'POST',
             body: JSON.stringify({
@@ -62,7 +61,6 @@ class Comments extends React.Component{
             });
     }
 
-    // might have errors
     async getMod(name){
         await fetch('http://localhost:3030/currMod?modName=' + name, {
             method: 'GET',
@@ -79,7 +77,6 @@ class Comments extends React.Component{
                     });
                 }
                 else{
-                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -89,21 +86,14 @@ class Comments extends React.Component{
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this);
 
         this.addComments();
-        console.log("updated this");
         this.setState({
             comments: [
                 ...this.state.comments,
                 {username: this.state.username, content: this.state.content}
             ]
         });
-    }
-
-    handleDelete(){
-        // *** not done yet ***
-        this.deleteComments();
     }
 
     render(){

@@ -61,9 +61,8 @@ function CeMods() {
 
     const onSubmit = async (data) => {
 		const submittedIcon = data.file[0];
-        // e.preventDefault();
 		if(localStorage.getItem('user') == null){
-			console.log("please sign in...");
+			window.alert("Please sign in.");
 		}
 		else{
 			addMod(gameName, modName, slug, desc, url, tags, submittedIcon);
@@ -108,10 +107,6 @@ function CeMods() {
 					<br/>
 					<SubmitButton />
 				</form>
-				
-				
-				{/* <input type="textarea" rows="10" cols="50" size="50" maxLength="2500" className="form-desc" value={desc} onChange={(e) => setDesc(e.target.value)} /><br/> */}
-            	
             </div>
         </div>
     );

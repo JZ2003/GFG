@@ -74,7 +74,6 @@ class Edit extends React.Component{
                     });
                 }
                 else{
-                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -84,7 +83,6 @@ class Edit extends React.Component{
 
     async editMod(){
         const current = new Date();
-        console.log("newTags", this.state.currTags);
         await fetch('http://localhost:3030/updateMod', {
             method: 'PUT',
             body: JSON.stringify({
@@ -110,8 +108,8 @@ class Edit extends React.Component{
     handleSubmit = (e) => {
         e.preventDefault();
         if(localStorage.getItem('user') == null){
-			console.log("please sign in...");
-		}
+            window.alert("Please sign in");
+        }
 		else{
 			this.editMod();
 		}

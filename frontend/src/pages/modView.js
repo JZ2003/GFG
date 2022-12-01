@@ -43,10 +43,8 @@ class ModView extends React.Component{
         })
         .then((response) => {
             if(response.status === 204){
-                console.log('viewed');
             }
             else{
-                console.log('no viewed');
             }
         })
         .catch((err) => {
@@ -82,7 +80,6 @@ class ModView extends React.Component{
                     });
                 }
                 else{
-                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -92,28 +89,9 @@ class ModView extends React.Component{
 
     addFavorite=()=>{
         this.addFav(this.state.user, this.state.modName);
-        // this.removeAll();
     }
-    
-    async removeAll(){
-        console.log('removing');
-        await fetch('http://localhost:3030/cancelAllUsers', {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-        .then((response) => {
-            //console.log(response);
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-    };
-
 
     async addFav(user, modName){
-        console.log(user);
         await fetch('http://localhost:3030/addFavorite', {
             method: 'PUT',
             headers: {
@@ -123,14 +101,12 @@ class ModView extends React.Component{
             },
         })
         .then((response) => {
-            //console.log(response);
             if(response.status === 200){
-                console.log('favorited');
+                window.alert("You favorited this mod!");
                 this.addLike(this.state.modName);
             }
             else{
                 window.alert("You already favorited this mod!");
-                console.log('did not favorite');
             }
         })
         .catch((err) => {
@@ -150,10 +126,8 @@ class ModView extends React.Component{
         .then((response) => {
             console.log(response.status);
             if(response.status === 200){
-                console.log('liked');
             }
             else{
-                console.log('did not like');
             }
         })
         .catch((err) => {
@@ -181,8 +155,6 @@ class ModView extends React.Component{
                         <b>Date Modified:</b> {this.state.dateModified}<br/><br/>
                         <b>Game</b><br/><hr/>
                         {this.state.gameName} <br/><br/>
-                        {/* Likes: {this.state.likes}<br/>
-                        views: {this.state.views}<br/> */}
                         <b>Description</b><br/><hr/>
                         {this.state.desc} <br/><br/>
                         <b>Download From</b><br/><hr/>

@@ -30,7 +30,6 @@ function Login() {
                     navigate('/',{state:{username:user}});
                 }
                 else{
-                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -41,13 +40,10 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         log_Acc(user, pass);
-        console.log(user);
-        console.log(pass);
     };
 
     const logOut = (e) => {
         e.preventDefault();
-        console.log('Logout');
 
         localStorage.clear();
         sessionStorage.clear();

@@ -15,7 +15,6 @@ class Favorites extends React.Component{
 
     componentDidMount(){
         this.getFavorites(this.state.user)
-        console.log(this.state.mods.length);
     }
 
     async getMod(name){
@@ -28,7 +27,6 @@ class Favorites extends React.Component{
             .then((response) => {
                 if(response.status >= 200 && response.status <= 204){
                     this.state.mods = response.json().then((data) => {
-                        console.log(data);
                         this.setState({
                             modObj:[
                                 ...this.state.modObj,
@@ -52,7 +50,6 @@ class Favorites extends React.Component{
                     });
                 }
                 else{
-                    console.log('did not succeed lol');
                 }
             })
             .catch((err) => {
@@ -61,15 +58,12 @@ class Favorites extends React.Component{
     };
 
     async getFavorites (user) {
-        console.log("user is: " + user);
         if(user == null){
-            // window.alert("You are not signed into an account!");
         }
         else{
             this.setState({
                 signedIn: true
             })
-            console.log(this.state.signedIn);
         }
         await fetch('http://localhost:3030/allFavorite', {
             method: 'GET',
@@ -80,9 +74,7 @@ class Favorites extends React.Component{
         })
         .then(res => res.json())
         .then((response) => {
-            if(response /*status === 200*/){
-                console.log(response.Favorite);
-                console.log(response);
+            if(response){
                 let valid_favorite = []
                 for (let i = 0; i < response.Favorite.length; i++) {
                     if (response.Favorite[i] !== null) {
@@ -92,12 +84,8 @@ class Favorites extends React.Component{
                 this.setState({
                     mods: valid_favorite
                 });
-                // this.state.mods = response;
-                console.log(this.state.mods);
-                console.log("fetched");
             }
             else{
-                console.log('no favorites associated with user');
             }
         })
         .catch((err) => {
@@ -111,7 +99,6 @@ class Favorites extends React.Component{
     }
 
     async remFav(user, modName){
-        console.log(user);
         await fetch('http://localhost:3030/addFavorite', {
             method: 'PUT',
             headers: {
@@ -121,12 +108,9 @@ class Favorites extends React.Component{
             },
         })
         .then((response) => {
-            //console.log(response);
             if(response.status === 200){
-                console.log('favorited');
             }
             else{
-                console.log('did not favorite');
             }
         })
         .catch((err) => {
@@ -144,12 +128,9 @@ class Favorites extends React.Component{
             },
         })
         .then((response) => {
-            //console.log(response);
             if(response.status === 204){
-                console.log('liked');
             }
             else{
-                console.log('did not like');
             }
         })
         .catch((err) => {
