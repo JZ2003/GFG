@@ -8,10 +8,6 @@ const Signup = (props) => {
     const navigate = useNavigate();
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
-    // const [emailErr, setEmailErr] = useState(false);
-    // const validEmail = new RegExp(
-    //     '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
-    // );
     const loggedIn = localStorage.getItem('user');
 
     const addAcc = async (user, pass) => {
@@ -47,9 +43,6 @@ const Signup = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // if (!validEmail.test(user)) {
-        //     setEmailErr(true);
-        //  }
         console.log(user);
         console.log(pass);
         addAcc(user, pass);
@@ -78,7 +71,6 @@ const Signup = (props) => {
                             variant="outlined"
                             required
                             margin="normal"
-                            // color="white"
                             onChange={(e) => {setPass(e.target.value);}}
                         />
                         <br/>
@@ -86,7 +78,6 @@ const Signup = (props) => {
                             Signup
                         </Button>
                     </form>
-                    {/* {emailErr && <p>Your email is invalid</p>} */}
                 </center>
             </div>
         </div>

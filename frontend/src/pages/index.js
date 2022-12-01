@@ -1,8 +1,4 @@
-// import {useLocation} from 'react-router-dom';
-// import {useState,useEffect} from 'react';
-// import { formHelperTextClasses } from '@mui/material';
 import React from 'react';
-import ModBox from './modbox';
 import './styles.css'
 
 class Home extends React.Component{
@@ -15,8 +11,6 @@ class Home extends React.Component{
             selector: "modName",
             sorter: "view",
 			mods: []
-			// user: localStorage.getItem('user'),
-			// loggedIn: "false"
         };
         // this.sortByKey = this.sortByKey.bind(this);
     }
@@ -71,9 +65,6 @@ class Home extends React.Component{
       }
 
     async getDB () {
-		// if(user != null){
-		// 	loggedIn = true;
-		// }
         await fetch('http://localhost:3030/listall', {
             method: 'GET',
             headers: {
@@ -173,9 +164,7 @@ class Home extends React.Component{
     render(){
         return (
             <div className="container">
-				<h1><center>Welcome to gamersforgamers!</center></h1>
-				{/* {loggedIn && <p>Welcome {user}! Checkout our mods!</p>} */}
-                {/* <h2>Mod Name: {this.state.modName}</h2> */}
+				<h1><center>Welcome to Gamers for Gamers!</center></h1>
             <center>
 			<input 
                 className="search-bar"
@@ -241,9 +230,6 @@ class Home extends React.Component{
                                 <b className="num-views-item">Views: {mod.views}</b><br/>
                                 <b className="num-likes-item">Likes: {mod.likes}</b><br/>
                             </div>
-                        {/* <a className="edit-button" href={"http://localhost:3000/edit/" + this.state.mod.modName}>
-                            Edit
-                        </a> */}
                     </div>
 				);
             })}

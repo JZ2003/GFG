@@ -9,11 +9,6 @@ function Login() {
     const navigate = useNavigate();
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
-    // const [emailErr, setEmailErr] = useState(false);
-    // const validEmail = new RegExp(
-    //     '^[a-zA-Z0-9_]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$'
-    // );
-    // const[signedIn, setSignedIn] = usestate(false);
     const loggedIn = localStorage.getItem('user');
 
     const log_Acc = async (user, pass) => {
@@ -45,9 +40,6 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // if (!validEmail.test(user)) {
-        //     setEmailErr(true);
-        //  }
         log_Acc(user, pass);
         console.log(user);
         console.log(pass);
