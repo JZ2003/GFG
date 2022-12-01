@@ -170,7 +170,7 @@ class Home extends React.Component{
                 <option value="views">views</option>
                 <option value="likes">likes</option>
                 <option value="modName">alphabet</option>
-                <option value="dateCreated">date created</option>
+                {/* <option value="dateCreated">date created</option> */}
             </select>
 
 
