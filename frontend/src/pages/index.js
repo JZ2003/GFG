@@ -179,7 +179,7 @@ class Home extends React.Component{
             >
                 X
             </button>
-			</center>
+			</center><br/>
 			{this.state.displayMods.map((mod) => {
 				return(
                     <div className="grid-container" key={mod.modName}>
