@@ -49,7 +49,8 @@ async function testMods() {
     // ModsDB.insert(mod);
     // console.log(mods);
 
-    ModsDB.removeAll();
+    // ModsDB.removeAll();
+    // ModsDB.remove("The Rocket Expansion ")
 }
 
 async function main() {
