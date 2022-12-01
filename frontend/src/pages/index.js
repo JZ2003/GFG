@@ -15,15 +15,23 @@ class Home extends React.Component{
     }
 
     async sortByKey(mods,key) {
-        await mods.sort((a,b) => {
-            if (a[key] > b[key]) {
-                return -1;
-            } else if (a[key] < b[key]) {
-                return 1;
-            } else {
-                return 0;
-            }
-        })
+        if (key === 'dateCreated') {
+            await mods.sort((a, b) => {
+                var aa = a[key].split('/').reverse().join(),
+                    bb = b[key].split('/').reverse().join();
+                return aa < bb ? 1 : (aa > bb ? -1 : 0);
+            })
+        } else {
+            await mods.sort((a,b) => {
+                if (a[key] > b[key]) {
+                    return -1;
+                } else if (a[key] < b[key]) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            })
+        }
         if(key === "modName"){
             await mods.reverse();
         }
@@ -32,23 +40,23 @@ class Home extends React.Component{
         });
       }
 
-      async updateMods(mods,key) {
-        await mods.sort((a,b) => {
-            if (a[key] > b[key]) {
-                return -1;
-            } else if (a[key] < b[key]) {
-                return 1;
-            } else {
-                return 0;
-            }
-        })
-        if(key === "modName"){
-            await mods.reverse();
-        }
-        this.setState({
-            mods: mods
-        });
-      }
+    //   async updateMods(mods,key) {
+    //     await mods.sort((a,b) => {
+    //         if (a[key] > b[key]) {
+    //             return -1;
+    //         } else if (a[key] < b[key]) {
+    //             return 1;
+    //         } else {
+    //             return 0;
+    //         }
+    //     })
+    //     if(key === "modName"){
+    //         await mods.reverse();
+    //     }
+    //     this.setState({
+    //         mods: mods
+    //     });
+    //   }
 
     async getDB () {
         await fetch('http://localhost:3030/listall', {
@@ -170,7 +178,7 @@ class Home extends React.Component{
                 <option value="views">views</option>
                 <option value="likes">likes</option>
                 <option value="modName">alphabet</option>
-                {/* <option value="dateCreated">date created</option> */}
+                <option value="dateCreated">date created</option>
             </select>
 
 
