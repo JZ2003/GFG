@@ -50,7 +50,7 @@ async function testMods() {
     // console.log(mods);
 
     // ModsDB.removeAll();
-    // ModsDB.remove("The Rocket Expansion ")
+    // ModsDB.remove("Underworld");
 }
 
 async function main() {
