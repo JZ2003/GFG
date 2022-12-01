@@ -12,56 +12,42 @@ class Home extends React.Component{
             sorter: "view",
 			mods: []
         };
-        // this.sortByKey = this.sortByKey.bind(this);
     }
 
     async sortByKey(mods,key) {
         await mods.sort((a,b) => {
-            // console.log("The key now is " + key + " a[key] is "+a[key])
             if (a[key] > b[key]) {
-                // console.log("return 1")
                 return -1;
             } else if (a[key] < b[key]) {
-                // console.log("return -1")
                 return 1;
             } else {
-                // console.log("return 0")
                 return 0;
             }
         })
         if(key === "modName"){
             await mods.reverse();
         }
-        console.log("*** displayed array after sort ***");
         this.setState({
             displayMods: mods
         });
-        console.log(this.state.displayMods);
       }
 
       async updateMods(mods,key) {
-        console.log("************************************************")
         await mods.sort((a,b) => {
-            // console.log("The key now is " + key + " a[key] is "+a[key])
             if (a[key] > b[key]) {
-                // console.log("return 1")
                 return -1;
             } else if (a[key] < b[key]) {
-                // console.log("return -1")
                 return 1;
             } else {
-                // console.log("return 0")
                 return 0;
             }
         })
         if(key === "modName"){
             await mods.reverse();
         }
-        console.log("*** displayed array after sort ***");
         this.setState({
             mods: mods
         });
-        console.log(this.state.mods);
       }
 
     async getDB () {
@@ -73,22 +59,13 @@ class Home extends React.Component{
         })
         .then(res => res.json())
         .then(async (response) => {
-            // console.log(response);
-            if(response /*status === 200*/){
-                console.log("response: " + response);
-				// console.log(response.length);
+            if(response){
                 this.setState({
 					mods: response.data,
                     displayMods: response.data
                 });
-                // this.state.mods = response;
-                console.log(this.state.mods);
-                console.log("displayMods: ");
-                console.log(this.state.displayMods)
-                
             }
             else{
-                console.log('no mods associated with user');
             }
         })
         .catch((err) => {
@@ -117,8 +94,6 @@ class Home extends React.Component{
             this.updateMods(this.state.mods,this.state.sorter);
 			let regex = new RegExp(this.state.query, "i");
 			if(this.state.query.length > 0) {
-				// console.log(this.state.mods);
-                // console.log("this is the current selector state: " + this.state.selector);
                 let newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));
                 if(this.state.selector === "modName"){
 				    newMods = [...this.state.mods].filter((mod) =>regex.test(mod.modName));

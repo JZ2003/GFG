@@ -16,13 +16,10 @@
 
 .icon-item {
     grid-column: 1 / 1;
-
     background-color: #26292f;
     color: #d4d4d4;
     border: 2px solid #d4d4d4;
     border-radius: 5px;
-    /* padding: 5px;
-    margin: 5px; */
 }
 
 .center-item {
@@ -89,19 +86,6 @@
     align-self: center;
 }
 
-/* .edit-button {
-    grid-column: 3 / 3;
-    grid-row: 1 / 1;
-
-    background-color: #26292f;
-    color: #d4d4d4;
-    border: 1px solid #d4d4d4;
-    border-radius: 5px;
-    padding: 5px;
-    margin: 5px;
-} */
-
-
 .modbox {
     display:flex;
     justify-content: space-between;
@@ -128,9 +112,7 @@
 	border-radius: 10px;
     padding: 15px;
     color: #d4d4d4;
-    /* row-gap: 1em; */
 }
-/* Color scheme: #4E4E50, #6F2232, #950740, #C3073F */
 
 .title {
     display:flex;
