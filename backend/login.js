@@ -186,12 +186,14 @@ function handleGetAllFavoriteRequest(req, res) {
   AccountsDB.find(username).then(async (account) => {
     if (account !== null) {
       logger.info("Succedded to handle get all favorite request");
-      res.statusCode = 200;
       let mods = []
+      if (account.favoriteModNames === undefined) {
+        account.favoriteModNames = []
+      }
       for (let i = 0; i < account.favoriteModNames.length; i++) {
         await promiseAction(account.favoriteModNames[i], mods);
       }
-      console.log(mods);
+      res.statusCode = 200;
       res.json({"Favorite": mods});
       res.end();
     } else {
