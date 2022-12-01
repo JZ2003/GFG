@@ -42,6 +42,7 @@ class ModBox extends React.Component {
                 <div className="right-item">
                     <b className="num-views-item">Views: {this.state.mod.views}</b><br/>
                     <b className="num-likes-item">Likes: {this.state.mod.likes}</b><br/>
+                    <b className="author-item">Author: {this.state.mod.author}</b><br/>
                 </div>
             </div>
         );

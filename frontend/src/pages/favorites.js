@@ -166,7 +166,7 @@ class Favorites extends React.Component{
                     this.state.mods.map((mod) => {
                         return(
                             <div key={mod.modName}>
-                                <ModBox mod={mod}/><br/>
+                                <ModBox mod={mod}/>
                             </div>
                         );
                     })
