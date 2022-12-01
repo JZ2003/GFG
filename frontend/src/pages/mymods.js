@@ -115,7 +115,8 @@ class My_Mods extends React.Component{
                             <div className="right-item">
                                 <b className="num-views-item">Views: {mod.views}</b><br/>
                                 <b className="num-likes-item">Likes: {mod.likes}</b><br/>
-                                <a href={"http://localhost:3000/edit/" + mod.modName}>Edit</a>
+                                <b className="author-item">Author: {mod.author}</b><br/>
+                                <a className="edit-item" href={"http://localhost:3000/edit/" + mod.modName}>Edit</a>
                             </div>
                     </div>
                         );

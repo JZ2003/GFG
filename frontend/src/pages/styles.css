@@ -6,7 +6,7 @@
 	margin: 0 auto;
     margin-bottom: 1rem;
     display: grid;
-    grid-template-columns: 120px 540px 120px;
+    grid-template-columns: 120px 500px 120px;
     grid-gap: 15px 15px;
     background-color: #26292f;
 	border-radius: 15px;
@@ -61,6 +61,16 @@
 
 .num-likes-item {
     grid-row: 2 / 2;
+    align-self: center;
+}
+
+.author-item {
+    grid-row: 3 / 3;
+    align-self: center;
+}
+
+.edit-item {
+    grid-row: 4 / 4;
     align-self: center;
 }
 

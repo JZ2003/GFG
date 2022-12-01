@@ -234,6 +234,7 @@ class Home extends React.Component{
                             <div className="right-item">
                                 <b className="num-views-item">Views: {mod.views}</b><br/>
                                 <b className="num-likes-item">Likes: {mod.likes}</b><br/>
+                                <b className="author-item">Author: {mod.author}</b><br/>
                             </div>
                     </div>
 				);
