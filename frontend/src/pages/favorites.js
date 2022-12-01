@@ -19,11 +19,6 @@ class Favorites extends React.Component{
         console.log(this.state.mods.length);
     }
 
-    // componentDidUpdate() {
-    //     this.getFavorites(this.state.user);
-    //     console.log(this.state.mods.length);
-    // }
-
     async getMod(name){
         await fetch('http://localhost:3030/currMod?modName=' + name, {
             method: 'GET',
@@ -32,7 +27,6 @@ class Favorites extends React.Component{
             },
         })
             .then((response) => {
-                //console.log(response);
                 if(response.status >= 200 && response.status <= 204){
                     this.state.mods = response.json().then((data) => {
                         console.log(data);
@@ -73,7 +67,6 @@ class Favorites extends React.Component{
             window.alert("You are not signed into an account!");
         }
         else{
-            // this.state.signedIn = true;
             this.setState({
                 signedIn: true
             })
@@ -88,7 +81,6 @@ class Favorites extends React.Component{
         })
         .then(res => res.json())
         .then((response) => {
-            // console.log(response);
             if(response /*status === 200*/){
                 console.log(response.Favorite);
                 console.log(response);
@@ -179,10 +171,7 @@ class Favorites extends React.Component{
                             </div>
                         );
                     })
-                }
-                {/* {this.state.signedIn && <p>Game Name: {this.state.gameName}</p>}<br/>
-                {this.state.signedIn && <p>Description: {this.state.Desc}</p>}<br/> */}
-                
+                }                
             </div>
             
         );

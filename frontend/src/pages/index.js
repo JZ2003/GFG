@@ -11,8 +11,6 @@ class Home extends React.Component{
             selector: "modName",
             sorter: "view",
 			mods: []
-			// user: localStorage.getItem('user'),
-			// loggedIn: "false"
         };
         // this.sortByKey = this.sortByKey.bind(this);
     }
@@ -67,9 +65,6 @@ class Home extends React.Component{
       }
 
     async getDB () {
-		// if(user != null){
-		// 	loggedIn = true;
-		// }
         await fetch('http://localhost:3030/listall', {
             method: 'GET',
             headers: {
@@ -170,8 +165,6 @@ class Home extends React.Component{
         return (
             <div className="container">
 				<h1><center>Welcome to gamersforgamers!</center></h1>
-				{/* {loggedIn && <p>Welcome {user}! Checkout our mods!</p>} */}
-                {/* <h2>Mod Name: {this.state.modName}</h2> */}
             <center>
 			<input 
                 className="search-bar"

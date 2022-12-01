@@ -8,10 +8,7 @@ class Comments extends React.Component{
             modName: props.modName,
             username:"Anonymous User",
             content: "",
-            comments: [
-                // {username: "sunny", content: "hahaha"},
-                // {username: "anonymous", content: "so boring"}
-            ]
+            comments: []
         };
     }
 
@@ -23,44 +20,6 @@ class Comments extends React.Component{
 		}
         this.getMod(this.state.modName);
     }
-
-    // async getComments(name){
-    //     await fetch('http://localhost:3030/getUserComments' + name, {
-    //         method: 'GET',
-    //         // body: JSON.stringify({
-    //         //     user: '',
-    //         //     pass: ''
-    //         // }),
-    //         headers: {
-    //             'Content-type': 'application/json; charset=UTF-8',
-    //         },
-    //     })
-    //         .then((response) => {
-    //             //console.log(response);
-    //             if(response.status >= 200 && response.status <= 204){
-    //                 this.state.mods = response.json().then((data) => {
-    //                     console.log(data);
-    //                     for (let i = 0; i < data.comments.length; i++) {
-    //                         if (data.comments[i].hasOwnProperty(this.state.modName)){
-    //                             this.setState({
-    //                                 comments:data.comments[i]
-    //                             });
-    //                         }else{
-    //                             this.setState({
-    //                                 comments:"no comments yet"
-    //                             });
-    //                         }
-    //                     } 
-    //                 });
-    //             }
-    //             else{
-    //                 console.log('did not succeed lol');
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.message);
-    //         });
-    // };
     
     async addComments(){
         console.log("hi")
@@ -146,12 +105,6 @@ class Comments extends React.Component{
         // *** not done yet ***
         this.deleteComments();
     }
-
-    // componentDidUpdate(prevProps, prevState){
-	// 	if (this.state.content !== prevState.content) {
-			
-	// 	  }
-	// }
 
     render(){
         console.log("print comments array");

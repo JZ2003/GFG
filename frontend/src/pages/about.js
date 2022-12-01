@@ -8,7 +8,7 @@ return (
 		<center><b>GamersforGamers</b></center>
 	</h1>
 	<p>
-		Welcome to GamersforGamers, a website developed to allow gamers to upload and download mods for a variety of games from a comprehensive database. This 
+		Welcome to GamersforGamers, a website developed to allow gamers to share and browse mods for a variety of games from a comprehensive database. This 
 		is a project made by Team TraderBros from UCLA's CS 35L course.
 	</p>
 	<p>

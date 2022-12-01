@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import TagsInput from 'react-tagsinput'; // https://www.npmjs.com/package/react-tagsinput
+import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css'
 import './styles.css'
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
-
-// import moment from "moment";
 
 function CeMods() {
     const [gameName, setGameName] = useState('');
@@ -44,8 +42,6 @@ function CeMods() {
             method: 'POST',
 			body: formData,
             headers: {
-                // 'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-				// 'Content-Length': '<calculated when request is sent>',
 				'Accept': '*/*'
 			},
         })
@@ -103,7 +99,6 @@ function CeMods() {
 					<textarea rows="5" cols="50" className="form-slug" maxlength="50" value={slug} onChange={(e) => setSlug(e.target.value)}>
 						Enter a short description of 50 characters or less:
 					</textarea><br/>
-					{/* <input type="text" size="100" maxLength="50" className="form-control" value={slug} onChange={(e) => setSlug(e.target.value)} /><br/> */}
 					<label htmlFor="desc"> Description: </label><br/>
 					<textarea rows="5" cols="50" className="form-desc" maxlength="2500" value={desc} onChange={(e) => setDesc(e.target.value)}>
 						Enter a description:

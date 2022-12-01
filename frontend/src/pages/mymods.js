@@ -1,6 +1,4 @@
 import React from 'react';
-// import { Box } from '@mui/material';
-// import {useLocation} from 'react-router-dom';
 import './styles.css'
 
 class My_Mods extends React.Component{
@@ -11,11 +9,7 @@ class My_Mods extends React.Component{
             signedIn: false,
             modObj: [],
             mods: []
-            // modName: "",
-            // gameName: "",
-            // Desc: "",
         };
-        // this.getInfo(this.state.user);
     }
 
     componentDidMount(){
@@ -28,7 +22,6 @@ class My_Mods extends React.Component{
             window.alert("You are not signed into an account!");
         }
         else{
-            // this.state.signedIn = true;
             this.setState({
                 signedIn: true
             })
@@ -48,14 +41,6 @@ class My_Mods extends React.Component{
                 this.setState({
                     mods: response
                 });
-                // this.state.mods = response;
-                // console.log(this.state.mods);
-                // // this.setState({
-                // //     modName:  this.state.mods[0].modName,
-                // //     gameName: this.state.mods[0].gameName,
-                // //     Desc: this.state.mods[0].desc
-                // // })
-                // console.log("fetched");
             }
             else{
                 console.log('no mods associated with user');
@@ -85,35 +70,16 @@ class My_Mods extends React.Component{
         this.deleteMods(modname).then(()=>{
             this.getInfo(this.state.user
         )})
-        // console.log('before getinfo')
-        // console.log(this.state.mods);
         
         console.log('after getinfo')
         console.log(this.state.mods);
     }
-
-    handleEdit(){
-        // working
-    }
-
-    // componentDidUpdate(prevProps, prevState){
-	// 	if (this.state.mods !== prevState.mods) {
-    //         console.log("this changed*******");
-    //         console.log(this.state.mods);
-    //         this.setState({
-    //             mods:this.state.mods
-    //         });
-    //     }
-    // }
 
     render(){
         console.log("rendering...")
         console.log(this.state.mods);
         return (
             <div className="container">
-                    {/* [ marginLeft: '10%',
-                    marginRight: '10%',
-                    marginTop: '20px',] */}
                 {!this.state.signedIn && <center><h1>Please sign in.</h1></center>}
                 {this.state.signedIn && <center><h1>Your uploaded mods</h1></center>}<br/>
                 {this.state.signedIn && 

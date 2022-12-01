@@ -10,10 +10,6 @@ class ModBox extends React.Component {
         };
     }
 
-    handleDel = () => {
-        this.props.onHandleDelete(this.state.mod.modName);
-    }
-
     render() {
         return (
             <div className="grid-container">
