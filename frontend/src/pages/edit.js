@@ -2,6 +2,7 @@ import React from 'react';
 import TagsInput from 'react-tagsinput';
 import './styles.css'
 import 'react-tagsinput/react-tagsinput.css'
+import {Navigate} from "react-router-dom"
 
 
 class Edit extends React.Component{    
@@ -31,6 +32,9 @@ class Edit extends React.Component{
             currSlug: '',
             currTags: [],
             currIcon: '',
+
+            //navigate
+            redirect:false
         };
         
     }
@@ -114,6 +118,7 @@ class Edit extends React.Component{
 		}
 		else{
 			this.editMod();
+            this.setState({redirect:true});
 		}
     }
 
@@ -146,7 +151,7 @@ class Edit extends React.Component{
 					</textarea><br/>
 
                 <button type="submit" onClick={this.handleSubmit}>Submit</button>
-
+                {this.state.redirect && <Navigate to="/mymods" replace={true}/>}
             </div>
         </div>
         );
