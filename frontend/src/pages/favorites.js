@@ -99,6 +99,10 @@ class Favorites extends React.Component{
     }
 
     async remFav(user, modName){
+        if(user === null || modName == null){
+            window.alert("Please sign in first!")
+            return;
+        }
         await fetch('http://localhost:3030/addFavorite', {
             method: 'PUT',
             headers: {

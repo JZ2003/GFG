@@ -92,6 +92,10 @@ class ModView extends React.Component{
     }
 
     async addFav(user, modName){
+        if(user === null || modName == null){
+            window.alert("Please sign in first!")
+            return;
+        }
         await fetch('http://localhost:3030/addFavorite', {
             method: 'PUT',
             headers: {
